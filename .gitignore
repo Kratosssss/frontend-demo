@@ -1,0 +1,7 @@
+# Local planning and research notes
+/.planning/
+/docs/plans/
+/docs/research/
+
+# macOS
+.DS_Store
