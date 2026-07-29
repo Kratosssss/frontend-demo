@@ -41,6 +41,15 @@ const headerCopy = {
   },
 } as const;
 
+export function SkipLink() {
+  const { locale } = useLocale();
+  return (
+    <a className="skip-link" href="#main-content">
+      {locale === "zh" ? "跳至主要内容" : "Skip to main content"}
+    </a>
+  );
+}
+
 export function SiteHeader() {
   const { locale, toggleLocale } = useLocale();
   const copy = headerCopy[locale];
@@ -56,7 +65,11 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <Link className="brand" href="/" aria-label="MATRILINK 首页">
+      <Link
+        className="brand"
+        href="/"
+        aria-label={locale === "zh" ? "MATRILINK 首页" : "MATRILINK home"}
+      >
         <span className="brand-mark" aria-hidden="true">
           M
         </span>
@@ -197,7 +210,10 @@ export function ProductCard({
         </p>
         <h2>{text(product.name, locale)}</h2>
         <p>{text(product.summary, locale)}</p>
-        <div className="spec-chips mono" aria-label="关键规格">
+        <div
+          className="spec-chips mono"
+          aria-label={locale === "zh" ? "关键规格" : "Key specifications"}
+        >
           <span>{product.current} A</span>
           <span>{product.voltage}</span>
           <span>{product.protection}</span>

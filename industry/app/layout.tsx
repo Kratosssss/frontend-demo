@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
+import { SkipLink } from "./components";
 import { SiteProvider } from "./site-context";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -53,10 +54,10 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <a className="skip-link" href="#main-content">
-          跳至主要内容
-        </a>
-        <SiteProvider>{children}</SiteProvider>
+        <SiteProvider>
+          <SkipLink />
+          {children}
+        </SiteProvider>
       </body>
     </html>
   );

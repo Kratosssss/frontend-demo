@@ -64,11 +64,12 @@ test("catalog and detail journeys expose the expected demo controls", async () =
 });
 
 test("client behaviors remain local-only and accessible", async () => {
-  const [context, products, components, layout] = await Promise.all([
+  const [context, products, components, layout, pdfGenerator] = await Promise.all([
     readFile(new URL("../app/site-context.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/products/products-page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/components.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../scripts/generate-demo-pdf.py", import.meta.url), "utf8"),
   ]);
 
   assert.match(context, /localStorage\.setItem\("matrilink-locale"/);
@@ -80,4 +81,8 @@ test("client behaviors remain local-only and accessible", async () => {
   assert.doesNotMatch(components, /\bfetch\s*\(/);
   assert.match(layout, /index:\s*false/);
   assert.match(layout, /x-forwarded-host/);
+  assert.match(pdfGenerator, /\("Rated current", "120 A"\)/);
+  assert.match(pdfGenerator, /\("Protection", "IP67"\)/);
+  assert.match(pdfGenerator, /\("Connection pitch", "5\.08 mm"\)/);
+  assert.doesNotMatch(pdfGenerator, /\("Rated current", "32 A"\)|\("Protection", "IP20"\)/);
 });

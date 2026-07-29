@@ -29,17 +29,17 @@ def draw_specification() -> None:
     document.setFont("Helvetica-Bold", 42)
     document.drawString(44, PAGE_HEIGHT - 132, "MX-C120")
     document.setFont("Helvetica", 15)
-    document.drawString(46, PAGE_HEIGHT - 158, "High-current pluggable terminal block")
+    document.drawString(46, PAGE_HEIGHT - 158, "Modular industrial connector")
     document.setStrokeColor(GRAPHITE)
     document.line(44, PAGE_HEIGHT - 178, PAGE_WIDTH - 44, PAGE_HEIGHT - 178)
 
     rows = [
-        ("Rated current", "32 A"),
+        ("Rated current", "120 A"),
         ("Rated voltage", "1000 V"),
-        ("Wire range", "0.5 - 6 mm2"),
-        ("Pole count", "2 - 12"),
-        ("Protection", "IP20"),
-        ("Operating temperature", "-40 C to +105 C"),
+        ("Protection", "IP67"),
+        ("Connection pitch", "5.08 mm"),
+        ("Wire range", "0.5 - 35 mm2"),
+        ("Mechanical life", "500 cycles"),
     ]
     top = PAGE_HEIGHT - 226
     document.setFont("Helvetica-Bold", 9)
