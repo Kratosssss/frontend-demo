@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { SkeletonPreview } from "./_sites-preview/SkeletonPreview";
+import { HomePage } from "./home-page";
 
 export const metadata: Metadata = {
-  title: "Your site is taking shape",
+  title: "工业连接系统演示",
   description:
-    "Your first version will appear here automatically when it’s ready.",
-  other: {
-    "codex-preview": "development",
-  },
+    "面向智能制造、新能源与轨道交通的虚构工业连接系统前端演示项目。",
 };
 
 export default function Home() {
-  return <SkeletonPreview />;
+  return <HomePage />;
 }
