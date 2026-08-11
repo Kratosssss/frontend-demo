@@ -3,5 +3,10 @@
 /docs/plans/
 /docs/research/
 
+# CloudBase static release output
+/cloudbase-dist/
+/industry-mainpage/out/
+/hrms/dist/
+
 # macOS
 .DS_Store

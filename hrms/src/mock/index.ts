@@ -1,0 +1,1 @@
+export { installMock } from './handlers'

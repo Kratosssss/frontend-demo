@@ -1,23 +1,25 @@
-# MATRILINK Frontend Demo
+# Frontend Portfolio Demos
 
-面向 前端岗位沟通的 演示仓库。站点源码位于 
+两个可独立访问的前端作品：
 
-## industry 行业官网项目
+- `industry-mainpage/`：MATRILINK 虚构工业官网，含中英文体验、产品筛选、详情与资料下载。
+- `hrms/`：企业人力资源管理系统，含登录、权限、员工、考勤与请假业务流。
 
-- 工业期刊式视觉系统与原创产品视觉
-- 8 个虚构产品的搜索、分类和应用筛选
-- 移动端筛选面板、产品快速详情抽屉与吸底 CTA
-- 本地语言偏好、键盘操作、Reduced Motion 与前端表单校验
-- 无数据库、无真实表单发送、无分析埋点
+国内发布后，根入口提供两个项目卡片；也可以直接访问各自的子路径。
 
-## 本地开发
+## 在线访问
+
+- [作品集入口](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/)
+- [工业官网](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/industry-mainpage/)
+- [HRMS 人力资源系统](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/hrms/)
+
+## 本地验证
 
 ```bash
-cd industry
-npm ci
-npm run dev
+npm --prefix industry-mainpage ci
+npm --prefix industry-mainpage test
+npm --prefix hrms ci
+npm --prefix hrms test
 ```
 
-需要 Node.js 22.13 或更高版本。
-
-> Frontend Candidate Demo · 非商业概念作品
+使用 Node.js 22 或更高版本。
