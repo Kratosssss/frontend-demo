@@ -1,0 +1,17 @@
+{
+  "name": "p009-hrms-demo",
+  "compatibility_date": "2026-08-11",
+  "main": "index.js",
+  "no_bundle": true,
+  "rules": [
+    {
+      "type": "ESModule",
+      "globs": ["**/*.js", "**/*.mjs"]
+    }
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "../client",
+    "not_found_handling": "none"
+  }
+}
