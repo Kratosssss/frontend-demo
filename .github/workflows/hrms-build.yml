@@ -1,14 +1,14 @@
-name: Industry site build
+name: HRMS build
 
 on:
   push:
     paths:
-      - "industry-mainpage/**"
-      - ".github/workflows/industry-build.yml"
+      - "hrms/**"
+      - ".github/workflows/hrms-build.yml"
   pull_request:
     paths:
-      - "industry-mainpage/**"
-      - ".github/workflows/industry-build.yml"
+      - "hrms/**"
+      - ".github/workflows/hrms-build.yml"
 
 permissions:
   contents: read
@@ -18,14 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: industry-mainpage
+        working-directory: hrms
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: industry-mainpage/package-lock.json
+          cache-dependency-path: hrms/package-lock.json
       - run: npm ci
-      - run: npm test
       - run: npm run lint
+      - run: npm run type-check
+      - run: npm run test
+      - run: npm run build

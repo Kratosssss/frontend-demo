@@ -229,7 +229,7 @@ export function ProductDetailPage() {
             <p>{copy.downloadCopy}</p>
           </div>
           <div className="download-list">
-            <a href="/downloads/mx-c120-demo-spec.pdf" download>
+            <a href="/industry-mainpage/downloads/mx-c120-demo-spec.pdf" download>
               <span className="download-type mono">PDF</span>
               <span>
                 <strong>MX-C120 DEMO DATASHEET</strong>
@@ -237,7 +237,7 @@ export function ProductDetailPage() {
               </span>
               <b aria-hidden="true">↓</b>
             </a>
-            <a href="/downloads/mx-c120-demo-outline.dxf" download>
+            <a href="/industry-mainpage/downloads/mx-c120-demo-outline.dxf" download>
               <span className="download-type mono">DXF</span>
               <span>
                 <strong>MX-C120 DEMO OUTLINE</strong>
@@ -245,7 +245,7 @@ export function ProductDetailPage() {
               </span>
               <b aria-hidden="true">↓</b>
             </a>
-            <a href="/downloads/mx-c120-demo-model.stp" download>
+            <a href="/industry-mainpage/downloads/mx-c120-demo-model.stp" download>
               <span className="download-type mono">STP</span>
               <span>
                 <strong>MX-C120 DEMO MODEL</strong>

@@ -1,11 +1,11 @@
 {
-  "name": "p009-hrms-vue3",
+  "name": "hrms-portfolio",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && node scripts/clean-dist.mjs && vite build && node scripts/prepare-sites-build.mjs",
+    "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint . --max-warnings=0",
     "type-check": "vue-tsc -b",

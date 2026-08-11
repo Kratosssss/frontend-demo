@@ -1,0 +1,20 @@
+import { cp, copyFile, mkdir, rm } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const output = resolve(root, "cloudbase-dist");
+
+await rm(output, { recursive: true, force: true });
+await mkdir(output, { recursive: true });
+await copyFile(resolve(root, "portal", "index.html"), resolve(output, "index.html"));
+const withoutDesktopMetadata = (source) => !source.endsWith(".DS_Store");
+
+await cp(resolve(root, "industry-mainpage", "out"), resolve(output, "industry-mainpage"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});
+await cp(resolve(root, "hrms", "dist"), resolve(output, "hrms"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});

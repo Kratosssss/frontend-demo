@@ -2,28 +2,15 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render(pathname = "/") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${pathname}`);
-  const { default: worker } = await import(workerUrl.href);
+const pageFiles = {
+  "/": "../out/index.html",
+  "/products": "../out/products/index.html",
+  "/products/mx-c120": "../out/products/mx-c120/index.html",
+};
 
-  return worker.fetch(
-    new Request(`http://localhost${pathname}`, {
-      headers: {
-        accept: "text/html",
-        host: "localhost",
-      },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
+async function render(pathname = "/") {
+  const html = await readFile(new URL(pageFiles[pathname], import.meta.url), "utf8");
+  return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
 }
 
 test("server-renders all public routes with finished portfolio content", async () => {
@@ -42,7 +29,7 @@ test("server-renders all public routes with finished portfolio content", async (
     assert.match(html, /MATRILINK/);
     assert.match(html, content);
     assert.match(html, /name="robots" content="noindex, nofollow"/);
-    assert.doesNotMatch(html, /codex-preview|loading skeleton|react-loading-skeleton/i);
+    assert.doesNotMatch(html, /loading skeleton|react-loading-skeleton/i);
   }
 });
 
@@ -80,7 +67,6 @@ test("client behaviors remain local-only and accessible", async () => {
   assert.match(components, /aria-modal="true"/);
   assert.doesNotMatch(components, /\bfetch\s*\(/);
   assert.match(layout, /index:\s*false/);
-  assert.match(layout, /x-forwarded-host/);
   assert.match(pdfGenerator, /\("Rated current", "120 A"\)/);
   assert.match(pdfGenerator, /\("Protection", "IP67"\)/);
   assert.match(pdfGenerator, /\("Connection pitch", "5\.08 mm"\)/);

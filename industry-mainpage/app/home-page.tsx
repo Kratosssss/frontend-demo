@@ -104,7 +104,7 @@ export function HomePage() {
             </h1>
             <div className="hero-copy-bottom">
               <p>{copy.description}</p>
-              <form className="hero-search" action="/products" method="get">
+              <form className="hero-search" action="/industry-mainpage/products/" method="get">
                 <label className="mono" htmlFor="hero-product-search">
                   FIND
                 </label>
@@ -126,7 +126,7 @@ export function HomePage() {
               <span>ENGINEERED FOR CONTINUITY</span>
             </div>
             <Image
-              src="/images/matrilink-hero.jpg"
+              src="/industry-mainpage/images/matrilink-hero.jpg"
               alt={
                 locale === "zh"
                   ? "虚构的 MATRILINK 模块化工业连接器"

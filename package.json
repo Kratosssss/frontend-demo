@@ -1,0 +1,13 @@
+{
+  "name": "frontend-portfolio-demos",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:apps": "npm ci --prefix industry-mainpage && npm ci --prefix hrms",
+    "build:industry": "npm run build --prefix industry-mainpage",
+    "build:hrms": "npm run build --prefix hrms",
+    "build:cloudbase": "npm run install:apps && npm run build:industry && npm run build:hrms && node scripts/assemble-cloudbase.mjs",
+    "test": "npm run test --prefix industry-mainpage && npm run test --prefix hrms",
+    "lint": "npm run lint --prefix industry-mainpage && npm run lint --prefix hrms"
+  }
+}
