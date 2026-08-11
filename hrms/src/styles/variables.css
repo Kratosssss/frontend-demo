@@ -1,0 +1,12 @@
+:root {
+  --hrms-primary: #2563eb;
+  --hrms-primary-dark: #1d4ed8;
+  --hrms-bg: #f4f6f9;
+  --hrms-card: #ffffff;
+  --hrms-border: #e5e7eb;
+  --hrms-text: #182230;
+  --hrms-muted: #667085;
+  --hrms-sidebar: #111827;
+  --hrms-radius: 10px;
+  --hrms-shadow: 0 1px 2px rgb(16 24 40 / 5%);
+}
