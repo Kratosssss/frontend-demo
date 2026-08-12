@@ -18,3 +18,19 @@ await cp(resolve(root, "hrms", "dist"), resolve(output, "hrms"), {
   recursive: true,
   filter: withoutDesktopMetadata,
 });
+await cp(resolve(root, "freight-quotes"), resolve(output, "freight-quotes"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});
+await cp(resolve(root, "testcar", "out"), resolve(output, "testcar"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});
+await cp(resolve(root, "export-car-demo", "out"), resolve(output, "export-car-demo"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});
+await cp(resolve(root, "adpulse", "dist"), resolve(output, "adpulse"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});

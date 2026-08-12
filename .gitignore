@@ -2,11 +2,17 @@
 /.planning/
 /docs/plans/
 /docs/research/
+/.codegraph/
 
 # CloudBase static release output
 /cloudbase-dist/
 /industry-mainpage/out/
 /hrms/dist/
+/adpulse/dist/
+
+# JavaScript build and dependency artifacts
+**/node_modules/
+**/.next/
 
 # macOS
 .DS_Store

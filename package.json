@@ -3,11 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "install:apps": "npm ci --prefix industry-mainpage && npm ci --prefix hrms",
+    "install:apps": "npm ci --prefix industry-mainpage && npm ci --prefix hrms && npm ci --prefix testcar && npm ci --prefix export-car-demo && npm ci --prefix adpulse",
     "build:industry": "npm run build --prefix industry-mainpage",
     "build:hrms": "npm run build --prefix hrms",
-    "build:cloudbase": "npm run install:apps && npm run build:industry && npm run build:hrms && node scripts/assemble-cloudbase.mjs",
-    "test": "npm run test --prefix industry-mainpage && npm run test --prefix hrms",
-    "lint": "npm run lint --prefix industry-mainpage && npm run lint --prefix hrms"
+    "build:testcar": "npm run build --prefix testcar",
+    "build:exportcar": "npm run build --prefix export-car-demo",
+    "build:adpulse": "npm run build --prefix adpulse",
+    "build:cloudbase": "npm run install:apps && npm run build:industry && npm run build:hrms && npm run build:testcar && npm run build:exportcar && npm run build:adpulse && node scripts/assemble-cloudbase.mjs",
+    "test": "npm run install:apps && npm run test:apps && npm run build:industry && npm run build:hrms && npm run build:testcar && npm run build:exportcar && npm run build:adpulse && node scripts/assemble-cloudbase.mjs && node --test tests/*.test.mjs",
+    "test:apps": "npm run test --prefix industry-mainpage && npm run test --prefix hrms && npm run test --prefix testcar && npm run test --prefix export-car-demo && npm run test --prefix adpulse",
+    "lint": "npm run lint --prefix industry-mainpage && npm run lint --prefix hrms && npm run lint --prefix testcar && npm run lint --prefix export-car-demo && npm run lint --prefix adpulse"
   }
 }

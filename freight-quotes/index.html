@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>海运空运报价目录</title>
+  <style>
+    :root {
+      --ink:#17324d;
+      --muted:#66798d;
+      --line:#cfdae4;
+      --page:#f3f6f8;
+      --panel:#ffffff;
+      --sea-bg:#eef7fc;
+      --sea-line:#a9cddd;
+      --air-bg:#fff2f1;
+      --air-line:#e2b8b5;
+      --accent:#174b72;
+      --danger:#a43c36;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      background:var(--page);
+      color:#223244;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    }
+    button,input,select,textarea { font:inherit; }
+    button { cursor:pointer; }
+    [hidden] { display:none !important; }
+    .shell { max-width:1080px; margin:0 auto; padding:36px 22px 72px; }
+    .masthead { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:24px; }
+    .eyebrow { margin:0 0 7px; color:#6c7f91; font-size:12px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+    h1 { margin:0; color:var(--ink); font-size:clamp(27px,4vw,38px); line-height:1.15; letter-spacing:-.02em; }
+    .intro { max-width:650px; margin:10px 0 0; color:var(--muted); line-height:1.65; }
+    .new-actions { display:flex; flex-wrap:wrap; gap:10px; flex-shrink:0; }
+    .new-btn,.toolbar button,.add-row-btn {
+      border:1px solid #bdcbd7;
+      border-radius:10px;
+      background:#fff;
+      color:var(--ink);
+      padding:10px 15px;
+      font-weight:750;
+    }
+    .new-btn.sea { background:var(--sea-bg); border-color:var(--sea-line); }
+    .new-btn.air { background:var(--air-bg); border-color:var(--air-line); }
+    .new-btn:hover,.toolbar button:hover,.add-row-btn:hover { box-shadow:0 4px 12px rgba(23,50,77,.08); transform:translateY(-1px); }
+    .local-note {
+      margin:0 0 24px;
+      padding:11px 14px;
+      border:1px solid #d9dfe4;
+      border-radius:10px;
+      background:#fbfcfd;
+      color:#657484;
+      font-size:13px;
+      line-height:1.55;
+    }
+    .section-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:0 0 12px; }
+    .section-head h2 { margin:0; color:var(--ink); font-size:19px; }
+    .count { color:#718294; font-size:13px; }
+    .quote-list { display:grid; gap:10px; }
+    .quote-capsule {
+      position:relative;
+      display:grid;
+      grid-template-columns:110px minmax(0,1fr) auto;
+      align-items:center;
+      gap:18px;
+      min-height:82px;
+      padding:16px 54px 16px 18px;
+      border:1px solid;
+      border-radius:14px;
+      outline:none;
+      transition:.15s ease;
+    }
+    .quote-capsule.sea { background:var(--sea-bg); border-color:var(--sea-line); }
+    .quote-capsule.air { background:var(--air-bg); border-color:var(--air-line); }
+    .quote-capsule:hover,.quote-capsule:focus-visible { box-shadow:0 5px 15px rgba(23,50,77,.09); transform:translateY(-1px); }
+    .mode-label { color:var(--ink); font-size:14px; font-weight:800; letter-spacing:.04em; }
+    .route { min-width:0; color:var(--ink); font-size:18px; font-weight:800; overflow:hidden; }
+    .route small { display:block; margin-bottom:3px; color:#63778b; font-size:12px; font-weight:750; letter-spacing:.06em; }
+    .route-main { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .route-meta { display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:7px; color:#5f7487; font-size:12px; font-weight:700; line-height:1.4; }
+    .updated { color:#6f7f8e; font-size:12px; white-space:nowrap; }
+    .delete-capsule {
+      position:absolute;
+      top:10px;
+      right:11px;
+      width:31px;
+      height:31px;
+      border:1px solid rgba(164,60,54,.24);
+      border-radius:999px;
+      background:rgba(255,255,255,.72);
+      color:var(--danger);
+      font-size:19px;
+      line-height:1;
+    }
+    .delete-capsule:hover { background:#fff; border-color:rgba(164,60,54,.5); }
+    .empty {
+      padding:44px 24px;
+      border:1px dashed #bac8d3;
+      border-radius:14px;
+      background:rgba(255,255,255,.55);
+      text-align:center;
+      color:#6d7e8e;
+    }
+    .empty strong { display:block; margin-bottom:7px; color:var(--ink); font-size:17px; }
+    .secondary-action { width:100%; color:#52687c; background:transparent; }
+    .template-tabs { display:flex; gap:8px; margin:20px 0 14px; }
+    .template-tab {
+      border:1px solid #bdcbd7;
+      border-radius:999px;
+      background:#fff;
+      color:var(--ink);
+      padding:8px 16px;
+      font-weight:800;
+    }
+    .template-tab[aria-selected="true"] { background:var(--sea-bg); border-color:var(--sea-line); box-shadow:inset 0 0 0 1px #fff; }
+
+    .editor-shell { max-width:980px; margin:0 auto; padding:22px 20px 64px; }
+    .toolbar {
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px;
+      padding:12px;
+      border:1px solid #cad5df;
+      border-radius:13px;
+      background:rgba(255,255,255,.96);
+      box-shadow:0 7px 20px rgba(23,50,77,.08);
+      backdrop-filter:blur(8px);
+    }
+    .toolbar .back { margin-right:auto; }
+    .toolbar .primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .toolbar .danger { color:var(--danger); }
+    .status { min-height:22px; margin:9px 4px 5px; color:#637588; font-size:13px; }
+    .editor-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:24px 0 14px; }
+    .editor-heading h1 { font-size:26px; }
+    .mode-chip { padding:7px 12px; border:1px solid; border-radius:999px; font-size:13px; font-weight:800; }
+    .mode-chip.sea { background:var(--sea-bg); border-color:var(--sea-line); }
+    .mode-chip.air { background:var(--air-bg); border-color:var(--air-line); }
+    .quote-card {
+      overflow:hidden;
+      border:1px solid #bfcbd6;
+      border-radius:12px;
+      background:#fff;
+      box-shadow:0 8px 25px rgba(23,50,77,.07);
+      color:#1e2c3a;
+      font:14px Arial,sans-serif;
+    }
+    .quote-card-head { padding:20px 22px 16px; border-bottom:1px solid #cbd5df; }
+    .quote-card-head strong { display:block; color:var(--ink); font-size:19px; }
+    .quote-card-head span { display:block; margin-top:5px; color:#68798a; font-size:12px; }
+    .quote-body { padding:18px 22px 22px; }
+    .quote-card table { width:100%; border-collapse:collapse; table-layout:fixed; }
+    .quote-card th,.quote-card td { border:1px solid #cbd5df; padding:7px 9px; text-align:left; vertical-align:middle; }
+    .quote-card th { width:28%; background:#f3f6f9; color:#263c50; font-weight:700; }
+    .quote-card input,.quote-card select,.quote-card textarea {
+      width:100%;
+      min-width:0;
+      border:0;
+      border-bottom:1px dashed #b8c4cf;
+      border-radius:0;
+      outline:none;
+      background:transparent;
+      color:#1e2c3a;
+      padding:3px 2px;
+    }
+    .quote-card input:focus,.quote-card select:focus,.quote-card textarea:focus { border-bottom-color:#2c6d98; background:#f7fbfe; }
+    .quote-card textarea { min-height:74px; resize:vertical; line-height:1.5; }
+    .info-table .info-label { font-weight:800; color:#263c50; }
+    .info-table .info-remove-cell { width:105px; padding:4px; text-align:center; background:#fff; }
+    .info-tools { display:flex; margin-top:8px; }
+    .charges { margin-top:14px; }
+    .charges h3,.remarks h3 { margin:0 0 7px; color:var(--ink); font-size:14px; }
+    .charges-table-wrap { overflow-x:auto; }
+    .charges-table { min-width:680px; table-layout:auto !important; }
+    .charges th { width:auto; }
+    .charges .column-head { position:relative; min-width:135px; padding-right:37px; }
+    .charges .column-name { font-weight:800; color:#263c50; }
+    .charges .remove-cell { width:105px; padding:4px; text-align:center; }
+    .row-controls { display:flex; align-items:center; justify-content:center; gap:4px; }
+    .move-row,.remove-row,.remove-column,.remove-info-row {
+      width:27px;
+      height:27px;
+      border-radius:999px;
+      background:#fff;
+      line-height:1;
+    }
+    .move-row { border:1px solid #bfd1df; color:#2c6d98; }
+    .remove-row,.remove-column,.remove-info-row { border:1px solid #e1c2bf; color:var(--danger); }
+    .remove-column { position:absolute; top:50%; right:5px; transform:translateY(-50%); }
+    .column-tools { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .add-row-btn { margin-top:8px; padding:7px 11px; font-size:12px; }
+    .column-tools .add-row-btn { margin-top:0; }
+    .remarks { margin-top:14px; padding-top:12px; border-top:1px solid #cbd5df; }
+    .storage-error { color:var(--danger); }
+    @media (max-width:760px) {
+      .masthead { align-items:flex-start; flex-direction:column; }
+      .new-actions { width:100%; }
+      .new-btn { flex:1; }
+      .quote-capsule { grid-template-columns:1fr; gap:5px; padding-right:50px; }
+      .route-meta { gap:4px 12px; }
+      .updated { white-space:normal; }
+      .toolbar .back { width:100%; margin-right:0; }
+      .toolbar button { flex:1; padding:9px 8px; font-size:13px; }
+      .quote-body,.quote-card-head { padding-left:13px; padding-right:13px; }
+      .quote-card th { width:35%; }
+      .editor-heading { align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main id="homeView" class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Freight Quote Library</p>
+        <h1>海运空运报价目录</h1>
+        <p class="intro">从这里新建报价，保存后按运输方式、Term 和路线统一管理。点击已有报价即可继续修改。</p>
+      </div>
+      <div class="new-actions" aria-label="报价操作">
+        <button class="new-btn sea" type="button" data-new-mode="sea">＋ 新建海运</button>
+        <button class="new-btn air" type="button" data-new-mode="air">＋ 新建空运</button>
+        <button class="new-btn secondary-action" type="button" id="openDefaults">默认模板设置</button>
+      </div>
+    </header>
+    <p class="local-note">数据保存在当前浏览器。重要报价请同时使用“下载 HTML”留档；清理浏览器数据可能会清空这里的目录。</p>
+    <section aria-labelledby="savedTitle">
+      <div class="section-head">
+        <h2 id="savedTitle">已保存报价</h2>
+        <span id="quoteCount" class="count">0 条</span>
+      </div>
+      <div id="quoteList" class="quote-list"></div>
+    </section>
+  </main>
+
+  <main id="editorView" class="editor-shell" hidden>
+    <nav class="toolbar" aria-label="报价操作">
+      <button class="back" type="button" id="backHome">← 返回主页</button>
+      <button class="primary" type="button" id="saveQuote">保存报价</button>
+      <button type="button" id="copyQuote">复制邮件表格</button>
+      <button type="button" id="downloadQuote">下载 HTML</button>
+      <button class="danger" type="button" id="resetQuote">恢复默认</button>
+    </nav>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <div class="editor-heading">
+      <div>
+        <p class="eyebrow">Quote Editor</p>
+        <h1 id="editorTitle">新建海运报价</h1>
+      </div>
+      <span id="modeChip" class="mode-chip sea">海运</span>
+    </div>
+    <div id="editorCardHost"><section id="quoteCard" class="quote-card" aria-label="报价内容"></section></div>
+  </main>
+
+  <main id="defaultsView" class="editor-shell" hidden>
+    <nav class="toolbar" aria-label="默认模板操作">
+      <button class="back" type="button" id="backDefaultsHome">← 返回主页</button>
+      <button class="primary" type="button" id="saveDefault">保存当前模板</button>
+      <button class="danger" type="button" id="restoreDefault">恢复当前内置模板</button>
+    </nav>
+    <p id="defaultStatus" class="status" role="status" aria-live="polite"></p>
+    <div class="editor-heading">
+      <div>
+        <p class="eyebrow">Ocean Defaults</p>
+        <h1>默认模板设置</h1>
+      </div>
+      <span class="mode-chip sea">海运</span>
+    </div>
+    <div class="template-tabs" role="tablist" aria-label="海运默认模板">
+      <button class="template-tab" type="button" role="tab" data-template-term="FOB" aria-selected="true">FOB</button>
+      <button class="template-tab" type="button" role="tab" data-template-term="EXW" aria-selected="false">EXW</button>
+    </div>
+    <div id="templateCardHost"></div>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/export-car-demo/sitemap.xml
