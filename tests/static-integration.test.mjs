@@ -17,7 +17,7 @@ async function listFiles(directory) {
   return nested.flat();
 }
 
-test("作品集入口包含全部六个项目", async () => {
+test("作品集入口包含全部七个项目", async () => {
   const portal = await read("portal/index.html");
   assert.match(portal, /<h1>前端作品集<\/h1>/);
   assert.doesNotMatch(portal, /[两三2-9]个(?:完整的)?前端作品/);
@@ -25,6 +25,7 @@ test("作品集入口包含全部六个项目", async () => {
   assert.match(portal, /href="\/testcar\/"/);
   assert.match(portal, /href="\/export-car-demo\/"/);
   assert.match(portal, /href="\/adpulse\/"/);
+  assert.match(portal, /href="\/qiwu-mall\/"/);
   assert.match(portal, /repeat\(auto-fit,/);
 });
 
