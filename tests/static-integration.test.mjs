@@ -26,6 +26,8 @@ test("作品集入口包含全部六个项目", async () => {
   assert.match(portal, /href="\/export-car-demo\/"/);
   assert.match(portal, /href="\/adpulse\/"/);
   assert.match(portal, /repeat\(auto-fit,/);
+  assert.match(portal, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?a \{ transition: none; \}/);
+  assert.match(portal, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?a:hover, a:focus-visible \{ transform: none; \}/);
 });
 
 test("报价工具使用独立存储并保留一次性示例初始化门禁", async () => {

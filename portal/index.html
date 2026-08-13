@@ -19,6 +19,10 @@
       p { color: #607083; line-height: 1.65; }
       .go { display: inline-block; margin-top: 12px; font-weight: 700; }
       @media (max-width: 640px) { main { padding: 36px 0; } .grid { grid-template-columns: 1fr; } }
+      @media (prefers-reduced-motion: reduce) {
+        a { transition: none; }
+        a:hover, a:focus-visible { transform: none; }
+      }
     </style>
   </head>
   <body>
