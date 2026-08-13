@@ -41,6 +41,21 @@ test("报价工具使用独立存储并保留一次性示例初始化门禁", as
   assert.doesNotMatch(html + app, /LEGACY_TEMPLATES|hiddenLegacyIds|legacyList|restoreLegacy|旧模板备份/);
 });
 
+test("海运空运默认备注覆盖市场波动、额外费用和货物保险", async () => {
+  const html = await read("freight-quotes/index.html");
+  const app = await read("freight-quotes/app.js");
+  assert.match(html, /app\.js\?v=20260814-remarks/);
+  assert.match(app, /const DEFAULTS_VERSION = 2/);
+  assert.match(app, /international shipping and freight markets/);
+  assert.match(app, /Demurrage, detention, truck waiting time, storage/);
+  assert.match(app, /international air freight market/);
+  assert.match(app, /Truck waiting time, palletization, storage/);
+  assert.match(app, /Cargo insurance is not included in this quotation/);
+  assert.doesNotMatch(app, /Truck waiting time, palletization, storage, security screening/);
+  assert.doesNotMatch(app, /Truck waiting time, palletization, storage, terminal handling/);
+  assert.match(app, /migrateSeaDefaultTemplate/);
+});
+
 test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () => {
   const assemble = await read("scripts/assemble-cloudbase.mjs");
   assert.match(assemble, /resolve\(root, "freight-quotes"\)/);
