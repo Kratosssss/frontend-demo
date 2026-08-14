@@ -230,3 +230,13 @@ test("六个技能显式调用且普通 CI 保留 verify", async () => {
   await assert.rejects(access(resolve(root, "WORKFLOW.md")));
   await assert.rejects(access(resolve(root, "scripts/validate-symphony-workflow.mjs")));
 });
+
+test("根规则只定义跨目录通用的四条工程底线", async () => {
+  const instructions = await read("AGENTS.md");
+  assert.match(instructions, /^## 通用工程底线$/m);
+  assert.match(instructions, /最小改动：只修改完成任务必需的文件和逻辑/);
+  assert.match(instructions, /优先复用：先复用现有组件、工具和架构/);
+  assert.match(instructions, /不得绕过质量门禁：不得通过删除或放宽测试/);
+  assert.match(instructions, /改动必须可验证：行为变化必须有测试或可复现证据/);
+  assert.match(instructions, /子项目专属规则应放在对应目录最近的 `AGENTS\.md`/);
+});
