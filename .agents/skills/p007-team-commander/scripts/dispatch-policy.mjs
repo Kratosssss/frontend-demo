@@ -17,6 +17,13 @@ export const ROLE_PROFILES = Object.freeze({
   qa: { model: "gpt-5.6-sol", reasoningEffort: "high" },
 });
 
+export const CARD_TEMPLATE_FILES = Object.freeze({
+  design: "assets/cards/design-card-template.md",
+  frontend: "assets/cards/frontend-card-template.md",
+  backend: "assets/cards/backend-card-template.md",
+  qa: "assets/cards/qa-card-template.md",
+});
+
 const quotedTrigger = /[“”"'`《》「」『』][^\n]{0,24}编队执行[^\n]{0,24}[“”"'`《》「」『』]/;
 const nonDirectiveContext = /(不(?:要|用|能|会|是)?|别|无需|尚未|没说|如果|假如|等到|讨论|引用|解释|什么意思|为什么|只有.+才|的时候|再说|之前再|以后再)/;
 
@@ -38,11 +45,67 @@ export function selectSpecialists({ experience = false, frontend = false, backen
   return roles;
 }
 
-export function roleMayWrite({ role, designRequired = false, designApproved = false } = {}) {
+export function roleMayWrite({
+  role,
+  designRequired = false,
+  directionApproved = false,
+  figmaApproved = false,
+} = {}) {
   if (role === "qa") return false;
   if (role === "design") return true;
-  if (designRequired && !designApproved && (role === "frontend" || role === "backend")) return false;
+  if (designRequired && (!directionApproved || !figmaApproved) && (role === "frontend" || role === "backend")) return false;
   return role === "frontend" || role === "backend";
+}
+
+export function mayUseFigma({ designRequired = false, directionApproved = false } = {}) {
+  return designRequired && directionApproved;
+}
+
+export function canRequestDirectionApproval({ directionImages = [] } = {}) {
+  return Array.isArray(directionImages)
+    && directionImages.length === 3
+    && directionImages.every((path) => typeof path === "string" && path.trim().length > 0);
+}
+
+export function canAdvanceToFigma({
+  directionImages = [],
+  directionApproved = false,
+  directionApprovalEvidence = "",
+  selectedDirection = "",
+} = {}) {
+  return canRequestDirectionApproval({ directionImages })
+    && directionApproved
+    && typeof directionApprovalEvidence === "string"
+    && directionApprovalEvidence.trim().length > 0
+    && typeof selectedDirection === "string"
+    && selectedDirection.trim().length > 0;
+}
+
+export function canReleaseImplementation({
+  designRequired = false,
+  directionImages = [],
+  directionApproved = false,
+  directionApprovalEvidence = "",
+  selectedDirection = "",
+  figmaFileUrl = "",
+  figmaNodeId = "",
+  figmaApproved = false,
+  figmaApprovalEvidence = "",
+} = {}) {
+  if (!designRequired) return true;
+  return canAdvanceToFigma({
+    directionImages,
+    directionApproved,
+    directionApprovalEvidence,
+    selectedDirection,
+  })
+    && typeof figmaFileUrl === "string"
+    && figmaFileUrl.trim().length > 0
+    && typeof figmaNodeId === "string"
+    && figmaNodeId.trim().length > 0
+    && figmaApproved
+    && typeof figmaApprovalEvidence === "string"
+    && figmaApprovalEvidence.trim().length > 0;
 }
 
 export function mayStartRepair(completedRepairRounds) {
@@ -68,10 +131,17 @@ export function assertExclusiveOwnership(cards) {
   return true;
 }
 
-export function validateTaskCard(markdown) {
-  const required = [
+export function validateTaskCard(markdown, role) {
+  const commonRequired = [
     "目标", "输入", "拥有路径", "只读路径", "技能", "接口契约",
     "交付物", "验收标准", "验证命令", "禁止事项", "阻塞关系",
   ];
+  const roleRequired = {
+    design: ["设计目标与项目人格", "视觉侦察", "反公式化清单", "三个视觉方向", "方向图片证据", "Figma 完善", "两次人工批准"],
+    frontend: ["最终设计输入", "实现边界", "视觉还原证据"],
+    backend: ["设计门禁期间", "数据与副作用边界"],
+    qa: ["批准证据核验", "视觉与反公式化验收", "独立验收边界"],
+  };
+  const required = [...commonRequired, ...(roleRequired[role] ?? [])];
   return required.filter((heading) => !new RegExp(`^## ${heading}$`, "m").test(markdown));
 }

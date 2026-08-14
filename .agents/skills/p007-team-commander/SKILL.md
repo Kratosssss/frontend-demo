@@ -26,11 +26,11 @@ Use `scripts/dispatch-policy.mjs` as the deterministic policy source for trigger
    - Backend for API, data, mock, service, or server behavior.
    - QA for every code, configuration, or workflow delivery.
 4. Report every skipped role and the reason.
-5. Create `.planning/dispatch/<goal-id>/manifest.yaml`, one card per active role under `cards/`, and one report path per active role under `reports/`.
+5. Create `.planning/dispatch/<goal-id>/manifest.yaml`, one card per active role under `cards/`, one report path per active role under `reports/`, and role artifacts under `artifacts/`.
 6. Validate that owned paths do not overlap. Keep shared contracts and shared files owned by the commander.
 7. Show the card summary, then dispatch automatically. Run at most three specialists concurrently.
 
-Copy the formats from `assets/manifest-template.yaml` and `assets/task-card-template.md`. Task cards must define objective, inputs, owned paths, read-only paths, skill, interface contract, deliverables, acceptance criteria, validation, forbidden actions, and dependencies.
+Copy the manifest from `assets/manifest-template.yaml`. Copy each active role card from its matching template under `assets/cards/`; these four templates are the only task-card sources. Every card must define objective, inputs, owned paths, read-only paths, skill, interface contract, role-specific gates and evidence, deliverables, acceptance criteria, validation, forbidden actions, and dependencies.
 
 ## Apply model routing
 
@@ -43,12 +43,14 @@ Create a fresh agent for every new card. Resume the original card agent for repa
 
 ## Enforce the design gate
 
-When Design is active:
+When Design is active, enforce two separate human approvals:
 
-1. Let Design write only the design specification.
-2. Pause frontend and backend implementation until the user explicitly approves it.
-3. While waiting, allow Backend to perform read-only reconnaissance and draft an interface contract; forbid business-code writes.
-4. Record approval in the manifest before changing the state from `waiting_human`.
+1. Let Design inspect the real product and create exactly three materially different direction images under `.planning/dispatch/<goal-id>/artifacts/design-directions/`. Images must show real composition and visual treatment; text, palettes, links, or reference collages alone are insufficient.
+2. Forbid Figma during direction exploration. Show all three images in the user conversation, set `state: waiting_human`, and request a direction decision only when all three image paths are recorded in the manifest.
+3. Record the user's approval evidence and `selected_direction` before allowing Design to use Figma. Do not infer approval from silence or a general acknowledgement.
+4. Let Design use Figma only after direction approval to complete high-fidelity screens, components, states, responsive behavior, and the durable specification. Record the Figma file URL and node ID.
+5. Show the final Figma result, return to `state: waiting_human`, and record separate final approval evidence. Frontend and Backend remain write-blocked until this second approval is complete and evidenced.
+6. During both waits, allow Backend only read-only reconnaissance and a draft interface contract. Never let Design authorize either gate itself.
 
 ## Integrate and verify
 

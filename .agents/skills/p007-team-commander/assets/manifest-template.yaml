@@ -5,8 +5,17 @@ state: queued
 repair_round: 0
 design:
   required: false
-  approved: false
-  approval_evidence: ""
+  phase: not_required
+  direction_required: false
+  direction_images: []
+  direction_approved: false
+  direction_approval_evidence: ""
+  selected_direction: ""
+  figma_required: false
+  figma_file_url: ""
+  figma_node_id: ""
+  figma_approved: false
+  figma_approval_evidence: ""
 active_roles: []
 skipped_roles: []
 dependencies: {}

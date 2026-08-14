@@ -1,6 +1,6 @@
 interface:
   display_name: "P007 总指挥"
-  short_description: "协调 P007 五角色任务卡、设计门禁、集成验证与交付收尾"
+  short_description: "协调 P007 四类角色卡、双重设计门禁、集成验证与交付收尾"
   default_prompt: "使用 $p007-team-commander 准备或执行一次 P007 原生编队任务。"
 policy:
   allow_implicit_invocation: false
