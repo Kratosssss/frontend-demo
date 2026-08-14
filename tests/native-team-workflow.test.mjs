@@ -12,6 +12,7 @@ import {
   ROLE_PROFILES,
   assertExclusiveOwnership,
   canAdvanceToFigma,
+  canReleaseProductBaseline,
   canReleaseImplementation,
   canRequestDirectionApproval,
   isAffirmativeTeamTrigger,
@@ -35,12 +36,57 @@ test("只有肯定式编队执行指令触发团队", () => {
 });
 
 test("角色选择、模型和并发策略固定", () => {
-  assert.deepEqual(selectSpecialists({ experience: true, frontend: true, backend: false }), ["design", "frontend", "qa"]);
+  assert.deepEqual(selectSpecialists({ product: true, experience: true, frontend: true, backend: false }), ["product", "design", "frontend", "qa"]);
   assert.deepEqual(selectSpecialists({ backend: true }), ["backend", "qa"]);
   assert.equal(MAX_PARALLEL_SPECIALISTS, 3);
+  assert.deepEqual(ROLE_PROFILES.product, { model: "gpt-5.6-sol", reasoningEffort: "high" });
   assert.deepEqual(ROLE_PROFILES.frontend, { model: "gpt-5.6-terra", reasoningEffort: "high" });
   assert.deepEqual(ROLE_PROFILES.qa, { model: "gpt-5.6-sol", reasoningEffort: "high" });
   assert.deepEqual(DISPATCH_STATES, ["queued", "running", "waiting_human", "blocked", "passed", "failed"]);
+});
+
+test("产品规格基线按需启用且重大产品决策必须由用户批准", () => {
+  const readyBaseline = {
+    productRequired: true,
+    productSpecPath: "docs/specs/feature-product-spec.md",
+    productBaselineReady: true,
+  };
+
+  assert.equal(canReleaseProductBaseline({ productRequired: false }), true);
+  assert.equal(canReleaseProductBaseline({ productRequired: true }), false);
+  assert.equal(canReleaseProductBaseline(readyBaseline), true);
+  assert.equal(canReleaseProductBaseline({
+    ...readyBaseline,
+    productDecisionRequired: true,
+  }), false);
+  assert.equal(canReleaseProductBaseline({
+    ...readyBaseline,
+    productDecisionRequired: true,
+    productDecisionApproved: true,
+    productDecisionApprovalEvidence: "用户选择方案 A",
+  }), true);
+
+  assert.equal(roleMayWrite({ role: "product", productRequired: true }), true);
+  assert.equal(roleMayWrite({ role: "design", productRequired: true }), false);
+  assert.equal(roleMayWrite({ role: "frontend", ...readyBaseline }), true);
+  assert.equal(roleMayWrite({
+    role: "backend",
+    ...readyBaseline,
+    productDecisionRequired: true,
+    productDecisionApproved: true,
+  }), false);
+  assert.equal(mayUseFigma({
+    productRequired: true,
+    designRequired: true,
+    directionApproved: true,
+  }), false);
+  assert.equal(mayUseFigma({
+    ...readyBaseline,
+    designRequired: true,
+    directionApproved: true,
+  }), true);
+  assert.equal(canReleaseImplementation({ productRequired: true, designRequired: false }), false);
+  assert.equal(canReleaseImplementation({ ...readyBaseline, designRequired: false }), true);
 });
 
 test("设计门禁和两轮返修上限不可绕过", () => {
@@ -81,7 +127,7 @@ test("设计门禁和两轮返修上限不可绕过", () => {
   assert.equal(mayStartRepair(2), false);
 });
 
-test("任务卡路径必须独占且四套模板字段完整", async () => {
+test("任务卡路径必须独占且五套模板字段完整", async () => {
   assert.equal(assertExclusiveOwnership([
     { role: "frontend", ownedPaths: ["hrms/src"] },
     { role: "backend", ownedPaths: ["hrms/mock-server"] },
@@ -92,6 +138,7 @@ test("任务卡路径必须独占且四套模板字段完整", async () => {
   ]), /owned path overlap/);
 
   assert.deepEqual(CARD_TEMPLATE_FILES, {
+    product: "assets/cards/product-card-template.md",
     design: "assets/cards/design-card-template.md",
     frontend: "assets/cards/frontend-card-template.md",
     backend: "assets/cards/backend-card-template.md",
@@ -103,21 +150,33 @@ test("任务卡路径必须独占且四套模板字段完整", async () => {
     assert.deepEqual(validateTaskCard(template, role), [], `${role} card should be complete`);
   }
 
+  const product = await read(".agents/skills/p007-team-commander/assets/cards/product-card-template.md");
   const design = await read(".agents/skills/p007-team-commander/assets/cards/design-card-template.md");
   const frontend = await read(".agents/skills/p007-team-commander/assets/cards/frontend-card-template.md");
   const backend = await read(".agents/skills/p007-team-commander/assets/cards/backend-card-template.md");
   const qa = await read(".agents/skills/p007-team-commander/assets/cards/qa-card-template.md");
+  assert.match(product, /重大产品决策/);
+  assert.match(product, /不创建视觉方向、不调用 Figma/);
+  assert.doesNotMatch(product, /^## 三个视觉方向$/m);
   assert.match(design, /三个视觉方向/);
   assert.match(design, /方向批准前禁止调用 Figma/);
   assert.doesNotMatch(frontend, /^## 三个视觉方向$/m);
   assert.match(frontend, /最终 Figma 文件 URL/);
   assert.match(backend, /最终 Figma 批准证据缺失时不得修改业务代码/);
   assert.match(qa, /核验三张方向图/);
+  assert.match(qa, /规格符合性验收/);
+  assert.match(qa, /工程质量验收/);
   await assert.rejects(access(resolve(root, ".agents/skills/p007-team-commander/assets/task-card-template.md")));
 });
 
-test("manifest 和角色技能声明双重设计门禁", async () => {
+test("manifest 和角色技能声明产品基线与双重设计门禁", async () => {
   const manifest = await read(".agents/skills/p007-team-commander/assets/manifest-template.yaml");
+  for (const field of [
+    "spec_path", "baseline_ready", "decision_required", "decision_options",
+    "decision_approved", "decision_approval_evidence",
+  ]) {
+    assert.match(manifest, new RegExp(`^  ${field}:`, "m"));
+  }
   for (const field of [
     "direction_images", "direction_approved", "direction_approval_evidence",
     "selected_direction", "figma_file_url", "figma_node_id",
@@ -127,21 +186,29 @@ test("manifest 和角色技能声明双重设计门禁", async () => {
   }
 
   const commander = await read(".agents/skills/p007-team-commander/SKILL.md");
+  const product = await read(".agents/skills/p007-product-manager/SKILL.md");
   const design = await read(".agents/skills/p007-product-designer/SKILL.md");
   const frontend = await read(".agents/skills/p007-frontend-engineer/SKILL.md");
   const backend = await read(".agents/skills/p007-backend-engineer/SKILL.md");
   const qa = await read(".agents/skills/p007-qa-engineer/SKILL.md");
+  assert.match(commander, /project manager and delivery owner/);
+  assert.match(commander, /Enforce the product baseline/);
+  assert.match(product, /user problem, product scope/);
+  assert.match(product, /do not choose on the user's behalf/);
   assert.match(commander, /exactly three materially different direction images/);
   assert.match(commander, /Forbid Figma during direction exploration/);
   assert.match(design, /Create exactly three materially different visual directions/);
   assert.match(frontend, /final approved Figma file\/node/);
   assert.match(backend, /final Figma approval/);
   assert.match(qa, /three direction images/);
+  assert.match(qa, /specification-compliance verdict/);
+  assert.match(qa, /engineering-quality verdict/);
 });
 
-test("五个技能显式调用且普通 CI 保留 verify", async () => {
+test("六个技能显式调用且普通 CI 保留 verify", async () => {
   const skills = [
     "p007-team-commander",
+    "p007-product-manager",
     "p007-product-designer",
     "p007-frontend-engineer",
     "p007-backend-engineer",

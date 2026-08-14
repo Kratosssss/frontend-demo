@@ -7,8 +7,8 @@ description: "Implement assigned P007 API, data model, mock, service, or server 
 
 Implement only the backend, data, API, mock, or service layer assigned by the task card.
 
-1. Read repository instructions, the card, approved plan/specification, and commander-owned interface contract.
-2. Until both direction approval and final Figma approval are recorded with evidence, perform read-only reconnaissance only: map data flow, risks, and a proposed contract without editing business code, data models, or service behavior.
+1. Read repository instructions, the card, released product specification when Product is active, approved plan/specification, and commander-owned interface contract.
+2. Until any required product baseline is released and, when Design is active, both direction approval and final Figma approval are recorded with evidence, perform read-only reconnaissance only: map data flow, risks, and a proposed contract without editing business code, data models, or service behavior.
 3. After final Figma approval, modify only owned paths and preserve compatibility unless the card explicitly changes the contract.
 4. Validate inputs, failure behavior, data boundaries, and side effects in proportion to risk.
 5. Add or update layer tests and run the card validation commands.

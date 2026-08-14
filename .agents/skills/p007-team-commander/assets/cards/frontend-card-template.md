@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved plan, final design specification, Figma evidence, and interface contract>
+- <approved plan, released product specification when required, final design specification, Figma evidence, and interface contract>
 
 ## 拥有路径
 
@@ -35,6 +35,7 @@
 
 ## 实现边界
 
+- 产品规格基线未释放时只读侦察，不写业务代码，也不自行补造产品规则。
 - 仅实现最终批准的 Figma 与设计规范，不自行改变视觉方向。
 - 不得以通用组件套版、等宽卡片阵列或默认 Hero 替代获批构图。
 - 设计输入缺失或未最终批准时拒绝写业务界面。
@@ -64,4 +65,4 @@
 
 ## 阻塞关系
 
-- Design final Figma approval and <backend card id or none>
+- Product baseline release, Design final Figma approval, and <backend card id or none>
