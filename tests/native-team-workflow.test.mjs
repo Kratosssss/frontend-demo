@@ -205,7 +205,7 @@ test("manifest 和角色技能声明产品基线与双重设计门禁", async ()
   assert.match(qa, /engineering-quality verdict/);
 });
 
-test("六个技能显式调用且普通 CI 保留 verify", async () => {
+test("六个技能显式调用且不保留仓库级 verify 工作流", async () => {
   const skills = [
     "p007-team-commander",
     "p007-product-manager",
@@ -220,13 +220,7 @@ test("六个技能显式调用且普通 CI 保留 verify", async () => {
     await access(resolve(root, `.agents/skills/${skill}/SKILL.md`));
   }
 
-  const workflow = await read(".github/workflows/project-verify.yml");
-  assert.match(workflow, /^name: Project verify$/m);
-  assert.match(workflow, /^  verify:$/m);
-  assert.match(workflow, /run: npm test/);
-  assert.match(workflow, /run: npm run lint/);
-  assert.doesNotMatch(workflow, /Symphony/i);
-
+  await assert.rejects(access(resolve(root, ".github/workflows/project-verify.yml")));
   await assert.rejects(access(resolve(root, "WORKFLOW.md")));
   await assert.rejects(access(resolve(root, "scripts/validate-symphony-workflow.mjs")));
 });

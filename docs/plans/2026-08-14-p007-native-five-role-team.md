@@ -25,7 +25,7 @@ Linear/Symphony 作为备用入口保留，但所有工作流、注册和运维�
 ## Linear 中央化
 
 - 先通过 P010 受控停止 P007，不删除 S002、TIM-6 workspace、日志、锁或凭据。
-- P007 删除 `WORKFLOW.md` 和 Symphony 专属校验器；普通 CI 继续提供必需 job `verify`。
+- P007 删除 `WORKFLOW.md`、Symphony 专属校验器和仓库级 `verify` 工作流；质量验收由编队 QA 与按需本地验证负责，子项目专项工作流保持独立。
 - P010 的八个登记项目全部指向 `ops/workflows/<Pxxx>/WORKFLOW.md`；P007 保留 pilot 标识但设置为 disabled。
 - 只有启用项目要求中央工作流实际存在并通过校验。恢复时必须显式启用、doctor、start。
 
@@ -39,6 +39,6 @@ Linear/Symphony 作为备用入口保留，但所有工作流、注册和运维�
 
 - 五个技能通过官方 quick validator。
 - 自动测试口令识别、自适应角色、设计门禁、独占文件所有权和两轮返修上限。
-- P007 通过完整 `npm test` 与 `npm run lint`，远端必需检查仍为 `verify`。
+- P007 在交付前按改动范围运行适用的本地测试与 lint；远端不再配置仓库级必需检查。
 - P010 通过完整运维单元测试；所有登记路径位于 P010；P007 显示 stopped/disabled。
 - S003 仅在确认干净且已合并后移除；S002 与 TIM-6 内容保持不变。
