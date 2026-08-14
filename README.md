@@ -8,6 +8,7 @@
 - `testcar/`：TestCar 虚构汽车出口官网，含五语切换、车型筛选、详情页与本地模拟询盘。
 - `export-car-demo/`：EXPORTCAR 虚构国际车辆出口展示，含五语体验、库存筛选、出口准备信息与本地模拟询盘。
 - `adpulse/`：AdPulse 营销投放分析中台，React SPA，含仪表盘、活动管理、详情下钻及本地 Mock 数据流。
+- `motion-demo/`：Motion Signal Lab 网页动效作品，展示入场编排、滚动叙事、指针响应、模式切换、暂停与减少动态效果支持。
 
 CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可以直接访问各自的子路径；本地构建只生成待发布产物，不会自动部署。
 
@@ -39,3 +40,10 @@ npm run build:cloudbase
 ```
 
 使用 Node.js 22 或更高版本。
+
+只预览动效作品时，无需构建子项目：
+
+```bash
+python3 -m http.server 4176
+# 打开 http://127.0.0.1:4176/motion-demo/
+```
