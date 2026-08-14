@@ -17,7 +17,7 @@ async function listFiles(directory) {
   return nested.flat();
 }
 
-test("作品集入口包含全部八个项目", async () => {
+test("作品集入口包含全部九个项目", async () => {
   const portal = await read("portal/index.html");
   assert.match(portal, /<h1>前端作品集<\/h1>/);
   assert.doesNotMatch(portal, /[两三2-9]个(?:完整的)?前端作品/);
@@ -27,6 +27,7 @@ test("作品集入口包含全部八个项目", async () => {
   assert.match(portal, /href="\/adpulse\/"/);
   assert.match(portal, /href="\/motion-demo\/"/);
   assert.match(portal, /href="\/qiwu-mall\/"/);
+  assert.match(portal, /href="\/ai-learning\/"/);
   assert.match(portal, /repeat\(auto-fit,/);
 });
 
@@ -73,6 +74,7 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   assert.match(buildChanged, /outputMissing/);
   assert.match(buildChanged, /retail-mall\/dist\/build\/h5\/index\.html/);
   assert.match(buildChanged, /script:\s*"build:h5"/);
+  assert.match(buildChanged, /ai-learning\/dist\/index\.html/);
   assert.match(buildChanged, /回退到全量构建/);
   assert.match(assemble, /requiredInputs/);
   assert.match(assemble, /汇总前缺少必需产物/);
@@ -83,6 +85,7 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   assert.match(assemble, /resolve\(root, "adpulse", "dist"\)/);
   assert.match(assemble, /resolve\(root, "motion-demo"\)/);
   assert.match(assemble, /resolve\(root, "retail-mall", "dist", "build", "h5"\)/);
+  assert.match(assemble, /resolve\(root, "ai-learning", "dist"\)/);
 
   const builtRoot = resolve(root, "cloudbase-dist", "freight-quotes");
   const files = await listFiles(builtRoot);
@@ -99,6 +102,7 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   await readFile(resolve(root, "cloudbase-dist", "motion-demo", "styles.css"), "utf8");
   await readFile(resolve(root, "cloudbase-dist", "motion-demo", "motion.js"), "utf8");
   await readFile(resolve(root, "cloudbase-dist", "qiwu-mall", "index.html"), "utf8");
+  await readFile(resolve(root, "cloudbase-dist", "ai-learning", "index.html"), "utf8");
 });
 
 test("Motion Signal Lab 具备完整本地资源和动态治理", async () => {
@@ -144,6 +148,18 @@ test("AdPulse 作品接入入口与 CloudBase 汇总产物", async () => {
   assert.match(app, /CampaignDetail/);
 });
 
+test("AI 学习知识库以纯静态地图、笔记和搜索接入", async () => {
+  const portal = await read("portal/index.html");
+  const packageJson = await read("ai-learning/package.json");
+  const sourceFiles = await listFiles(resolve(root, "ai-learning", "src"));
+  const source = (await Promise.all(sourceFiles.map((path) => readFile(path, "utf8")))).join("\n");
+
+  assert.match(portal, /六阶段学习地图、12 篇原创长文笔记与中文全文搜索/);
+  assert.doesNotMatch(portal, /RAG 问答|登录后提问/);
+  assert.doesNotMatch(packageJson, /@cloudbase\/js-sdk/);
+  assert.doesNotMatch(source, /VITE_CLOUDBASE_|p007\.ai-learning\.chat|\/ask|\/login|AI 问答|DeepSeek|sendMessage|ai\.bot/);
+});
+
 test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", async () => {
   const builtRoot = resolve(root, "cloudbase-dist");
   const surfaces = [
@@ -156,6 +172,7 @@ test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", as
     ["AdPulse", resolve(builtRoot, "adpulse")],
     ["Motion Signal Lab", resolve(builtRoot, "motion-demo")],
     ["栖物生活方式商城", resolve(builtRoot, "qiwu-mall")],
+    ["AI 学习知识库", resolve(builtRoot, "ai-learning")],
   ];
 
   for (const [name, target] of surfaces) {

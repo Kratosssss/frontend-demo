@@ -10,6 +10,8 @@
 /hrms/dist/
 /adpulse/dist/
 /retail-mall/dist/
+/ai-learning/dist/
+/ai-learning/generated/
 
 # JavaScript build and dependency artifacts
 **/node_modules/

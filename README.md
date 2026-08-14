@@ -10,6 +10,7 @@
 - `adpulse/`：AdPulse 营销投放分析中台，React SPA，含仪表盘、活动管理、详情下钻及本地 Mock 数据流。
 - `motion-demo/`：Motion Signal Lab 网页动效作品，展示入场编排、滚动叙事、指针响应、模式切换、暂停与减少动态效果支持。
 - `retail-mall/`：栖物 QIWU 多端商城 Demo，同一套 uni-app 业务代码生成 H5、微信小程序和支付宝小程序。
+- `ai-learning/`：AI 学习知识库，含六阶段学习地图、12 篇原创 Markdown 笔记与中文全文搜索。
 
 CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可以直接访问各自的子路径；本地构建只生成待发布产物，不会自动部署。
 
@@ -23,6 +24,8 @@ CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可�
 - [Export Car Demo](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/export-car-demo/)
 - [AdPulse 营销投放分析中台](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/adpulse/)
 - [栖物 QIWU 多端商城](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/qiwu-mall/)
+
+`/ai-learning/` 仅在本地任务分支完成并合并到干净 `main` 后才能正式发布；当前不提供尚未发布的线上链接。本版是纯静态知识库，不接登录、在线问答、模型 API 或业务数据库。
 
 ## 本地验证
 
@@ -43,6 +46,7 @@ npm --prefix retail-mall run typecheck
 npm --prefix retail-mall run build:h5
 npm --prefix retail-mall run build:mp-weixin
 npm --prefix retail-mall run build:mp-alipay
+npm --prefix ai-learning test
 npm test
 npm run build:release
 npm run build:cloudbase
@@ -67,3 +71,5 @@ npm run assemble:cloudbase
 python3 -m http.server 4176
 # 打开 http://127.0.0.1:4176/motion-demo/
 ```
+
+AI 学习知识库直接从仓库内 Markdown 生成静态页面与搜索索引，不需要账号、密钥或云端数据同步。

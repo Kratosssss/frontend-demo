@@ -19,6 +19,7 @@ const requiredInputs = [
   ["AdPulse 构建产物", resolve(root, "adpulse", "dist", "index.html")],
   ["Motion Signal Lab", resolve(root, "motion-demo", "index.html")],
   ["栖物商城构建产物", resolve(root, "retail-mall", "dist", "build", "h5", "index.html")],
+  ["AI 学习知识库构建产物", resolve(root, "ai-learning", "dist", "index.html")],
 ];
 
 const missingInputs = [];
@@ -68,6 +69,10 @@ await cp(resolve(root, "motion-demo"), resolve(output, "motion-demo"), {
   filter: withoutDesktopMetadata,
 });
 await cp(resolve(root, "retail-mall", "dist", "build", "h5"), resolve(output, "qiwu-mall"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});
+await cp(resolve(root, "ai-learning", "dist"), resolve(output, "ai-learning"), {
   recursive: true,
   filter: withoutDesktopMetadata,
 });

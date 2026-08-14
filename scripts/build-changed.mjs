@@ -13,6 +13,7 @@ const apps = [
   { name: "exportcar", directory: "export-car-demo", output: "export-car-demo/out/index.html" },
   { name: "adpulse", directory: "adpulse", output: "adpulse/dist/index.html" },
   { name: "qiwu", directory: "retail-mall", output: "retail-mall/dist/build/h5/index.html", script: "build:h5" },
+  { name: "ai-learning", directory: "ai-learning", output: "ai-learning/dist/index.html" },
 ];
 
 const args = process.argv.slice(2);

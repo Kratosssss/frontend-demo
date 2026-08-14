@@ -1,0 +1,45 @@
+{
+  "name": "p007-ai-learning",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "predev": "npm run validate:content",
+    "prebuild": "npm run validate:content",
+    "pretest": "npm run validate:content",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty false",
+    "lint": "eslint src --max-warnings=0",
+    "test": "npm run test:backend && vitest run",
+    "validate:content": "node scripts/generate-index.mjs",
+    "test:backend": "node --test tests/backend/*.test.mjs"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@vitejs/plugin-react": "6.0.5",
+    "lucide-react": "1.31.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-markdown": "10.1.0",
+    "react-router-dom": "7.18.2",
+    "vite": "8.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "eslint": "10.8.1",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.4",
+    "globals": "17.11.0",
+    "jsdom": "26.1.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.67.0",
+    "vitest": "4.1.10"
+  }
+}
