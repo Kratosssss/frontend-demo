@@ -1,0 +1,6 @@
+interface:
+  display_name: "P007 产品经理"
+  short_description: "定义 P007 用户问题、产品范围、规则与可验证验收标准"
+  default_prompt: "使用 $p007-product-manager 为当前 P007 需求建立产品规格基线。"
+policy:
+  allow_implicit_invocation: false

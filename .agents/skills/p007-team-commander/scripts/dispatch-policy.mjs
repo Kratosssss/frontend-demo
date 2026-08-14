@@ -11,6 +11,7 @@ export const DISPATCH_STATES = Object.freeze([
 ]);
 
 export const ROLE_PROFILES = Object.freeze({
+  product: { model: "gpt-5.6-sol", reasoningEffort: "high" },
   design: { model: "gpt-5.6-sol", reasoningEffort: "high" },
   frontend: { model: "gpt-5.6-terra", reasoningEffort: "high" },
   backend: { model: "gpt-5.6-terra", reasoningEffort: "high" },
@@ -18,6 +19,7 @@ export const ROLE_PROFILES = Object.freeze({
 });
 
 export const CARD_TEMPLATE_FILES = Object.freeze({
+  product: "assets/cards/product-card-template.md",
   design: "assets/cards/design-card-template.md",
   frontend: "assets/cards/frontend-card-template.md",
   backend: "assets/cards/backend-card-template.md",
@@ -36,8 +38,9 @@ export function isAffirmativeTeamTrigger(input) {
   return true;
 }
 
-export function selectSpecialists({ experience = false, frontend = false, backend = false, delivery = true } = {}) {
+export function selectSpecialists({ product = false, experience = false, frontend = false, backend = false, delivery = true } = {}) {
   const roles = [];
+  if (product) roles.push("product");
   if (experience) roles.push("design");
   if (frontend) roles.push("frontend");
   if (backend) roles.push("backend");
@@ -47,18 +50,50 @@ export function selectSpecialists({ experience = false, frontend = false, backen
 
 export function roleMayWrite({
   role,
+  productRequired = false,
+  productSpecPath = "",
+  productBaselineReady = false,
+  productDecisionRequired = false,
+  productDecisionApproved = false,
+  productDecisionApprovalEvidence = "",
   designRequired = false,
   directionApproved = false,
   figmaApproved = false,
 } = {}) {
   if (role === "qa") return false;
+  if (role === "product") return true;
+  if (!canReleaseProductBaseline({
+    productRequired,
+    productSpecPath,
+    productBaselineReady,
+    productDecisionRequired,
+    productDecisionApproved,
+    productDecisionApprovalEvidence,
+  })) return false;
   if (role === "design") return true;
   if (designRequired && (!directionApproved || !figmaApproved) && (role === "frontend" || role === "backend")) return false;
   return role === "frontend" || role === "backend";
 }
 
-export function mayUseFigma({ designRequired = false, directionApproved = false } = {}) {
-  return designRequired && directionApproved;
+export function canReleaseProductBaseline({
+  productRequired = false,
+  productSpecPath = "",
+  productBaselineReady = false,
+  productDecisionRequired = false,
+  productDecisionApproved = false,
+  productDecisionApprovalEvidence = "",
+} = {}) {
+  if (!productRequired) return true;
+  if (typeof productSpecPath !== "string" || productSpecPath.trim().length === 0 || !productBaselineReady) return false;
+  if (!productDecisionRequired) return true;
+  return productDecisionApproved
+    && typeof productDecisionApprovalEvidence === "string"
+    && productDecisionApprovalEvidence.trim().length > 0;
+}
+
+export function mayUseFigma(options = {}) {
+  const { designRequired = false, directionApproved = false } = options;
+  return canReleaseProductBaseline(options) && designRequired && directionApproved;
 }
 
 export function canRequestDirectionApproval({ directionImages = [] } = {}) {
@@ -82,6 +117,12 @@ export function canAdvanceToFigma({
 }
 
 export function canReleaseImplementation({
+  productRequired = false,
+  productSpecPath = "",
+  productBaselineReady = false,
+  productDecisionRequired = false,
+  productDecisionApproved = false,
+  productDecisionApprovalEvidence = "",
   designRequired = false,
   directionImages = [],
   directionApproved = false,
@@ -92,6 +133,14 @@ export function canReleaseImplementation({
   figmaApproved = false,
   figmaApprovalEvidence = "",
 } = {}) {
+  if (!canReleaseProductBaseline({
+    productRequired,
+    productSpecPath,
+    productBaselineReady,
+    productDecisionRequired,
+    productDecisionApproved,
+    productDecisionApprovalEvidence,
+  })) return false;
   if (!designRequired) return true;
   return canAdvanceToFigma({
     directionImages,
@@ -137,10 +186,11 @@ export function validateTaskCard(markdown, role) {
     "交付物", "验收标准", "验证命令", "禁止事项", "阻塞关系",
   ];
   const roleRequired = {
+    product: ["用户问题与证据", "范围与非目标", "用户流程与产品规则", "边界情况", "重大产品决策", "产品规格基线"],
     design: ["设计目标与项目人格", "视觉侦察", "反公式化清单", "三个视觉方向", "方向图片证据", "Figma 完善", "两次人工批准"],
     frontend: ["最终设计输入", "实现边界", "视觉还原证据"],
     backend: ["设计门禁期间", "数据与副作用边界"],
-    qa: ["批准证据核验", "视觉与反公式化验收", "独立验收边界"],
+    qa: ["批准证据核验", "视觉与反公式化验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
   };
   const required = [...commonRequired, ...(roleRequired[role] ?? [])];
   return required.filter((heading) => !new RegExp(`^## ${heading}$`, "m").test(markdown));

@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved plan, current product surface, real content, and constraints>
+- <approved plan, released product specification when required, current product surface, real content, and constraints>
 
 ## 拥有路径
 
@@ -28,6 +28,7 @@
 
 ## 设计目标与项目人格
 
+- 产品规格基线路径与释放证据：<path/evidence or not required>
 - 核心用户、场景和关键任务：<...>
 - 第一眼与使用后的目标感受：<...>
 - 项目人格与明确排除的气质：<...>
@@ -87,6 +88,7 @@
 - 不提交、推送、创建 PR、合并或部署。
 - 不修改业务代码、共享契约或其他角色拥有的路径。
 - 方向批准前不调用 Figma；最终 Figma 批准前不授权实现。
+- 不静默改变已释放的产品范围、业务规则或验收标准；发现缺口时退回产品角色或总指挥澄清。
 
 ## 阻塞关系
 

@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved plan, final design specification, and interface contract>
+- <approved plan, released product specification when required, final design specification, and interface contract>
 
 ## 拥有路径
 
@@ -27,6 +27,7 @@
 
 ## 设计门禁期间
 
+- 产品规格基线未释放时仅可只读侦察、列出数据假设和澄清问题。
 - 方向批准和最终 Figma 批准完成前仅做只读侦察、数据流梳理、风险分析和接口草案。
 - 最终 Figma 批准证据缺失时不得修改业务代码、数据模型或服务行为。
 
@@ -54,4 +55,4 @@
 
 ## 阻塞关系
 
-- Design final Figma approval and <card id or none>
+- Product baseline release, Design final Figma approval, and <card id or none>
