@@ -205,6 +205,29 @@ test("manifest 和角色技能声明产品基线与双重设计门禁", async ()
   assert.match(qa, /engineering-quality verdict/);
 });
 
+test("总指挥自动审计收尾清理但不越权删除", async () => {
+  const commander = await read(".agents/skills/p007-team-commander/SKILL.md");
+  const manifest = await read(".agents/skills/p007-team-commander/assets/manifest-template.yaml");
+
+  assert.match(commander, /^## Audit close-out cleanup$/m);
+  assert.match(commander, /always run a read-only cleanup audit/);
+  assert.match(commander, /deletion is not/);
+  assert.match(commander, /explicit cleanup authorization/);
+  assert.match(commander, /Never force-remove/);
+  assert.match(commander, /Do not remove the worktree that hosts the active commander turn/);
+  assert.match(commander, /total worktree counts before and after cleanup/);
+  assert.match(commander, /Do not automatically push, merge, deploy, delete worktrees, or delete branches merely because the task is complete/);
+
+  for (const field of [
+    "audit_completed", "authorization_evidence", "worktree_count_before",
+    "worktree_count_after", "worktrees", "branches", "stopped_services",
+    "deleted_worktrees", "deleted_local_branches", "deleted_remote_branches",
+    "retained_items", "deferred_current_worktree",
+  ]) {
+    assert.match(manifest, new RegExp(`^  ${field}:`, "m"));
+  }
+});
+
 test("六个技能显式调用且不保留仓库级 verify 工作流", async () => {
   const skills = [
     "p007-team-commander",

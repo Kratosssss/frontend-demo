@@ -75,6 +75,17 @@ When Design is active, enforce two separate human approvals:
 6. Never let a child agent commit, push, create a PR, merge, deploy, publish, or touch production data.
 7. Follow the P007 CloudBase gate: production release is commander-only, after merge to a clean local `main`, rebuilt from `main`.
 
+## Audit close-out cleanup
+
+1. Before the final handoff, always run a read-only cleanup audit covering `git status`, `git worktree list`, task-branch ancestry against local `main`, open PR state, and task-owned local services or preview processes.
+2. Record the audit in the manifest. For every worktree and task branch, record whether it is current, clean or dirty, merged or unmerged, still associated with an open PR or active task, and the exact retain or cleanup reason.
+3. Classify a non-current worktree as removable only when it is clean, its task commit is reachable from local `main`, no open PR or active task still needs it, and no user verification or task-owned service depends on it. Never force-remove a dirty, untracked, unmerged, locked, or uncertain worktree.
+4. Classify a local or remote task branch as removable only when its commits are reachable from `main`, no open PR or active task needs it, and it is not the default branch. Never use force deletion to bypass failed ancestry or safety checks.
+5. The audit and candidate report are automatic; deletion is not. Execute worktree removal, branch deletion, or service shutdown only after the user selects cleanup or the current request already contains explicit cleanup authorization for the resolved targets. Do not infer authorization from task completion.
+6. When cleanup is authorized, resolve exact paths and branch names again immediately before acting, stop only task-owned temporary services, remove safe worktrees without force, and delete only fully merged task branches. Preserve recoverable branch references when a worktree contains anything uncertain.
+7. Do not remove the worktree that hosts the active commander turn. Mark it as `deferred_current_worktree` and report that it must be removed from another checkout or after the task is archived.
+8. Report deleted worktrees, deleted local and remote branches, stopped services, retained items with reasons, and total worktree counts before and after cleanup. If nothing is safe to remove, say so explicitly.
+
 ## Finish
 
-Update the manifest and reports, run repository checks, perform the selected read-only retrospective, and hand Git integration choices back to the user. Do not automatically push, merge, deploy, delete worktrees, or delete branches.
+Update the manifest and reports, run repository checks, perform the selected read-only retrospective, complete the read-only cleanup audit, and hand Git integration plus cleanup choices back to the user. Execute only the choices already authorized by the user. Do not automatically push, merge, deploy, delete worktrees, or delete branches merely because the task is complete.
