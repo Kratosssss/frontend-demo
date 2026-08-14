@@ -25,6 +25,12 @@ design:
   figma_node_id: ""
   figma_approved: false
   figma_approval_evidence: ""
+qa:
+  required: false
+  risk_reasons: []
+  scope: []
+  reused_evidence: []
+  skipped_reason: ""
 active_roles: []
 skipped_roles: []
 dependencies: {}

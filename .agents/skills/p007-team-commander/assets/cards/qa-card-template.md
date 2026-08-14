@@ -24,16 +24,23 @@
 
 <commander-owned contract>
 
+## 风险与范围
+
+- QA 启用原因：<matched risk trigger(s)>
+- 变更面与共享影响：<bounded paths, flows, contracts, or projects>
+- 可复用证据：<current owner test/build/lint/screenshots and report paths>
+- 独立检查：默认最多 3 个最高价值的独立检查；只有已记录风险无法被较小检查覆盖时才扩展。
+- 全仓命令：<not required, or exact shared-risk justification>
+
 ## 批准证据核验
 
-- 核验所需产品规格路径、baseline ready 状态和重大产品决策批准证据。
-- 核验三张方向图、选定方向和第一次用户批准证据。
-- 核验最终 Figma 文件 URL、节点 ID和第二次用户批准证据。
-- 任一证据缺失时不得判定实现通过。
+- 仅在 Product 启用时核验产品规格路径、baseline ready 状态和重大产品决策批准证据。
+- 仅在 Design 启用时核验三张方向图、选定方向、第一次用户批准、最终 Figma 文件/节点和第二次批准证据。
+- 适用证据缺失时不得判定实现通过；未启用的门禁不得变成额外 QA 工作。
 
 ## 视觉与反公式化验收
 
-- 对照最终 Figma 检查桌面端、移动端、关键状态、交互、无障碍和 reduced-motion。
+- 仅在 Design 启用时，对照最终 Figma 检查卡片范围内的桌面端、移动端、关键状态、交互、无障碍和 reduced-motion。
 - 检查实现是否退回已禁止的通用 Hero、等宽卡片阵列或其他 AI 套版。
 - 使用实现截图记录可复现的视觉差异。
 
@@ -49,7 +56,8 @@
 
 ## 工程质量验收
 
-- 独立核验测试、构建、lint、回归、错误路径、无障碍、响应式、性能风险和可维护性。
+- 复用责任角色当前且可信的测试、构建、lint 和截图证据，只对变更面、共享影响、关键回归和错误路径补独立检查。
+- 不得重复运行责任角色已经通过的同一套命令；无明确共享风险时不得安装全部依赖、运行全仓测试或全量构建。
 - 工程质量结论与规格符合性结论分开记录，两者均通过才能给出最终通过。
 
 ## 交付物
@@ -62,7 +70,7 @@
 
 ## 验证命令
 
-- `<unit, integration, build, lint, regression, and visual validation commands>`
+- `<up to three focused independent commands/checks by default; expand only with recorded risk justification>`
 
 ## 禁止事项
 

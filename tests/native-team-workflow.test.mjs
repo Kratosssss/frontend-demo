@@ -18,6 +18,7 @@ import {
   isAffirmativeTeamTrigger,
   mayUseFigma,
   mayStartRepair,
+  requiresIndependentQa,
   roleMayWrite,
   selectSpecialists,
   validateTaskCard,
@@ -35,9 +36,18 @@ test("只有肯定式编队执行指令触发团队", () => {
   assert.equal(isAffirmativeTeamTrigger(`以下计划要求只有我说编队执行才启动：${"x".repeat(100)}`), false);
 });
 
-test("角色选择、模型和并发策略固定", () => {
-  assert.deepEqual(selectSpecialists({ product: true, experience: true, frontend: true, backend: false }), ["product", "design", "frontend", "qa"]);
-  assert.deepEqual(selectSpecialists({ backend: true }), ["backend", "qa"]);
+test("角色选择按影响启用且 QA 只在风险命中时加入", () => {
+  assert.deepEqual(selectSpecialists({ product: true, experience: true, frontend: true }), ["product", "design", "frontend"]);
+  assert.deepEqual(selectSpecialists({ backend: true }), ["backend"]);
+  assert.deepEqual(selectSpecialists({ backend: true, qaRequired: true }), ["backend", "qa"]);
+  assert.equal(requiresIndependentQa({}), false);
+  assert.equal(requiresIndependentQa({ explicitRequest: true }), true);
+  assert.equal(requiresIndependentQa({ designGateDelivery: true }), true);
+  assert.equal(requiresIndependentQa({ crossLayerOrMultipleOwners: true }), true);
+  assert.equal(requiresIndependentQa({ sharedBuildOrConfig: true }), true);
+  assert.equal(requiresIndependentQa({ securityOrPermission: true }), true);
+  assert.equal(requiresIndependentQa({ dataOrIrreversibleSideEffect: true }), true);
+  assert.equal(requiresIndependentQa({ ownerEvidenceInsufficient: true }), true);
   assert.equal(MAX_PARALLEL_SPECIALISTS, 3);
   assert.deepEqual(ROLE_PROFILES.product, { model: "gpt-5.6-sol", reasoningEffort: "high" });
   assert.deepEqual(ROLE_PROFILES.frontend, { model: "gpt-5.6-terra", reasoningEffort: "high" });
@@ -166,6 +176,9 @@ test("任务卡路径必须独占且五套模板字段完整", async () => {
   assert.match(qa, /核验三张方向图/);
   assert.match(qa, /规格符合性验收/);
   assert.match(qa, /工程质量验收/);
+  assert.match(qa, /风险与范围/);
+  assert.match(qa, /最多 3 个最高价值的独立检查/);
+  assert.match(qa, /不得重复运行责任角色已经通过的同一套命令/);
   await assert.rejects(access(resolve(root, ".agents/skills/p007-team-commander/assets/task-card-template.md")));
 });
 
@@ -175,6 +188,9 @@ test("manifest 和角色技能声明产品基线与双重设计门禁", async ()
     "spec_path", "baseline_ready", "decision_required", "decision_options",
     "decision_approved", "decision_approval_evidence",
   ]) {
+    assert.match(manifest, new RegExp(`^  ${field}:`, "m"));
+  }
+  for (const field of ["required", "risk_reasons", "scope", "reused_evidence", "skipped_reason"]) {
     assert.match(manifest, new RegExp(`^  ${field}:`, "m"));
   }
   for (const field of [
@@ -203,6 +219,8 @@ test("manifest 和角色技能声明产品基线与双重设计门禁", async ()
   assert.match(qa, /three direction images/);
   assert.match(qa, /specification-compliance verdict/);
   assert.match(qa, /engineering-quality verdict/);
+  assert.match(commander, /QA is risk-based, not automatic/);
+  assert.match(qa, /Reuse valid owner evidence/);
 });
 
 test("总指挥自动审计收尾清理但不越权删除", async () => {

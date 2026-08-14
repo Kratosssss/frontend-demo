@@ -38,13 +38,33 @@ export function isAffirmativeTeamTrigger(input) {
   return true;
 }
 
-export function selectSpecialists({ product = false, experience = false, frontend = false, backend = false, delivery = true } = {}) {
+export function requiresIndependentQa({
+  explicitRequest = false,
+  designGateDelivery = false,
+  crossLayerOrMultipleOwners = false,
+  sharedBuildOrConfig = false,
+  securityOrPermission = false,
+  dataOrIrreversibleSideEffect = false,
+  ownerEvidenceInsufficient = false,
+} = {}) {
+  return [
+    explicitRequest,
+    designGateDelivery,
+    crossLayerOrMultipleOwners,
+    sharedBuildOrConfig,
+    securityOrPermission,
+    dataOrIrreversibleSideEffect,
+    ownerEvidenceInsufficient,
+  ].some(Boolean);
+}
+
+export function selectSpecialists({ product = false, experience = false, frontend = false, backend = false, qaRequired = false } = {}) {
   const roles = [];
   if (product) roles.push("product");
   if (experience) roles.push("design");
   if (frontend) roles.push("frontend");
   if (backend) roles.push("backend");
-  if (delivery) roles.push("qa");
+  if (qaRequired) roles.push("qa");
   return roles;
 }
 
@@ -190,7 +210,7 @@ export function validateTaskCard(markdown, role) {
     design: ["设计目标与项目人格", "视觉侦察", "反公式化清单", "三个视觉方向", "方向图片证据", "Figma 完善", "两次人工批准"],
     frontend: ["最终设计输入", "实现边界", "视觉还原证据"],
     backend: ["设计门禁期间", "数据与副作用边界"],
-    qa: ["批准证据核验", "视觉与反公式化验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
+    qa: ["风险与范围", "批准证据核验", "视觉与反公式化验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
   };
   const required = [...commonRequired, ...(roleRequired[role] ?? [])];
   return required.filter((heading) => !new RegExp(`^## ${heading}$`, "m").test(markdown));

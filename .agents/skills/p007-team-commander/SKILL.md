@@ -25,11 +25,14 @@ Operate as the project manager and delivery owner, not as the product decision-m
    - Design for visual, interaction, copy, or user-flow changes.
    - Frontend for browser UI or client behavior.
    - Backend for API, data, mock, service, or server behavior.
-   - QA for every code, configuration, or workflow delivery.
+   - QA is risk-based, not automatic. Require a QA card when the user explicitly asks for independent QA, an active Design gate needs independent implementation comparison, the delivery crosses layers or implementation owners, shared build/configuration can affect multiple projects, auth/security/permission behavior changes, data migration or irreversible side effects are involved, or owner evidence is missing, stale, or failing.
+   - Skip QA for documentation/rule/plan-only work, bounded low-risk single-layer changes with current owner test/build evidence, and deployment-only work that the commander can verify with proportional smoke checks. Record the skip reason and the commander-owned minimum verification; never treat a skipped QA card as permission to skip verification.
 4. Skip Product for a bounded bug, typo, already-approved pure implementation, local style correction, or engineering-only refactor. Report every skipped role and the reason.
 5. Create `.planning/dispatch/<goal-id>/manifest.yaml`, one card per active role under `cards/`, one report path per active role under `reports/`, and role artifacts under `artifacts/`.
 6. Validate that owned paths do not overlap. Keep shared contracts and shared files owned by the commander.
 7. Show the card summary, then dispatch automatically. Run at most three specialists concurrently.
+
+Before dispatch, list every role as active or skipped with one concrete reason. For QA, record the matched risk triggers, changed surfaces, evidence that can be reused, the smallest independent check set, and whether any full-repository command is justified. A QA card defaults to at most three highest-value independent checks. Do not repeat an owner's already-passing command merely to reproduce the same evidence, and do not run dependency installation, a full repository test, or a full rebuild unless the card names the shared-risk reason that requires it.
 
 Copy the manifest from `assets/manifest-template.yaml`. Copy each active role card from its matching template under `assets/cards/`; these five templates are the only task-card sources. Every card must define objective, inputs, owned paths, read-only paths, skill, interface contract, role-specific gates and evidence, deliverables, acceptance criteria, validation, forbidden actions, and dependencies.
 
@@ -69,7 +72,7 @@ When Design is active, enforce two separate human approvals:
 
 1. Keep all user communication, shared-file edits, Git operations, PR actions, merge decisions, and deployment decisions with the commander.
 2. Require role reports and inspect diffs before integration.
-3. Ask QA for independent read-only verification after implementation. Require separate specification-compliance and engineering-quality verdicts before the combined result can pass.
+3. When QA is active, ask for independent read-only verification after implementation and require separate specification-compliance and engineering-quality verdicts before the combined result can pass. When QA is skipped, the commander runs and records the proportional checks declared at dispatch.
 4. Route defects to the original owner. Allow at most two repair/retest rounds.
 5. Stop after the second failed repair round and report the root cause and remaining evidence.
 6. Never let a child agent commit, push, create a PR, merge, deploy, publish, or touch production data.
