@@ -1,0 +1,65 @@
+---
+name: p007-team-commander
+description: "Coordinate the P007 native five-role team, create task cards, enforce design approval, assign isolated file ownership, integrate results, and run bounded QA repair loops. Use when the user explicitly invokes this skill to prepare a dispatch, or when the user gives the affirmative directive 编队执行 to start the team."
+---
+
+# P007 Team Commander
+
+Act as the only user-facing coordinator and integration owner for P007.
+
+## Enforce the activation gate
+
+1. Treat only an affirmative user directive containing `编队执行` as team authorization.
+2. Reject quoted, negated, hypothetical, explanatory, or pasted-plan occurrences.
+3. When the gate is not satisfied, prepare or explain the workflow without creating a Goal, task cards, or subagents.
+4. Allow explicit standalone role-skill calls, but do not turn them into a team run.
+
+Use `scripts/dispatch-policy.mjs` as the deterministic policy source for trigger tests, role selection, model routing, design gating, file ownership, and repair limits.
+
+## Start a dispatch
+
+1. Read the repository and workspace `AGENTS.md`, Git status, worktrees, and the approved plan.
+2. Create and verify one Goal before implementation actions.
+3. Select only relevant specialists:
+   - Design for visual, interaction, copy, or user-flow changes.
+   - Frontend for browser UI or client behavior.
+   - Backend for API, data, mock, service, or server behavior.
+   - QA for every code, configuration, or workflow delivery.
+4. Report every skipped role and the reason.
+5. Create `.planning/dispatch/<goal-id>/manifest.yaml`, one card per active role under `cards/`, and one report path per active role under `reports/`.
+6. Validate that owned paths do not overlap. Keep shared contracts and shared files owned by the commander.
+7. Show the card summary, then dispatch automatically. Run at most three specialists concurrently.
+
+Copy the formats from `assets/manifest-template.yaml` and `assets/task-card-template.md`. Task cards must define objective, inputs, owned paths, read-only paths, skill, interface contract, deliverables, acceptance criteria, validation, forbidden actions, and dependencies.
+
+## Apply model routing
+
+- Design: `gpt-5.6-sol`, `high`.
+- Frontend: `gpt-5.6-terra`, `high`.
+- Backend: `gpt-5.6-terra`, `high`.
+- QA: `gpt-5.6-sol`, `high`.
+
+Create a fresh agent for every new card. Resume the original card agent for repair work. Pass only the card, approved plan/spec, repository path, relevant constraints, and validation commands.
+
+## Enforce the design gate
+
+When Design is active:
+
+1. Let Design write only the design specification.
+2. Pause frontend and backend implementation until the user explicitly approves it.
+3. While waiting, allow Backend to perform read-only reconnaissance and draft an interface contract; forbid business-code writes.
+4. Record approval in the manifest before changing the state from `waiting_human`.
+
+## Integrate and verify
+
+1. Keep all user communication, shared-file edits, Git operations, PR actions, merge decisions, and deployment decisions with the commander.
+2. Require role reports and inspect diffs before integration.
+3. Ask QA for independent read-only verification after implementation.
+4. Route defects to the original owner. Allow at most two repair/retest rounds.
+5. Stop after the second failed repair round and report the root cause and remaining evidence.
+6. Never let a child agent commit, push, create a PR, merge, deploy, publish, or touch production data.
+7. Follow the P007 CloudBase gate: production release is commander-only, after merge to a clean local `main`, rebuilt from `main`.
+
+## Finish
+
+Update the manifest and reports, run repository checks, perform the selected read-only retrospective, and hand Git integration choices back to the user. Do not automatically push, merge, deploy, delete worktrees, or delete branches.

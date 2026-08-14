@@ -1,0 +1,6 @@
+interface:
+  display_name: "P007 后端工程师"
+  short_description: "按任务卡实现 P007 接口、数据、Mock 服务和层级测试"
+  default_prompt: "使用 $p007-backend-engineer 实现当前分配的 P007 后端任务卡。"
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "P007 产品设计"
+  short_description: "定义 P007 页面体验、交互规范、响应状态并提交人工确认"
+  default_prompt: "使用 $p007-product-designer 为当前 P007 需求产出设计规范。"
+policy:
+  allow_implicit_invocation: false

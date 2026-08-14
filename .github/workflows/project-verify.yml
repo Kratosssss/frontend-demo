@@ -1,4 +1,4 @@
-name: Symphony gate
+name: Project verify
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: symphony-gate-${{ github.ref }}
+  group: project-verify-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -29,8 +29,6 @@ jobs:
             testcar/package-lock.json
             export-car-demo/package-lock.json
             adpulse/package-lock.json
-      - name: Validate Symphony policy
-        run: node scripts/validate-symphony-workflow.mjs
       - name: Test all portfolio apps
         run: npm test
       - name: Lint all portfolio apps
