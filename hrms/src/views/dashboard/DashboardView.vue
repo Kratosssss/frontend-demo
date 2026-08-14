@@ -10,6 +10,7 @@ import StatusTag from '@/components/common/StatusTag.vue'
 import { dashboardApi, type DashboardSummary } from '@/api/modules/dashboard'
 import { attendanceStatusOptions, labelOf, leaveTypeOptions } from '@/constants/options'
 import { formatDate } from '@/utils/data'
+import { getChartMotionOptions } from '@/utils/motion'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -29,7 +30,7 @@ const drawCharts = async () => {
   await nextTick()
   charts.splice(0).forEach((chart) => chart.dispose())
   if (!data.value || !trendEl.value || !deptEl.value || !attendanceEl.value) return
-  const common = { animationDuration: 450, textStyle: { fontFamily: 'Inter, PingFang SC, sans-serif' } }
+  const common = { ...getChartMotionOptions(), textStyle: { fontFamily: 'Inter, PingFang SC, sans-serif' } }
   const trend = echarts.init(trendEl.value)
   trend.setOption({ ...common, grid: { left: 42, right: 18, top: 24, bottom: 34 }, tooltip: { trigger: 'axis' }, xAxis: { type: 'category', data: data.value.trend.map((item) => item.month), axisLine: { lineStyle: { color: '#d0d5dd' } } }, yAxis: { type: 'value', splitLine: { lineStyle: { color: '#eef0f3' } } }, series: [{ type: 'line', smooth: true, symbolSize: 8, data: data.value.trend.map((item) => item.value), lineStyle: { width: 3, color: '#2563eb' }, itemStyle: { color: '#2563eb' }, areaStyle: { color: 'rgba(37,99,235,.08)' } }] })
   const dept = echarts.init(deptEl.value)

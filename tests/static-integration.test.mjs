@@ -88,3 +88,27 @@ test("AdPulse 作品接入入口与 CloudBase 汇总产物", async () => {
   assert.match(app, /新建投放活动/);
   assert.match(app, /CampaignDetail/);
 });
+
+test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", async () => {
+  const builtRoot = resolve(root, "cloudbase-dist");
+  const surfaces = [
+    ["作品集入口", resolve(builtRoot, "index.html")],
+    ["工业官网", resolve(builtRoot, "industry-mainpage")],
+    ["HRMS", resolve(builtRoot, "hrms")],
+    ["海运空运报价", resolve(builtRoot, "freight-quotes")],
+    ["TestCar", resolve(builtRoot, "testcar")],
+    ["Export Car Demo", resolve(builtRoot, "export-car-demo")],
+    ["AdPulse", resolve(builtRoot, "adpulse")],
+  ];
+
+  for (const [name, target] of surfaces) {
+    const files = target.endsWith(".html") ? [target] : await listFiles(target);
+    const textAssets = files.filter((path) => /\.(?:css|html)$/.test(path));
+    const content = (await Promise.all(textAssets.map((path) => readFile(path, "utf8")))).join("\n");
+
+    assert.match(content, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, `${name} 缺少 reduced-motion 媒体查询`);
+    assert.match(content, /scroll-behavior:\s*auto\s*!important/, `${name} 未关闭平滑滚动`);
+    assert.match(content, /animation-duration:\s*(?:0|0?\.0?1ms)\s*!important/, `${name} 未缩短动画`);
+    assert.match(content, /transition-duration:\s*(?:0|0?\.0?1ms)\s*!important/, `${name} 未缩短过渡`);
+  }
+});

@@ -19,6 +19,15 @@
       p { color: #607083; line-height: 1.65; }
       .go { display: inline-block; margin-top: 12px; font-weight: 700; }
       @media (max-width: 640px) { main { padding: 36px 0; } .grid { grid-template-columns: 1fr; } }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
     </style>
   </head>
   <body>
