@@ -59,6 +59,22 @@ test("海运空运默认备注覆盖市场波动、额外费用和货物保险",
 
 test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () => {
   const assemble = await read("scripts/assemble-cloudbase.mjs");
+  const buildChanged = await read("scripts/build-changed.mjs");
+  const packageJson = JSON.parse(await read("package.json"));
+
+  assert.equal(packageJson.scripts["build:changed"], "node scripts/build-changed.mjs");
+  assert.equal(packageJson.scripts["assemble:cloudbase"], "node scripts/assemble-cloudbase.mjs");
+  assert.match(packageJson.scripts["build:release"], /build:changed.*assemble:cloudbase/);
+  assert.match(packageJson.scripts["build:cloudbase"], /install:apps.*assemble:cloudbase/);
+  assert.match(buildChanged, /CLOUDBASE_BUILD_BASE/);
+  assert.match(buildChanged, /cloudbase-build-state\.json/);
+  assert.match(buildChanged, /readSavedBase/);
+  assert.match(buildChanged, /--base/);
+  assert.match(buildChanged, /outputMissing/);
+  assert.match(buildChanged, /回退到全量构建/);
+  assert.match(assemble, /requiredInputs/);
+  assert.match(assemble, /汇总前缺少必需产物/);
+  assert.match(assemble, /cloudbase-build-state\.json/);
   assert.match(assemble, /resolve\(root, "freight-quotes"\)/);
   assert.match(assemble, /resolve\(root, "testcar", "out"\)/);
   assert.match(assemble, /resolve\(root, "export-car-demo", "out"\)/);

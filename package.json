@@ -10,8 +10,11 @@
     "build:exportcar": "npm run build --prefix export-car-demo",
     "build:adpulse": "npm run build --prefix adpulse",
     "build": "npm run build:cloudbase",
-    "build:cloudbase": "npm run install:apps && npm run build:industry && npm run build:hrms && npm run build:testcar && npm run build:exportcar && npm run build:adpulse && node scripts/assemble-cloudbase.mjs",
-    "test": "npm run install:apps && npm run test:apps && npm run build:industry && npm run build:hrms && npm run build:testcar && npm run build:exportcar && npm run build:adpulse && node scripts/assemble-cloudbase.mjs && node --test tests/*.test.mjs",
+    "build:changed": "node scripts/build-changed.mjs",
+    "assemble:cloudbase": "node scripts/assemble-cloudbase.mjs",
+    "build:release": "npm run build:changed && npm run assemble:cloudbase",
+    "build:cloudbase": "npm run install:apps && npm run build:industry && npm run build:hrms && npm run build:testcar && npm run build:exportcar && npm run build:adpulse && npm run assemble:cloudbase",
+    "test": "npm run install:apps && npm run test:apps && npm run build:industry && npm run build:hrms && npm run build:testcar && npm run build:exportcar && npm run build:adpulse && npm run assemble:cloudbase && node --test tests/*.test.mjs",
     "test:apps": "npm run test --prefix industry-mainpage && npm run test --prefix hrms && npm run test --prefix testcar && npm run test --prefix export-car-demo && npm run test --prefix adpulse",
     "lint": "npm run lint --prefix industry-mainpage && npm run lint --prefix hrms && npm run lint --prefix testcar && npm run lint --prefix export-car-demo && npm run lint --prefix adpulse"
   }

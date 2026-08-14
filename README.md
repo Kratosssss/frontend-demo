@@ -36,10 +36,22 @@ npm --prefix export-car-demo test
 npm --prefix adpulse ci
 npm --prefix adpulse test
 npm test
+npm run build:release
 npm run build:cloudbase
 ```
 
 使用 Node.js 22 或更高版本。
+
+正式发布默认使用增量流程：`npm run build:release` 会以上次成功汇总时记录在 `.local/cloudbase-build-state.json` 的提交为 Git 基线，只安装和构建发生变化或缺少产物的子项目，然后完整汇总 `cloudbase-dist`。首次运行或新 worktree 没有本地状态时回退到 `HEAD^`；发布包含多个提交且本地状态不可用时，应显式传入上次已发布提交：
+
+```bash
+CLOUDBASE_BUILD_BASE=<last-deployed-commit> npm run build:release
+# 或
+npm run build:changed -- --base <last-deployed-commit>
+npm run assemble:cloudbase
+```
+
+根 `package.json` 或增量构建脚本发生变化、基线无效、或使用 `--force` 时会安全回退到全量子项目构建。`npm run build:cloudbase` 始终保留为全量兜底。
 
 只预览动效作品时，无需构建子项目：
 
