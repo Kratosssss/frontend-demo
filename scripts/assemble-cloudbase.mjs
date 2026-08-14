@@ -34,3 +34,7 @@ await cp(resolve(root, "adpulse", "dist"), resolve(output, "adpulse"), {
   recursive: true,
   filter: withoutDesktopMetadata,
 });
+await cp(resolve(root, "motion-demo"), resolve(output, "motion-demo"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});

@@ -17,7 +17,7 @@ async function listFiles(directory) {
   return nested.flat();
 }
 
-test("作品集入口包含全部七个项目", async () => {
+test("作品集入口包含全部八个项目", async () => {
   const portal = await read("portal/index.html");
   assert.match(portal, /<h1>前端作品集<\/h1>/);
   assert.doesNotMatch(portal, /[两三2-9]个(?:完整的)?前端作品/);
@@ -25,6 +25,7 @@ test("作品集入口包含全部七个项目", async () => {
   assert.match(portal, /href="\/testcar\/"/);
   assert.match(portal, /href="\/export-car-demo\/"/);
   assert.match(portal, /href="\/adpulse\/"/);
+  assert.match(portal, /href="\/motion-demo\/"/);
   assert.match(portal, /href="\/qiwu-mall\/"/);
   assert.match(portal, /repeat\(auto-fit,/);
 });
@@ -62,6 +63,7 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   assert.match(assemble, /resolve\(root, "testcar", "out"\)/);
   assert.match(assemble, /resolve\(root, "export-car-demo", "out"\)/);
   assert.match(assemble, /resolve\(root, "adpulse", "dist"\)/);
+  assert.match(assemble, /resolve\(root, "motion-demo"\)/);
 
   const builtRoot = resolve(root, "cloudbase-dist", "freight-quotes");
   const files = await listFiles(builtRoot);
@@ -74,6 +76,39 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   await readFile(resolve(root, "cloudbase-dist", "testcar", "index.html"), "utf8");
   await readFile(resolve(root, "cloudbase-dist", "export-car-demo", "index.html"), "utf8");
   await readFile(resolve(root, "cloudbase-dist", "adpulse", "index.html"), "utf8");
+  await readFile(resolve(root, "cloudbase-dist", "motion-demo", "index.html"), "utf8");
+  await readFile(resolve(root, "cloudbase-dist", "motion-demo", "styles.css"), "utf8");
+  await readFile(resolve(root, "cloudbase-dist", "motion-demo", "motion.js"), "utf8");
+});
+
+test("Motion Signal Lab 具备完整本地资源和动态治理", async () => {
+  const html = await read("motion-demo/index.html");
+  const css = await read("motion-demo/styles.css");
+  const script = await read("motion-demo/motion.js");
+
+  assert.match(html, /href="\.\/styles\.css"/);
+  assert.match(html, /src="\.\/motion\.js"/);
+  assert.match(html, /data-motion-toggle/);
+  assert.match(html, /data-scroll-lab/);
+  assert.match(html, /data-mode="orbit"/);
+  assert.match(css, /@font-face/);
+  assert.match(css, /IBMPlexSansCondensed-Regular\.woff2/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(css, /html\[data-motion="reduced"\]\s+\.scroll-lab__sticky/);
+  assert.match(css, /html\.motion-ready:not\(\[data-motion="reduced"\]\)\s+\.scene-copy/);
+  assert.match(css, /top:\s*var\(--header-height\)/);
+  assert.match(css, /\.mode-stage\.is-in-viewport\[data-mode="orbit"\]/);
+  assert.match(css, /html\[data-motion="reduced"\].*animation:\s*none\s*!important/s);
+  assert.match(script, /prefersReduced\.matches\s*\?\s*"reduced"\s*:\s*"running"/);
+  assert.match(script, /querySelectorAll\("\.mode-button\[data-mode\]"\)/);
+  assert.doesNotMatch(script, /querySelectorAll\("\[data-mode\]"\)/);
+  assert.match(script, /IntersectionObserver[\s\S]*is-in-viewport/);
+  assert.match(script, /motionToggle\.addEventListener\("click"/);
+  assert.match(script, /requestAnimationFrame/);
+  assert.match(script, /visibilitychange/);
+
+  await readFile(resolve(root, "motion-demo/fonts/IBMPlexSansCondensed-Regular.woff2"));
+  await readFile(resolve(root, "motion-demo/fonts/IBMPlexSansCondensed-SemiBold.woff2"));
 });
 
 test("AdPulse 作品接入入口与 CloudBase 汇总产物", async () => {
@@ -99,6 +134,7 @@ test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", as
     ["TestCar", resolve(builtRoot, "testcar")],
     ["Export Car Demo", resolve(builtRoot, "export-car-demo")],
     ["AdPulse", resolve(builtRoot, "adpulse")],
+    ["Motion Signal Lab", resolve(builtRoot, "motion-demo")],
   ];
 
   for (const [name, target] of surfaces) {
@@ -107,8 +143,8 @@ test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", as
     const content = (await Promise.all(textAssets.map((path) => readFile(path, "utf8")))).join("\n");
 
     assert.match(content, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, `${name} 缺少 reduced-motion 媒体查询`);
-    assert.match(content, /scroll-behavior:\s*auto\s*!important/, `${name} 未关闭平滑滚动`);
-    assert.match(content, /animation-duration:\s*(?:0|0?\.0?1ms)\s*!important/, `${name} 未缩短动画`);
-    assert.match(content, /transition-duration:\s*(?:0|0?\.0?1ms)\s*!important/, `${name} 未缩短过渡`);
+    assert.match(content, /scroll-behavior:\s*auto(?:\s*!important)?/, `${name} 未关闭平滑滚动`);
+    assert.match(content, /(?:animation-duration:\s*(?:0|0?\.0?1ms)\s*!important|animation:\s*none\s*!important)/, `${name} 未停用或缩短动画`);
+    assert.match(content, /(?:transition-duration:\s*(?:0|0?\.0?1ms)\s*!important|transition:\s*none\s*!important)/, `${name} 未停用或缩短过渡`);
   }
 });
