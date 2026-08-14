@@ -1,17 +1,28 @@
 const STORAGE_KEY = "freight-quote-library:v1";
 const DEFAULTS_KEY = "freight-quote-defaults:v1";
+const DEFAULTS_VERSION = 2;
 const TERMS = ["FOB", "EXW", "CFR", "CIF", "DAP", "DDU", "DDP", "其他"];
-const SEA_DEFAULT_REMARKS = [
+const LEGACY_SEA_DEFAULT_REMARKS = [
   "Rates are subject to final confirmation at the time of booking.",
   "Any cancellation or dead freight charges incurred after booking confirmation shall be borne by the customer.",
   "Storage, demurrage, detention, or any other additional charges are not included and will be charged at actual cost if incurred.",
   "Monthly payment terms may be available upon approval; however, prepayment is required for the first shipment in accordance with company policy.",
 ];
+const SEA_DEFAULT_REMARKS = [
+  "Due to ongoing volatility in the international shipping and freight markets, all rates and space are subject to final carrier confirmation and availability at the time of booking.",
+  "Sailing schedules are indicative only and may be subject to delay, change, or rollover due to carrier operations, port congestion, weather conditions, or other circumstances beyond our reasonable control.",
+  "Any cancellation, amendment, no-show, or dead freight charges incurred after booking confirmation shall be borne by the customer.",
+  "Demurrage, detention, truck waiting time, storage, port congestion surcharges, and any other additional charges are not included and will be charged at actual cost if incurred.",
+  "Cargo insurance is not included in this quotation unless expressly stated otherwise in writing. Given the uncertainties associated with international transportation, cargo owners are strongly advised to arrange adequate goods-in-transit insurance before shipment. Insurance can be quoted separately upon request.",
+  "Prepayment is required for the first shipment in accordance with company policy.",
+];
 const AIR_DEFAULT_REMARKS = [
-  "Rates are subject to final confirmation at the time of booking.",
-  "Final chargeable weight is subject to the airport's final weighing.",
-  "Any cancellation or dead freight charges incurred after booking confirmation shall be borne by the customer.",
-  "Pallet, storage and other additional charges will be charged at actual cost if incurred.",
+  "Due to ongoing volatility in the international air freight market, all rates and space are subject to final airline confirmation and availability at the time of booking.",
+  "Flight schedules are indicative only and may be subject to delay, change, or cargo offload due to airline operations, space constraints, weather conditions, or other circumstances beyond our reasonable control.",
+  "The final chargeable weight is subject to the airline's verified weight and dimensions.",
+  "Any cancellation, amendment, no-show, or other charges incurred after booking confirmation shall be borne by the customer.",
+  "Truck waiting time, palletization, storage, and any other additional charges not expressly included in this quotation will be charged at actual cost if incurred.",
+  "Cargo insurance is not included in this quotation unless expressly stated otherwise in writing. Given the uncertainties associated with international transportation, cargo owners are strongly advised to arrange adequate goods-in-transit insurance before shipment. Insurance can be quoted separately upon request.",
   "Prepayment is required for the first shipment in accordance with company policy.",
 ];
 const SEA_FOB_DEFAULT_CHARGES = [
@@ -175,9 +186,16 @@ function builtInSeaTemplate(term) {
   return defaultEditorHtml("sea", term);
 }
 
+function migrateSeaDefaultTemplate(template, savedVersion) {
+  if (typeof template !== "string" || savedVersion >= DEFAULTS_VERSION) return template;
+  const legacyRemarks = LEGACY_SEA_DEFAULT_REMARKS.join("\n");
+  const nextRemarks = SEA_DEFAULT_REMARKS.join("\n");
+  return template.replace(legacyRemarks, nextRemarks);
+}
+
 function readDefaults() {
   const builtIn = {
-    version: 1,
+    version: DEFAULTS_VERSION,
     sea: {
       FOB: builtInSeaTemplate("FOB"),
       EXW: builtInSeaTemplate("EXW"),
@@ -186,13 +204,13 @@ function readDefaults() {
   try {
     const parsed = JSON.parse(localStorage.getItem(DEFAULTS_KEY));
     const result = {
-      version: 1,
+      version: DEFAULTS_VERSION,
       sea: {
-        FOB: typeof parsed?.sea?.FOB === "string" ? parsed.sea.FOB : builtIn.sea.FOB,
-        EXW: typeof parsed?.sea?.EXW === "string" ? parsed.sea.EXW : builtIn.sea.EXW,
+        FOB: typeof parsed?.sea?.FOB === "string" ? migrateSeaDefaultTemplate(parsed.sea.FOB, parsed.version) : builtIn.sea.FOB,
+        EXW: typeof parsed?.sea?.EXW === "string" ? migrateSeaDefaultTemplate(parsed.sea.EXW, parsed.version) : builtIn.sea.EXW,
       },
     };
-    if (!parsed || result.sea.FOB !== parsed?.sea?.FOB || result.sea.EXW !== parsed?.sea?.EXW) {
+    if (!parsed || parsed.version !== DEFAULTS_VERSION || result.sea.FOB !== parsed?.sea?.FOB || result.sea.EXW !== parsed?.sea?.EXW) {
       localStorage.setItem(DEFAULTS_KEY, JSON.stringify(result));
     }
     return result;

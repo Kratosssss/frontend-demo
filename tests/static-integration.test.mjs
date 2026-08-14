@@ -17,7 +17,7 @@ async function listFiles(directory) {
   return nested.flat();
 }
 
-test("作品集入口包含全部六个项目", async () => {
+test("作品集入口包含全部七个项目", async () => {
   const portal = await read("portal/index.html");
   assert.match(portal, /<h1>前端作品集<\/h1>/);
   assert.doesNotMatch(portal, /[两三2-9]个(?:完整的)?前端作品/);
@@ -25,6 +25,7 @@ test("作品集入口包含全部六个项目", async () => {
   assert.match(portal, /href="\/testcar\/"/);
   assert.match(portal, /href="\/export-car-demo\/"/);
   assert.match(portal, /href="\/adpulse\/"/);
+  assert.match(portal, /href="\/qiwu-mall\/"/);
   assert.match(portal, /repeat\(auto-fit,/);
 });
 
@@ -38,6 +39,21 @@ test("报价工具使用独立存储并保留一次性示例初始化门禁", as
   assert.match(app, /quotes:\s*\[createExampleQuote\(\)\]/);
   assert.match(app, /if \(parsed && Array\.isArray\(parsed\.quotes\)\)/);
   assert.doesNotMatch(html + app, /LEGACY_TEMPLATES|hiddenLegacyIds|legacyList|restoreLegacy|旧模板备份/);
+});
+
+test("海运空运默认备注覆盖市场波动、额外费用和货物保险", async () => {
+  const html = await read("freight-quotes/index.html");
+  const app = await read("freight-quotes/app.js");
+  assert.match(html, /app\.js\?v=20260814-remarks/);
+  assert.match(app, /const DEFAULTS_VERSION = 2/);
+  assert.match(app, /international shipping and freight markets/);
+  assert.match(app, /Demurrage, detention, truck waiting time, storage/);
+  assert.match(app, /international air freight market/);
+  assert.match(app, /Truck waiting time, palletization, storage/);
+  assert.match(app, /Cargo insurance is not included in this quotation/);
+  assert.doesNotMatch(app, /Truck waiting time, palletization, storage, security screening/);
+  assert.doesNotMatch(app, /Truck waiting time, palletization, storage, terminal handling/);
+  assert.match(app, /migrateSeaDefaultTemplate/);
 });
 
 test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () => {
