@@ -12,6 +12,7 @@ const apps = [
   { name: "testcar", directory: "testcar", output: "testcar/out/index.html" },
   { name: "exportcar", directory: "export-car-demo", output: "export-car-demo/out/index.html" },
   { name: "adpulse", directory: "adpulse", output: "adpulse/dist/index.html" },
+  { name: "qiwu", directory: "retail-mall", output: "retail-mall/dist/build/h5/index.html", script: "build:h5" },
 ];
 
 const args = process.argv.slice(2);
@@ -88,5 +89,5 @@ for (const app of planned) {
   console.log(`[build:changed] 安装 ${app.name} 的锁定依赖…`);
   runNpm(["ci", "--prefix", app.directory]);
   console.log(`[build:changed] 构建 ${app.name}…`);
-  runNpm(["run", "build", "--prefix", app.directory]);
+  runNpm(["run", app.script ?? "build", "--prefix", app.directory]);
 }
