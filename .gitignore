@@ -8,6 +8,7 @@
 /industry-mainpage/out/
 /hrms/dist/
 /adpulse/dist/
+/retail-mall/dist/
 
 # JavaScript build and dependency artifacts
 **/node_modules/

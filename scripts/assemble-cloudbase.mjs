@@ -38,3 +38,7 @@ await cp(resolve(root, "motion-demo"), resolve(output, "motion-demo"), {
   recursive: true,
   filter: withoutDesktopMetadata,
 });
+await cp(resolve(root, "retail-mall", "dist", "build", "h5"), resolve(output, "qiwu-mall"), {
+  recursive: true,
+  filter: withoutDesktopMetadata,
+});

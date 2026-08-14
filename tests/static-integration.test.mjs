@@ -64,6 +64,7 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   assert.match(assemble, /resolve\(root, "export-car-demo", "out"\)/);
   assert.match(assemble, /resolve\(root, "adpulse", "dist"\)/);
   assert.match(assemble, /resolve\(root, "motion-demo"\)/);
+  assert.match(assemble, /resolve\(root, "retail-mall", "dist", "build", "h5"\)/);
 
   const builtRoot = resolve(root, "cloudbase-dist", "freight-quotes");
   const files = await listFiles(builtRoot);
@@ -79,6 +80,7 @@ test("CloudBase 产物包含恢复的子项目且不包含旧模板", async () =
   await readFile(resolve(root, "cloudbase-dist", "motion-demo", "index.html"), "utf8");
   await readFile(resolve(root, "cloudbase-dist", "motion-demo", "styles.css"), "utf8");
   await readFile(resolve(root, "cloudbase-dist", "motion-demo", "motion.js"), "utf8");
+  await readFile(resolve(root, "cloudbase-dist", "qiwu-mall", "index.html"), "utf8");
 });
 
 test("Motion Signal Lab 具备完整本地资源和动态治理", async () => {
@@ -135,6 +137,7 @@ test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", as
     ["Export Car Demo", resolve(builtRoot, "export-car-demo")],
     ["AdPulse", resolve(builtRoot, "adpulse")],
     ["Motion Signal Lab", resolve(builtRoot, "motion-demo")],
+    ["栖物生活方式商城", resolve(builtRoot, "qiwu-mall")],
   ];
 
   for (const [name, target] of surfaces) {
