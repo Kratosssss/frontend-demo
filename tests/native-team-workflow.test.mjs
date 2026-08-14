@@ -246,6 +246,28 @@ test("总指挥自动审计收尾清理但不越权删除", async () => {
   }
 });
 
+test("总指挥收尾执行产物晋升审计但不自动写规则或创建技能", async () => {
+  const commander = await read(".agents/skills/p007-team-commander/SKILL.md");
+  const manifest = await read(".agents/skills/p007-team-commander/assets/manifest-template.yaml");
+
+  assert.match(commander, /^## Audit artifact promotion$/m);
+  assert.match(commander, /durable specification/);
+  assert.match(commander, /stable project-rule candidate/);
+  assert.match(commander, /reusable-skill candidate/);
+  assert.match(commander, /temporary process evidence/i);
+  assert.match(commander, /Do not automatically edit `AGENTS\.md`/);
+  assert.match(commander, /Do not create or update a skill from a single dispatch/);
+  assert.match(commander, /regression test or an issue candidate/);
+
+  for (const field of [
+    "audit_completed", "durable_specs", "project_rule_candidates",
+    "skill_candidates", "regression_tests_or_issue_candidates",
+    "temporary_evidence", "authorization_required",
+  ]) {
+    assert.match(manifest, new RegExp(`^  ${field}:`, "m"));
+  }
+});
+
 test("六个技能显式调用且不保留仓库级 verify 工作流", async () => {
   const skills = [
     "p007-team-commander",

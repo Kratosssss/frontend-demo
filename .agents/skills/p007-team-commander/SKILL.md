@@ -78,6 +78,17 @@ When Design is active, enforce two separate human approvals:
 6. Never let a child agent commit, push, create a PR, merge, deploy, publish, or touch production data.
 7. Follow the P007 CloudBase gate: production release is commander-only, after merge to a clean local `main`, rebuilt from `main`.
 
+## Audit artifact promotion
+
+1. Before final handoff, classify every role deliverable and dispatch artifact into exactly one of these groups:
+   - A durable specification: an approved product baseline, final design specification and Figma reference, shared interface contract, stable acceptance criteria, or another authority that future implementation must follow. Store it under `docs/specs/` or in the code-owned contract location, and make process records reference that single authority instead of copying it.
+   - A stable project-rule candidate: a recurring repository or subproject command, boundary, or constraint that future agents must follow. Record the proposed wording, evidence, and nearest authoritative `AGENTS.md` location. Do not automatically edit `AGENTS.md`; wait for explicit user authorization.
+   - A reusable-skill candidate: a repeated cross-task workflow with distinct instructions, templates, or tooling that cannot be represented adequately by an existing `AGENTS.md`, script, or template. Record the reuse evidence and expected owner. Do not create or update a skill from a single dispatch, and never promote a candidate without explicit user authorization.
+   - Temporary process evidence: task cards, role reports, intermediate direction images, implementation screenshots, approval transcripts, repair logs, and other run-specific evidence. Keep it under `.planning/dispatch/<goal-id>/`; do not copy it into durable documentation merely for completeness.
+2. Convert each confirmed QA defect into a regression test or an issue candidate: add the regression test when the fix is in scope, or record the issue candidate when it remains out of scope. Do not preserve an entire QA report as the long-term defect authority.
+3. Record every classification, destination, already-promoted artifact, candidate requiring authorization, and retained temporary artifact in the manifest. Never duplicate the same stable rule or specification across multiple authorities.
+4. Report the promotion audit to the user before Git handoff: what became durable, what stayed temporary, which rule or skill candidates still require approval, and why. If nothing merits promotion, record and report that explicitly.
+
 ## Audit close-out cleanup
 
 1. Before the final handoff, always run a read-only cleanup audit covering `git status`, `git worktree list`, task-branch ancestry against local `main`, open PR state, and task-owned local services or preview processes.
@@ -91,4 +102,4 @@ When Design is active, enforce two separate human approvals:
 
 ## Finish
 
-Update the manifest and reports, run repository checks, perform the selected read-only retrospective, complete the read-only cleanup audit, and hand Git integration plus cleanup choices back to the user. Execute only the choices already authorized by the user. Do not automatically push, merge, deploy, delete worktrees, or delete branches merely because the task is complete.
+Update the manifest and reports, run repository checks, perform the selected read-only retrospective, complete the artifact-promotion and cleanup audits, and hand Git integration plus authorized promotion and cleanup choices back to the user. Execute only the choices already authorized by the user. Do not automatically push, merge, deploy, delete worktrees, or delete branches merely because the task is complete. Likewise, do not automatically edit project rules or create skills.
