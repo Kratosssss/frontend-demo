@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js" data-motion="running">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="MOTION//06 动效实验室：一件展示页面转场、滚动编排、指针响应与微交互的网页动效作品。" />
+    <meta name="theme-color" content="#08110f" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>MOTION//06 · 动效实验室</title>
+    <link rel="preload" href="./fonts/IBMPlexSansCondensed-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/IBMPlexSansCondensed-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      document.documentElement.classList.replace("no-js", "js");
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+    <div class="ambient-field" aria-hidden="true">
+      <span class="ambient-field__glow"></span>
+      <span class="ambient-field__grain"></span>
+      <span class="ambient-field__grid"></span>
+    </div>
+
+    <div class="scroll-meter" aria-hidden="true">
+      <span class="scroll-meter__label">SCROLL SIGNAL</span>
+      <span class="scroll-meter__track"><span class="scroll-meter__fill"></span></span>
+      <span class="scroll-meter__value" data-scroll-value>000</span>
+    </div>
+
+    <header class="site-header">
+      <a class="brand-mark" href="/" aria-label="返回前端作品集">
+        <span class="brand-mark__index">M/06</span>
+        <span class="brand-mark__name">Motion Signal Lab</span>
+      </a>
+
+      <div class="site-header__meta" aria-label="页面状态">
+        <span class="status-light" aria-hidden="true"></span>
+        <span data-motion-status>LIVE SEQUENCE</span>
+      </div>
+
+      <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="false">
+        <svg class="motion-toggle__pause" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14M16 5v14" />
+        </svg>
+        <svg class="motion-toggle__play" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m8 5 11 7-11 7Z" />
+        </svg>
+        <span data-motion-label>暂停动态</span>
+      </button>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__copy">
+          <p class="eyebrow reveal-line">
+            <span>Digital motion study</span>
+            <span>Shanghai / 2026</span>
+          </p>
+
+          <h1 class="hero-title" id="hero-title" aria-label="Move with meaning">
+            <span class="hero-title__row hero-title__row--one"><span>Move</span></span>
+            <span class="hero-title__row hero-title__row--two"><span>with</span></span>
+            <span class="hero-title__row hero-title__row--three"><span>meaning.</span></span>
+          </h1>
+
+          <div class="hero__intro reveal-block">
+            <p>动效不是一层装饰，而是界面在时间维度里的排版。每一次进入、停留和反馈，都应当帮助用户理解正在发生什么。</p>
+            <a class="command-link" href="#scroll-lab">
+              <span>进入滚动实验</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m0 0 6-6m-6 6-6-6" /></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-stage reveal-stage" data-pointer-stage aria-label="指针响应动效预览">
+          <div class="hero-stage__frame">
+            <span class="frame-corner frame-corner--tl"></span>
+            <span class="frame-corner frame-corner--tr"></span>
+            <span class="frame-corner frame-corner--bl"></span>
+            <span class="frame-corner frame-corner--br"></span>
+
+            <div class="orbital-system" aria-hidden="true">
+              <span class="orbit orbit--outer"><span class="orbit__node"></span></span>
+              <span class="orbit orbit--inner"><span class="orbit__node"></span></span>
+              <span class="orbital-system__cross orbital-system__cross--x"></span>
+              <span class="orbital-system__cross orbital-system__cross--y"></span>
+              <span class="orbital-system__core">
+                <span class="orbital-system__core-label">INTENT</span>
+              </span>
+            </div>
+
+            <div class="signal-note signal-note--one">
+              <span class="signal-note__key">01</span>
+              <span>ENTRANCE<br />CHOREOGRAPHY</span>
+            </div>
+            <div class="signal-note signal-note--two">
+              <span class="signal-note__key">02</span>
+              <span>SPATIAL<br />RESPONSE</span>
+            </div>
+            <div class="signal-note signal-note--three">
+              <span class="signal-note__key">03</span>
+              <span>MICRO<br />FEEDBACK</span>
+            </div>
+          </div>
+
+          <div class="hero-stage__readout" aria-hidden="true">
+            <span>PTR <b data-pointer-x>050</b> / <b data-pointer-y>050</b></span>
+            <span data-clock>00:00:00</span>
+          </div>
+        </div>
+
+        <p class="hero__side-note" aria-hidden="true">SCROLL TO ALTER THE SIGNAL</p>
+      </section>
+
+      <div class="signal-ticker" aria-hidden="true">
+        <div class="signal-ticker__track">
+          <span>ENTRANCE / RHYTHM / RESPONSE / CONTINUITY / INTENT /</span>
+          <span>ENTRANCE / RHYTHM / RESPONSE / CONTINUITY / INTENT /</span>
+        </div>
+      </div>
+
+      <section class="manifesto section-shell" aria-labelledby="manifesto-title">
+        <div class="section-index" data-reveal>
+          <span>01</span>
+          <span>Motion grammar</span>
+        </div>
+
+        <div class="manifesto__statement" data-reveal>
+          <p class="section-kicker">THE PRINCIPLE</p>
+          <h2 id="manifesto-title">动效不是装饰。<br /><em>它是界面的语法。</em></h2>
+        </div>
+
+        <div class="manifesto__body" data-reveal>
+          <p>有意义的动效会建立空间关系、解释状态变化，并在交互发生的瞬间提供恰到好处的确认。</p>
+          <dl class="motion-metrics">
+            <div><dt>160–420ms</dt><dd>界面反馈的有效节奏</dd></div>
+            <div><dt>01 focus</dt><dd>每个场景只保留一个主动作</dd></div>
+            <div><dt>0 noise</dt><dd>不为炫技制造认知负担</dd></div>
+          </dl>
+        </div>
+
+        <div class="kinetic-type" aria-hidden="true" data-reveal>
+          <span>R</span><span>H</span><span>Y</span><span>T</span><span>H</span><span>M</span>
+        </div>
+      </section>
+
+      <section class="scroll-lab" id="scroll-lab" data-scroll-lab aria-labelledby="scroll-lab-title">
+        <div class="scroll-lab__sticky">
+          <div class="scroll-lab__header">
+            <div class="section-index">
+              <span>02</span>
+              <span>Scroll choreography</span>
+            </div>
+            <p><span data-scene-current>01</span> / 03</p>
+          </div>
+
+          <h2 class="visually-hidden" id="scroll-lab-title">滚动编排实验</h2>
+
+          <div class="sequence-copy" aria-live="polite">
+            <article class="scene-copy is-active" data-scene-copy="0">
+              <p>PHASE 01 — ENTER</p>
+              <h3>按相位进入，<br />而不是一起出现。</h3>
+              <span>错开的时间差建立阅读顺序，让视线先抵达最重要的信息。</span>
+            </article>
+            <article class="scene-copy" data-scene-copy="1">
+              <p>PHASE 02 — CONNECT</p>
+              <h3>用滚动组织空间，<br />让前后状态相连。</h3>
+              <span>连续变换保留对象关系，页面因此更像一个场景，而不是一叠画面。</span>
+            </article>
+            <article class="scene-copy" data-scene-copy="2">
+              <p>PHASE 03 — RESOLVE</p>
+              <h3>让反馈贴近意图，<br />然后安静退场。</h3>
+              <span>结果出现后迅速收束，把注意力还给内容与下一步行动。</span>
+            </article>
+          </div>
+
+          <div class="sequence-stage" data-sequence-stage aria-hidden="true">
+            <div class="sequence-stage__grid"></div>
+            <span class="sequence-stage__axis sequence-stage__axis--x"></span>
+            <span class="sequence-stage__axis sequence-stage__axis--y"></span>
+            <span class="sequence-stage__path"></span>
+            <span class="sequence-stage__ghost sequence-stage__ghost--a"></span>
+            <span class="sequence-stage__ghost sequence-stage__ghost--b"></span>
+            <div class="sequence-stage__object">
+              <span class="sequence-stage__object-core">M</span>
+              <span class="sequence-stage__object-ring"></span>
+            </div>
+            <span class="sequence-stage__satellite"></span>
+            <div class="sequence-stage__telemetry">
+              <span>PROGRESS <b data-lab-progress>000</b></span>
+              <span>EASE CUBIC.BEZIER</span>
+            </div>
+          </div>
+
+          <div class="scene-rail" aria-hidden="true">
+            <span class="scene-rail__fill"></span>
+            <i>01</i><i>02</i><i>03</i>
+          </div>
+        </div>
+      </section>
+
+      <section class="switchboard section-shell" id="interaction-lab" aria-labelledby="switchboard-title">
+        <div class="section-index" data-reveal>
+          <span>03</span>
+          <span>Interaction switchboard</span>
+        </div>
+
+        <div class="switchboard__heading" data-reveal>
+          <p class="section-kicker">DIRECT THE SYSTEM</p>
+          <h2 id="switchboard-title">选择一种<br /><em>运动逻辑。</em></h2>
+        </div>
+
+        <div class="mode-selector" data-reveal aria-label="动效模式">
+          <button type="button" class="mode-button is-active" data-mode="orbit" aria-pressed="true">
+            <span>01</span><strong>轨道 Orbit</strong><i>连续 / 方向</i>
+          </button>
+          <button type="button" class="mode-button" data-mode="pulse" aria-pressed="false">
+            <span>02</span><strong>脉冲 Pulse</strong><i>强调 / 反馈</i>
+          </button>
+          <button type="button" class="mode-button" data-mode="trace" aria-pressed="false">
+            <span>03</span><strong>轨迹 Trace</strong><i>路径 / 关联</i>
+          </button>
+        </div>
+
+        <div class="mode-stage" data-mode-stage data-mode="orbit" data-reveal>
+          <div class="mode-stage__grid" aria-hidden="true"></div>
+          <div class="mode-visual mode-visual--orbit" aria-hidden="true">
+            <span class="mode-orbit mode-orbit--one"><i></i></span>
+            <span class="mode-orbit mode-orbit--two"><i></i></span>
+            <b>O</b>
+          </div>
+          <div class="mode-visual mode-visual--pulse" aria-hidden="true">
+            <span></span><span></span><span></span><b>P</b>
+          </div>
+          <div class="mode-visual mode-visual--trace" aria-hidden="true">
+            <svg viewBox="0 0 420 260" preserveAspectRatio="none">
+              <path d="M18 222 C86 220 75 58 160 76 S258 236 310 146 S360 40 406 36" />
+            </svg>
+            <i></i><b>T</b>
+          </div>
+          <div class="mode-stage__caption">
+            <span>ACTIVE LOGIC</span>
+            <strong data-mode-name>ORBIT / 连续方向</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="principles section-shell" aria-labelledby="principles-title">
+        <div class="section-index" data-reveal>
+          <span>04</span>
+          <span>Motion discipline</span>
+        </div>
+
+        <div class="principles__heading" data-reveal>
+          <p class="section-kicker">BEHIND THE EFFECT</p>
+          <h2 id="principles-title">克制，才让<br /><em>动态有重量。</em></h2>
+        </div>
+
+        <ol class="principle-list">
+          <li data-reveal>
+            <span>01 / Purpose</span>
+            <h3>先解释，再取悦</h3>
+            <p>每个动作都回答一个问题：对象从哪里来、发生了什么、接下来能做什么。</p>
+          </li>
+          <li data-reveal>
+            <span>02 / Rhythm</span>
+            <h3>用节奏安排注意力</h3>
+            <p>速度、延迟与停顿共同形成层级，避免所有元素同时争夺视线。</p>
+          </li>
+          <li data-reveal>
+            <span>03 / Access</span>
+            <h3>尊重不同的感知方式</h3>
+            <p>提供可见的动态开关，并完整响应系统的减少动态效果偏好。</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="finale" aria-labelledby="finale-title">
+        <p class="finale__index" data-reveal>END / SIGNAL RESOLVED</p>
+        <h2 id="finale-title" data-reveal>
+          <span>A good motion system</span>
+          <span>leaves a memory—</span>
+          <em>and gets out of the way.</em>
+        </h2>
+        <div class="finale__footer" data-reveal>
+          <p>页面动效设计与前端实现展示</p>
+          <a class="command-link command-link--light" href="/">
+            <span>返回作品集</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6" /></svg>
+          </a>
+        </div>
+        <div class="finale__sun" aria-hidden="true"><span></span></div>
+      </section>
+    </main>
+
+    <script src="./motion.js" defer></script>
+  </body>
+</html>
