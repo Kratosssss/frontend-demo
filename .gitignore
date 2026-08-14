@@ -8,6 +8,8 @@
 /industry-mainpage/out/
 /hrms/dist/
 /adpulse/dist/
+/ai-learning/dist/
+/ai-learning/generated/
 
 # JavaScript build and dependency artifacts
 **/node_modules/

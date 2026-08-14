@@ -8,6 +8,7 @@
 - `testcar/`：TestCar 虚构汽车出口官网，含五语切换、车型筛选、详情页与本地模拟询盘。
 - `export-car-demo/`：EXPORTCAR 虚构国际车辆出口展示，含五语体验、库存筛选、出口准备信息与本地模拟询盘。
 - `adpulse/`：AdPulse 营销投放分析中台，React SPA，含仪表盘、活动管理、详情下钻及本地 Mock 数据流。
+- `ai-learning/`：AI 学习知识库，含六阶段学习地图、12 篇原创 Markdown 笔记与中文全文搜索。
 
 CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可以直接访问各自的子路径；本地构建只生成待发布产物，不会自动部署。
 
@@ -20,6 +21,8 @@ CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可�
 - [TestCar 汽车出口展示](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/testcar/)
 - [Export Car Demo](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/export-car-demo/)
 - [AdPulse 营销投放分析中台](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/adpulse/)
+
+`/ai-learning/` 仅在本地任务分支完成并合并到干净 `main` 后才能正式发布；当前不提供尚未发布的线上链接。本版是纯静态知识库，不接登录、在线问答、模型 API 或业务数据库。
 
 ## 本地验证
 
@@ -34,8 +37,11 @@ npm --prefix export-car-demo ci
 npm --prefix export-car-demo test
 npm --prefix adpulse ci
 npm --prefix adpulse test
+npm --prefix ai-learning test
 npm test
 npm run build:cloudbase
 ```
 
 使用 Node.js 22 或更高版本。
+
+AI 学习知识库直接从仓库内 Markdown 生成静态页面与搜索索引，不需要账号、密钥或云端数据同步。
