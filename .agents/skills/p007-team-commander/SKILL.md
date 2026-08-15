@@ -1,6 +1,6 @@
 ---
 name: p007-team-commander
-description: "Coordinate the P007 native six-role team, create role-specific task cards, enforce product-definition and design approvals, assign isolated file ownership, integrate results, and run bounded QA repair loops. Use when the user explicitly invokes this skill to prepare a dispatch, or when the user gives the affirmative directive 编队执行 to start the team."
+description: "Coordinate the P007 native seven-role team, create role-specific task cards, enforce product, visual-concept, and final-design approvals, assign isolated file ownership, integrate results, and run bounded QA repair loops. Use when the user explicitly invokes this skill to prepare a dispatch, or when the user gives the affirmative directive 编队执行 to start the team."
 ---
 
 # P007 Team Commander
@@ -22,7 +22,7 @@ Operate as the project manager and delivery owner, not as the product decision-m
 2. Create and verify one Goal before implementation actions.
 3. Select only relevant specialists:
    - Product for a new or materially changed feature, workflow, information architecture, permission, state, business rule, or ambiguous product scope.
-   - Design for visual, interaction, copy, or user-flow changes.
+   - Experience changes always activate both Concept and Design. Concept creates fast visual breadth and four actual Figma AI First Draft choices; Design acts as design director only after the user selects one.
    - Frontend for browser UI or client behavior.
    - Backend for API, data, mock, service, or server behavior.
    - QA is risk-based, not automatic. Require a QA card when the user explicitly asks for independent QA, an active Design gate needs independent implementation comparison, the delivery crosses layers or implementation owners, shared build/configuration can affect multiple projects, auth/security/permission behavior changes, data migration or irreversible side effects are involved, or owner evidence is missing, stale, or failing.
@@ -34,15 +34,16 @@ Operate as the project manager and delivery owner, not as the product decision-m
 
 Before dispatch, list every role as active or skipped with one concrete reason. For QA, record the matched risk triggers, changed surfaces, evidence that can be reused, the smallest independent check set, and whether any full-repository command is justified. A QA card defaults to at most three highest-value independent checks. Do not repeat an owner's already-passing command merely to reproduce the same evidence, and do not run dependency installation, a full repository test, or a full rebuild unless the card names the shared-risk reason that requires it.
 
-Copy the manifest from `assets/manifest-template.yaml`. Copy each active role card from its matching template under `assets/cards/`; these five templates are the only task-card sources. Every card must define objective, inputs, owned paths, read-only paths, skill, interface contract, role-specific gates and evidence, deliverables, acceptance criteria, validation, forbidden actions, and dependencies.
+Copy the manifest from `assets/manifest-template.yaml`. Copy each active role card from its matching template under `assets/cards/`; these six templates are the only task-card sources. Every card must define objective, inputs, owned paths, read-only paths, skill, interface contract, role-specific gates and evidence, deliverables, acceptance criteria, validation, forbidden actions, and dependencies.
 
 ## Apply model routing
 
 - Product: `gpt-5.6-sol`, `high`.
+- Concept: request `gpt-5.6-luna`, `none`. If the current dispatch interface does not support that exact model-and-effort combination, explicitly use `gpt-5.6-terra`, `low` and record requested/effective routing plus the fallback reason. Never silently choose another profile.
 - Design: `gpt-5.6-sol`, `high`.
 - Frontend: `gpt-5.6-terra`, `high`.
 - Backend: `gpt-5.6-terra`, `high`.
-- QA: `gpt-5.6-sol`, `high`.
+- QA: `gpt-5.6-sol`, `medium`.
 
 Create a fresh agent for every new card. Resume the original card agent for repair work. Pass only the card, approved plan/spec, repository path, relevant constraints, and validation commands.
 
@@ -54,19 +55,20 @@ When Product is active, release downstream work only after a durable product bas
 2. Save the durable specification under `docs/specs/` and record its path plus `baseline_ready` in the manifest. The commander checks completeness but does not invent product policy or decide user value.
 3. If no material decision remains, release the baseline without adding a human approval ceremony. If a choice changes user value, scope, policy, data semantics, or irreversible behavior, record the options and recommendation, set `state: waiting_human`, and request the user's explicit decision.
 4. Do not infer a decision from silence or a general acknowledgement. Record `decision_approved` and `decision_approval_evidence` before releasing a decision-required baseline.
-5. Keep Design, Frontend, and Backend write-blocked until the product baseline is released. They may perform read-only reconnaissance and clarification only.
-6. Treat the released product specification as the common product authority for Design, Frontend, Backend, and QA. Scope changes return to Product instead of being silently absorbed downstream.
+5. Keep Concept, Design, Frontend, and Backend write-blocked until the product baseline is released. They may perform read-only reconnaissance and clarification only.
+6. Treat the released product specification as the common product authority for Concept, Design, Frontend, Backend, and QA. Scope changes return to Product instead of being silently absorbed downstream.
 
 ## Enforce the design gate
 
-When Design is active, enforce two separate human approvals:
+When Experience is active, enforce separate concept-selection and final-design approvals:
 
-1. Require any active Product baseline to be released, then let Design inspect the real product and create exactly three materially different direction images under `.planning/dispatch/<goal-id>/artifacts/design-directions/`. Images must show real composition and visual treatment; text, palettes, links, or reference collages alone are insufficient.
-2. Forbid Figma during direction exploration. Show all three images in the user conversation, set `state: waiting_human`, and request a direction decision only when all three image paths are recorded in the manifest.
-3. Record the user's approval evidence and `selected_direction` before allowing Design to use Figma. Do not infer approval from silence or a general acknowledgement.
-4. Let Design use Figma only after direction approval to complete high-fidelity screens, components, states, responsive behavior, and the durable specification. Record the Figma file URL and node ID.
-5. Show the final Figma result, return to `state: waiting_human`, and record separate final approval evidence. Frontend and Backend remain write-blocked until this second approval is complete and evidenced.
-6. During both waits, allow Backend only read-only reconnaissance and a draft interface contract. Never let Design authorize either gate itself.
+1. Require any active Product baseline to be released, then dispatch Concept before Design. Concept must produce exactly twelve structured briefs grouped into four materially different direction families, three briefs per family.
+2. Require a fresh Figma Design file for every dispatch. Let Concept use native Figma Agent/First Draft to turn the four families into exactly four editable frames. Record the file URL, four distinct node IDs, four screenshot paths, and the prompt package. If Figma AI access or credits are unavailable, set `state: waiting_human`, record the cause, and stop; never silently replace Figma AI with manual Sol design.
+3. Request the first human choice only when all twelve briefs and all four actual First Draft node/screenshot pairs are recorded. Show the four screens, record the user's approval evidence and selected Brief ID, then lock composition, visual motif, and key color or typography. Do not infer approval from silence or a general acknowledgement.
+4. Keep Design read-only before the concept choice. After all three locked characteristics are recorded, let Design act as design director: perform deeper research and anti-generic review, drive Figma AI refinement, and complete high-fidelity screens, components, states, responsive behavior, accessibility, reduced motion, and the durable specification.
+5. Require Figma Make for a key interaction or state decision that benefits from experiential validation. For a static page, require a concrete Make skip reason. Record the final Figma file URL/node and either the Make URL or skip reason.
+6. Show the final Figma and applicable Make result, return to `state: waiting_human`, and record separate final approval evidence. Frontend and Backend remain write-blocked until this final approval is complete and evidenced.
+7. During both waits, allow Frontend and Backend only read-only reconnaissance and draft interface-contract work. Never let Concept or Design authorize a gate themselves.
 
 ## Integrate and verify
 
@@ -84,7 +86,7 @@ When Design is active, enforce two separate human approvals:
    - A durable specification: an approved product baseline, final design specification and Figma reference, shared interface contract, stable acceptance criteria, or another authority that future implementation must follow. Store it under `docs/specs/` or in the code-owned contract location, and make process records reference that single authority instead of copying it.
    - A stable project-rule candidate: a recurring repository or subproject command, boundary, or constraint that future agents must follow. Record the proposed wording, evidence, and nearest authoritative `AGENTS.md` location. Do not automatically edit `AGENTS.md`; wait for explicit user authorization.
    - A reusable-skill candidate: a repeated cross-task workflow with distinct instructions, templates, or tooling that cannot be represented adequately by an existing `AGENTS.md`, script, or template. Record the reuse evidence and expected owner. Do not create or update a skill from a single dispatch, and never promote a candidate without explicit user authorization.
-   - Temporary process evidence: task cards, role reports, intermediate direction images, implementation screenshots, approval transcripts, repair logs, and other run-specific evidence. Keep it under `.planning/dispatch/<goal-id>/`; do not copy it into durable documentation merely for completeness.
+   - Temporary process evidence: task cards, role reports, concept briefs, Figma First Draft prompts/nodes/screenshots, implementation screenshots, approval transcripts, repair logs, and other run-specific evidence. Keep it under `.planning/dispatch/<goal-id>/`; do not copy it into durable documentation merely for completeness.
 2. Convert each confirmed QA defect into a regression test or an issue candidate: add the regression test when the fix is in scope, or record the issue candidate when it remains out of scope. Do not preserve an entire QA report as the long-term defect authority.
 3. Record every classification, destination, already-promoted artifact, candidate requiring authorization, and retained temporary artifact in the manifest. Never duplicate the same stable rule or specification across multiple authorities.
 4. Report the promotion audit to the user before Git handoff: what became durable, what stayed temporary, which rule or skill candidates still require approval, and why. If nothing merits promotion, record and report that explicitly.

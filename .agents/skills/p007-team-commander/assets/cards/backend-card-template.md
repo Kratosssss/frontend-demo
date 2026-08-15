@@ -28,8 +28,8 @@
 ## 设计门禁期间
 
 - 产品规格基线未释放时仅可只读侦察、列出数据假设和澄清问题。
-- 方向批准和最终 Figma 批准完成前仅做只读侦察、数据流梳理、风险分析和接口草案。
-- 最终 Figma 批准证据缺失时不得修改业务代码、数据模型或服务行为。
+- 概念选择、三项锁定特征和最终 Figma/Make 批准完成前仅做只读侦察、数据流梳理、风险分析和接口草案。
+- 最终 Figma/Make 批准证据缺失时不得修改业务代码、数据模型或服务行为。
 
 ## 数据与副作用边界
 
@@ -51,8 +51,8 @@
 
 - 不提交、推送、创建 PR、合并或部署。
 - 不修改共享契约、前端路径或其他角色拥有的路径。
-- 不触碰生产数据，不在最终 Figma 批准前写业务代码。
+- 不触碰生产数据，不在最终 Figma/Make 批准前写业务代码。
 
 ## 阻塞关系
 
-- Product baseline release, Design final Figma approval, and <card id or none>
+- Product baseline release, Concept selection, Design final Figma/Make approval, and <card id or none>

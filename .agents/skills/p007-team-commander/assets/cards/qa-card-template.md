@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved product/design specifications, plan, all active cards, reports, diff, and approval evidence>
+- <approved product/concept/design specifications, plan, active cards, reports, diff, and approval evidence>
 
 ## 拥有路径
 
@@ -35,12 +35,12 @@
 ## 批准证据核验
 
 - 仅在 Product 启用时核验产品规格路径、baseline ready 状态和重大产品决策批准证据。
-- 仅在 Design 启用时核验三张方向图、选定方向、第一次用户批准、最终 Figma 文件/节点和第二次批准证据。
+- Concept/Design 启用时核验 12 个 Brief、4 个 Figma First Draft 节点/截图、requested/effective 路由及回退原因、选中概念、三项锁定特征、最终 Figma/Make 链接或静态跳过理由和最终批准证据。
 - 适用证据缺失时不得判定实现通过；未启用的门禁不得变成额外 QA 工作。
 
 ## 视觉与反公式化验收
 
-- 仅在 Design 启用时，对照最终 Figma 检查卡片范围内的桌面端、移动端、关键状态、交互、无障碍和 reduced-motion。
+- 仅在 Design 启用时，对照最终 Figma/Make 和三项锁定特征检查卡片范围内的桌面端、移动端、关键状态、交互、无障碍和 reduced-motion。
 - 检查实现是否退回已禁止的通用 Hero、等宽卡片阵列或其他 AI 套版。
 - 使用实现截图记录可复现的视觉差异。
 
@@ -79,4 +79,4 @@
 
 ## 阻塞关系
 
-- Product, Design, Frontend, Backend reports and <card id or none>
+- Product, Concept, Design, Frontend, Backend reports and <card id or none>

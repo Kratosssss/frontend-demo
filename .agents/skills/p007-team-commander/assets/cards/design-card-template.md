@@ -1,21 +1,23 @@
-# Design task card
+# Design director task card
 
 ## 目标
 
-<single bounded design objective>
+<single bounded final-design objective>
 
 ## 输入
 
-- <approved plan, released product specification when required, current product surface, real content, and constraints>
+- <approved plan, released product specification, twelve briefs, four First Draft frames, selected concept, locked characteristics, current surface, and constraints>
 
 ## 拥有路径
 
-- `.planning/dispatch/<goal-id>/artifacts/design-directions/`
+- `.planning/dispatch/<goal-id>/artifacts/final-design/`
 - `.planning/dispatch/<goal-id>/reports/design.md`
 - `docs/specs/<approved-design-spec>.md`
 
 ## 只读路径
 
+- `.planning/dispatch/<goal-id>/artifacts/concept-briefs/`
+- `.planning/dispatch/<goal-id>/artifacts/figma-first-drafts/`
 - `<current application and contract paths>`
 
 ## 技能
@@ -35,9 +37,9 @@
 
 ## 视觉侦察
 
-- 检查真实界面、内容和行业视觉文化。
-- 提炼同行与跨行业参考的设计原理，不复制外观。
-- 记录本行业常见俗套和项目的差异化机会。
+- 深入检查真实界面、内容、行业视觉文化、已有设计语言和跨行业参考。
+- 提炼可复用的设计原理，不复制外观，不把概念阶段的快速证据冒充研究结论。
+- 记录本行业常见俗套、选中方向的风险与可执行的差异化机会。
 
 ## 反公式化清单
 
@@ -45,39 +47,34 @@
 - 不得默认使用渐变 Hero、等宽卡片阵列、玻璃拟态或固定 SaaS 落地页顺序。
 - 任何被保留的常见模式必须说明业务作用。
 
-## 三个视觉方向
+## 获选概念与锁定特征
 
-- 提交三个构图、视觉母题和标志性动作均明显不同的方向。
-- 每个方向必须包含名称、一句话概念、构图、字体、色彩、图像、标志性动作和风险。
-- 三个方向不得只是同一页面换颜色、字体或装饰。
+- 用户选择证据与 Brief ID：<...>
+- 锁定构图：<...>
+- 锁定视觉母题：<...>
+- 锁定关键色彩或字体：<...>
+- 选择证据或任一锁定特征缺失时保持只读，不得开始精修。
 
-## 方向图片证据
+## Figma AI 与 Make 精修
 
-- 每个方向必须提供一张可直接观看和比较的实际图片，共三张。
-- 图片必须呈现真实构图和视觉效果；色板、文字说明、参考链接或素材拼贴不能单独充当方向图。
-- 图片保存到 `.planning/dispatch/<goal-id>/artifacts/design-directions/` 并在用户对话中展示。
+- 用 Figma AI 提示和直接精修完成高保真页面、组件、响应式、关键状态、交互、文案、无障碍与 reduced-motion。
+- 不得静默改变三项锁定特征；确有冲突时退回总指挥请求限定决策。
+- 有关键交互或状态决策时用 Figma Make 制作可体验原型并记录 URL；静态页面记录具体跳过理由。
+- 记录最终 Figma 文件 URL、节点 ID、Make URL 或跳过理由，以及最终画面证据。
 
-## Figma 完善
+## 最终人工批准
 
-- 方向批准前禁止调用 Figma；必须先有用户明确批准并由总指挥记录证据。
-- 方向获批后，使用 Figma 完善高保真页面、组件、状态、响应式和交互规范。
-- 记录 Figma 文件 URL、节点 ID 和最终画面证据。
-
-## 两次人工批准
-
-- 第一次批准：记录三张方向图、用户批准原文和选定方向。
-- 第二次批准：记录最终 Figma 文件、节点和用户批准原文。
-- 设计角色不得自行批准任一阶段，也不得在第二次批准前放行实现。
+- 将最终 Figma 与适用的 Make 原型一起展示给用户。
+- 记录用户批准原文；设计角色不得自行批准，也不得在证据齐全前放行实现。
 
 ## 交付物
 
-- 三张方向图与设计报告。
-- 获批方向的 Figma 文件/节点和 `docs/specs/` 正式规范。
+- 最终 Figma 文件/节点、适用的 Figma Make 原型或跳过理由、设计报告与 `docs/specs/` 正式规范。
 
 ## 验收标准
 
-- 三个方向可直接看图比较且不属于同一模板变体。
-- 最终 Figma 忠于获批方向，并覆盖桌面、移动、关键状态、无障碍和 reduced-motion。
+- 最终设计忠于获选概念和三项锁定特征。
+- 覆盖桌面、移动、关键状态、无障碍、reduced-motion 与实现所需规范。
 
 ## 验证命令
 
@@ -85,11 +82,11 @@
 
 ## 禁止事项
 
+- 不生成新一批概念方向，不改写用户已锁定的核心特征。
 - 不提交、推送、创建 PR、合并或部署。
 - 不修改业务代码、共享契约或其他角色拥有的路径。
-- 方向批准前不调用 Figma；最终 Figma 批准前不授权实现。
-- 不静默改变已释放的产品范围、业务规则或验收标准；发现缺口时退回产品角色或总指挥澄清。
+- 最终批准前不授权实现；不静默改变产品范围、业务规则或验收标准。
 
 ## 阻塞关系
 
-- <card id or none>
+- Concept selection and <card id or none>

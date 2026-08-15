@@ -28,9 +28,10 @@
 
 ## 最终设计输入
 
-- 选定方向：<direction id>
+- 选定概念 Brief ID 与三项锁定特征：<concept id and locks>
 - 最终 Figma 文件 URL：<url>
 - 最终 Figma 节点 ID：<node id>
+- Figma Make URL 或静态页面跳过理由：<url/reason>
 - 最终批准证据：<manifest/report reference>
 
 ## 实现边界
@@ -43,7 +44,7 @@
 ## 视觉还原证据
 
 - 提交桌面端、移动端和关键状态实现截图。
-- 对照最终 Figma 记录差异、理由和残余限制。
+- 对照最终 Figma/Make 与三项锁定特征记录差异、理由和残余限制。
 
 ## 交付物
 
@@ -61,8 +62,8 @@
 
 - 不提交、推送、创建 PR、合并或部署。
 - 不修改共享契约、后端路径或其他角色拥有的路径。
-- 不在最终 Figma 批准前写业务界面或自行重新设计。
+- 不在最终 Figma/Make 批准前写业务界面或自行重新设计。
 
 ## 阻塞关系
 
-- Product baseline release, Design final Figma approval, and <backend card id or none>
+- Product baseline release, Concept selection, Design final Figma/Make approval, and <backend card id or none>
