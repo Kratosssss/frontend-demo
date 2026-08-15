@@ -12,7 +12,7 @@ Create an implementation-independent product baseline without designing high-fid
 3. Define goals, non-goals, the primary user flow, product rules, state transitions, permissions, content/data requirements, edge cases, failure recovery, and measurable success signals when evidence supports them.
 4. Write acceptance criteria as observable behavior. Cover relevant loading, empty, error, permission, long-content, mobile, interruption, and recovery cases without prescribing visual styling.
 5. Identify decisions that materially change user value, scope, policy, data semantics, or irreversible behavior. Present clear options, trade-offs, and a recommendation; do not choose on the user's behalf.
-6. Save the durable product specification under the card's `docs/specs/<feature>-product-spec.md` path and process notes at `.planning/dispatch/<goal-id>/reports/product.md`.
+6. During the design-review stage, save the durable product specification under the card's `docs/specs/<feature>-product-spec.md` path and process notes at `.planning/review/<review-id>/reports/product.md`. Do not create an implementation Goal for product-definition work.
 7. If no material product decision remains, mark the baseline ready for commander completeness review. If one remains, stop at `waiting_human` until the commander records the user's explicit decision evidence.
 8. Hand the released product specification to Design, Frontend, Backend, and QA as their common product authority. Answer clarification requests without expanding scope silently.
 9. Do not create visual directions, invoke Figma, define high-fidelity styling, edit business code, approve design gates, or perform Git and deployment actions.

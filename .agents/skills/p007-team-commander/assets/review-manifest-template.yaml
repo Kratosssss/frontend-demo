@@ -1,0 +1,61 @@
+review_id: "<review-id>"
+plan_ref: "<approved-plan-path>"
+trigger_text: "编队执行"
+state: queued
+product:
+  required: false
+  phase: not_required
+  spec_path: ""
+  baseline_ready: false
+  decision_required: false
+  decision_options: []
+  decision_approved: false
+  decision_approval_evidence: ""
+concept:
+  required: false
+  phase: not_required
+  briefs: []
+  direction_families: []
+  prompt_package_path: ""
+  first_draft_file_url: ""
+  first_draft_node_ids: []
+  first_draft_screenshot_paths: []
+  approved: false
+  approval_evidence: ""
+  selected_concept_id: ""
+  locked_characteristics:
+    composition: ""
+    visual_motif: ""
+    color_or_typography: ""
+design:
+  required: false
+  phase: not_required
+  final_figma_file_url: ""
+  final_figma_node_id: ""
+  figma_make_required: false
+  figma_make_url: ""
+  figma_make_skipped_reason: ""
+  final_approved: false
+  final_approval_evidence: ""
+active_roles: []
+deferred_roles: []
+skipped_roles: []
+dependencies: {}
+model_profile:
+  product:
+    requested: { model: gpt-5.6-sol, reasoning_effort: high }
+    effective: { model: gpt-5.6-sol, reasoning_effort: high }
+    fallback_used: false
+    fallback_reason: ""
+  concept:
+    requested: { model: gpt-5.6-luna, reasoning_effort: none }
+    fallback: { model: gpt-5.6-terra, reasoning_effort: low }
+    effective: { model: "", reasoning_effort: "" }
+    fallback_used: false
+    fallback_reason: ""
+  design:
+    requested: { model: gpt-5.6-sol, reasoning_effort: high }
+    effective: { model: gpt-5.6-sol, reasoning_effort: high }
+    fallback_used: false
+    fallback_reason: ""
+shared_files_owner: commander

@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved plan, released product specification when required, final design specification, Figma evidence, and interface contract>
+- <implementation Goal ID, approved plan, review manifest reference, released product specification when required, final design specification, Figma evidence, and interface contract>
 
 ## 拥有路径
 
@@ -36,6 +36,7 @@
 
 ## 实现边界
 
+- 本卡只能在最终视觉审批完成后、实施 Goal 已创建并记录 review manifest 引用时创建。
 - 产品规格基线未释放时只读侦察，不写业务代码，也不自行补造产品规则。
 - 仅实现最终批准的 Figma 与设计规范，不自行改变视觉方向。
 - 不得以通用组件套版、等宽卡片阵列或默认 Hero 替代获批构图。

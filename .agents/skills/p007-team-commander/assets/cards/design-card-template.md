@@ -10,14 +10,14 @@
 
 ## 拥有路径
 
-- `.planning/dispatch/<goal-id>/artifacts/final-design/`
-- `.planning/dispatch/<goal-id>/reports/design.md`
+- `.planning/review/<review-id>/artifacts/final-design/`
+- `.planning/review/<review-id>/reports/design.md`
 - `docs/specs/<approved-design-spec>.md`
 
 ## 只读路径
 
-- `.planning/dispatch/<goal-id>/artifacts/concept-briefs/`
-- `.planning/dispatch/<goal-id>/artifacts/figma-first-drafts/`
+- `.planning/review/<review-id>/artifacts/concept-briefs/`
+- `.planning/review/<review-id>/artifacts/figma-first-drafts/`
 - `<current application and contract paths>`
 
 ## 技能

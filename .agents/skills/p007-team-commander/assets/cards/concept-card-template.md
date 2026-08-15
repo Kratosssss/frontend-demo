@@ -10,9 +10,9 @@
 
 ## 拥有路径
 
-- `.planning/dispatch/<goal-id>/artifacts/concept-briefs/`
-- `.planning/dispatch/<goal-id>/artifacts/figma-first-drafts/`
-- `.planning/dispatch/<goal-id>/reports/concept.md`
+- `.planning/review/<review-id>/artifacts/concept-briefs/`
+- `.planning/review/<review-id>/artifacts/figma-first-drafts/`
+- `.planning/review/<review-id>/reports/concept.md`
 
 ## 只读路径
 

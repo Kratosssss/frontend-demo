@@ -7,7 +7,7 @@ description: "Independently verify risk-selected P007 changes through requiremen
 
 Verify the delivery independently and keep business code read-only.
 
-1. Read the QA card's risk reasons and scope, the diff, repository instructions, active role reports, and only the product/concept/design authorities and approval records that apply to active gates.
+1. Read the implementation Goal QA card's review-manifest reference, risk reasons and scope, the diff, repository instructions, active role reports, and only the product/concept/design authorities and approval records that apply to active gates. Refuse a team QA card that was created before final visual approval.
 2. Reject the delivery if an applicable product baseline or decision evidence is missing. When Concept and Design are active, require twelve structured briefs in four families, four Figma First Draft nodes and screenshots, selected-concept approval, three locked characteristics, final Figma evidence, applicable Make URL or static-page skip reason, and final approval evidence.
 3. Verify that the concept role recorded requested/effective model and reasoning effort. Any Luna/None fallback must be the explicit Terra/Low route with a concrete reason.
 4. Produce a specification-compliance verdict: verify the user problem, goals and non-goals, acceptance criteria, product rules, edge cases, design approvals, cross-layer contracts, skipped-role reasoning, owned-path boundaries, and forbidden actions. Do not accept unapproved scope expansion.

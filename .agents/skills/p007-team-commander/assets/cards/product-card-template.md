@@ -10,7 +10,7 @@
 
 ## 拥有路径
 
-- `.planning/dispatch/<goal-id>/reports/product.md`
+- `.planning/review/<review-id>/reports/product.md`
 - `docs/specs/<feature>-product-spec.md`
 
 ## 只读路径

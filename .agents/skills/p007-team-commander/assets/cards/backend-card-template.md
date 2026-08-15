@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved plan, released product specification when required, final design specification, and interface contract>
+- <implementation Goal ID, approved plan, review manifest reference, released product specification when required, final design specification, and interface contract>
 
 ## 拥有路径
 
@@ -27,6 +27,7 @@
 
 ## 设计门禁期间
 
+- 本卡只能在最终视觉审批完成后、实施 Goal 已创建并记录 review manifest 引用时创建。
 - 产品规格基线未释放时仅可只读侦察、列出数据假设和澄清问题。
 - 概念选择、三项锁定特征和最终 Figma/Make 批准完成前仅做只读侦察、数据流梳理、风险分析和接口草案。
 - 最终 Figma/Make 批准证据缺失时不得修改业务代码、数据模型或服务行为。

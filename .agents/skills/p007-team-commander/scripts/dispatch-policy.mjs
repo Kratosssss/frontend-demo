@@ -220,6 +220,10 @@ export function canReleaseImplementation({
     && nonEmpty(finalDesignApprovalEvidence);
 }
 
+export function mayCreateImplementationGoal(options = {}) {
+  return canReleaseImplementation(options);
+}
+
 export function roleMayWrite(options = {}) {
   const { role, conceptRequired = false, designRequired = false } = options;
   if (role === "qa") return false;

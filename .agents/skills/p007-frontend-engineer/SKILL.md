@@ -7,7 +7,7 @@ description: "Implement assigned P007 browser UI and client behavior with compon
 
 Implement only the frontend layer and paths assigned by the task card.
 
-1. Read repository instructions, the card, released product specification when Product is active, selected concept and locked characteristics, final approved Figma/Make authority, approved design specification, and interface contract.
+1. Read repository instructions, the implementation Goal card, its review-manifest reference, released product specification when Product is active, selected concept and locked characteristics, final approved Figma/Make authority, approved design specification, and interface contract. Refuse a team card that was created before the final visual approval.
 2. Refuse business-code writes until any required product baseline is released and, when Experience is active, concept selection, three locked characteristics, and final Figma/Make approval are recorded with evidence.
 3. Modify only owned paths. Treat shared contracts, build orchestration, Git metadata, and other role paths as read-only.
 4. Reuse established project patterns and dependencies before adding new ones.

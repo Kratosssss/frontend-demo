@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved product/concept/design specifications, plan, active cards, reports, diff, and approval evidence>
+- <implementation Goal ID, review manifest reference, approved product/concept/design specifications, plan, active cards, reports, diff, and approval evidence>
 
 ## 拥有路径
 
@@ -26,6 +26,7 @@
 
 ## 风险与范围
 
+- 本卡只能在最终视觉审批完成后、实施 Goal 已创建并记录 review manifest 引用时创建。
 - QA 启用原因：<matched risk trigger(s)>
 - 变更面与共享影响：<bounded paths, flows, contracts, or projects>
 - 可复用证据：<current owner test/build/lint/screenshots and report paths>

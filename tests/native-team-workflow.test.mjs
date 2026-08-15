@@ -17,6 +17,7 @@ import {
   canRequestConceptApproval,
   isAffirmativeTeamTrigger,
   mayCreateFigmaFirstDraft,
+  mayCreateImplementationGoal,
   mayRefineDesignInFigma,
   mayStartRepair,
   requiresIndependentQa,
@@ -176,6 +177,14 @@ test("选择前设计精修和实现阻塞，最终批准前实现仍阻塞", ()
     figmaMakeSkippedReason: "静态信息页，无关键交互状态",
     finalDesignApproved: false,
   }), false);
+  assert.equal(mayCreateImplementationGoal({
+    designRequired: true,
+    ...approvedConcept,
+    finalFigmaFileUrl: "https://www.figma.com/design/final",
+    finalFigmaNodeId: "20:1",
+    figmaMakeSkippedReason: "静态信息页，无关键交互状态",
+    finalDesignApproved: false,
+  }), false);
 
   const approvedStaticDesign = {
     designRequired: true,
@@ -187,6 +196,7 @@ test("选择前设计精修和实现阻塞，最终批准前实现仍阻塞", ()
     finalDesignApprovalEvidence: "用户批准最终 Figma，确认跳过 Make",
   };
   assert.equal(canReleaseImplementation(approvedStaticDesign), true);
+  assert.equal(mayCreateImplementationGoal(approvedStaticDesign), true);
   assert.equal(roleMayWrite({ role: "frontend", ...approvedStaticDesign }), true);
   assert.equal(roleMayWrite({ role: "backend", ...approvedStaticDesign }), true);
   assert.equal(roleMayWrite({ role: "qa", ...approvedStaticDesign }), false);
@@ -252,8 +262,9 @@ test("任务卡路径必须独占且六套专家模板字段完整", async () =>
   await assert.rejects(access(resolve(root, ".agents/skills/p007-team-commander/assets/task-card-template.md")));
 });
 
-test("manifest 完整记录概念、路由、锁定特征与最终批准", async () => {
+test("视觉审查与实施 Goal 使用分离 manifest，并保留审批证据链", async () => {
   const manifest = await read(".agents/skills/p007-team-commander/assets/manifest-template.yaml");
+  const reviewManifest = await read(".agents/skills/p007-team-commander/assets/review-manifest-template.yaml");
   for (const field of [
     "briefs", "direction_families", "prompt_package_path", "first_draft_file_url",
     "first_draft_node_ids", "first_draft_screenshot_paths", "approval_evidence",
@@ -263,10 +274,16 @@ test("manifest 完整记录概念、路由、锁定特征与最终批准", async
     "final_approved", "final_approval_evidence", "requested", "effective",
     "fallback_used", "fallback_reason",
   ]) {
-    assert.match(manifest, new RegExp(`^\\s+${field}:`, "m"));
+    assert.match(reviewManifest, new RegExp(`^\\s+${field}:`, "m"));
   }
-  assert.match(manifest, /model: gpt-5\.6-luna, reasoning_effort: none/);
-  assert.match(manifest, /fallback: \{ model: gpt-5\.6-terra, reasoning_effort: low \}/);
+  assert.match(reviewManifest, /^review_id: "<review-id>"$/m);
+  assert.doesNotMatch(reviewManifest, /^goal_id:/m);
+  assert.match(reviewManifest, /model: gpt-5\.6-luna, reasoning_effort: none/);
+  assert.match(reviewManifest, /fallback: \{ model: gpt-5\.6-terra, reasoning_effort: low \}/);
+  assert.match(manifest, /^goal_id: "<goal-id>"$/m);
+  assert.match(manifest, /^review_manifest_path: ".planning\/review\/<review-id>\/manifest.yaml"$/m);
+  assert.match(manifest, /^review_approval_evidence_ref:/m);
+  assert.match(manifest, /^deferred_roles:/m);
   assert.match(manifest, /model: gpt-5\.6-sol, reasoning_effort: medium/);
 });
 
@@ -281,6 +298,9 @@ test("总指挥、概念师、设计总监与 QA 的职责边界已拆分", asyn
   assert.match(commander, /twelve structured briefs grouped into four materially different direction families/);
   assert.match(commander, /fresh Figma Design file for every dispatch/);
   assert.match(commander, /never silently replace Figma AI with manual Sol design/);
+  assert.match(commander, /Start the design-review stage without creating a Goal/);
+  assert.match(commander, /Create and verify exactly one implementation Goal only after the review gate is fully released/);
+  assert.match(commander, /do not create implementation agents or cards/);
   assert.match(concept, /twelve structured concept briefs grouped into exactly four/);
   assert.match(concept, /Do not modify business code, shared contracts, `docs\/specs\/`, or the final Figma design/);
   assert.doesNotMatch(design, /Create exactly three materially different visual directions/);
@@ -288,7 +308,7 @@ test("总指挥、概念师、设计总监与 QA 的职责边界已拆分", asyn
   assert.match(design, /Use Figma Make when the design contains a key interaction or state decision/);
   assert.match(frontend, /final approved Figma\/Make authority/);
   assert.match(backend, /final Figma\/Make approval/);
-  assert.match(qa, /QA card's risk reasons and scope/);
+  assert.match(qa, /implementation Goal QA card's review-manifest reference/);
   assert.match(qa, /Permit at most two automated repair\/retest rounds/);
 });
 
