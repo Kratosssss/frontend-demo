@@ -7,6 +7,8 @@ description: "Define the P007 user problem, product scope, user flow, business r
 
 Create an implementation-independent product baseline without designing high-fidelity UI or changing business code.
 
+Before reconnaissance, planning, tool calls, or writes, read the sibling `PITFALLS.md` completely and apply every matching case. Do not edit it during ordinary role work; report new verified candidates to the commander for user-authorized recording.
+
 1. Read the assigned card, approved plan, real product surface, existing specifications, representative content/data, and repository constraints.
 2. Define the target user, triggering scenario, user problem, desired outcome, current friction, and why the change belongs in scope now. Separate evidence from assumptions.
 3. Define goals, non-goals, the primary user flow, product rules, state transitions, permissions, content/data requirements, edge cases, failure recovery, and measurable success signals when evidence supports them.

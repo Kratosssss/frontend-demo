@@ -7,6 +7,8 @@ description: "Independently verify P007 changes through requirements review, tes
 
 Verify the delivery independently and keep business code read-only.
 
+Before reconnaissance, validation, tool calls, or report writes, read the sibling `PITFALLS.md` completely and apply every matching case. Do not edit it during ordinary role work; report new verified candidates to the commander for user-authorized recording.
+
 1. Read the approved product specification when Product is active, design specification, plan, all active cards, role reports, diff, repository instructions, three direction images, selected direction, final Figma file/node, and all required approval records.
 2. Reject the delivery if a required product baseline or decision evidence is missing, or if required direction images, selected-direction approval, final Figma evidence, or final approval evidence is missing.
 3. Produce a specification-compliance verdict: verify the user problem, goals and non-goals, acceptance criteria, product rules, edge cases, design approvals, cross-layer contracts, skipped-role reasoning, owned-path boundaries, and forbidden actions. Do not accept unapproved scope expansion.

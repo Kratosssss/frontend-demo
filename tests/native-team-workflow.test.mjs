@@ -160,12 +160,21 @@ test("任务卡路径必须独占且五套模板字段完整", async () => {
   assert.doesNotMatch(product, /^## 三个视觉方向$/m);
   assert.match(design, /三个视觉方向/);
   assert.match(design, /方向批准前禁止调用 Figma/);
+  assert.match(design, /\$refero-design/);
+  assert.match(design, /^## Refero 研究与参考锁定$/m);
+  assert.match(design, /^## Demo 资产政策$/m);
   assert.doesNotMatch(frontend, /^## 三个视觉方向$/m);
   assert.match(frontend, /最终 Figma 文件 URL/);
+  assert.match(frontend, /\$frontend-ui-engineering/);
+  assert.match(frontend, /\$baseline-ui/);
+  assert.match(frontend, /\$emil-design-eng/);
+  assert.match(frontend, /不得强制引入 Tailwind、Radix、shadcn/);
+  assert.doesNotMatch(frontend, /\$refero-design/);
   assert.match(backend, /最终 Figma 批准证据缺失时不得修改业务代码/);
   assert.match(qa, /核验三张方向图/);
   assert.match(qa, /规格符合性验收/);
   assert.match(qa, /工程质量验收/);
+  assert.doesNotMatch(qa, /frontend-design-review/);
   await assert.rejects(access(resolve(root, ".agents/skills/p007-team-commander/assets/task-card-template.md")));
 });
 
@@ -184,6 +193,7 @@ test("manifest 和角色技能声明产品基线与双重设计门禁", async ()
   ]) {
     assert.match(manifest, new RegExp(`^  ${field}:`, "m"));
   }
+  assert.match(manifest, /^design_review:\n  enabled: false\n  phase: disabled$/m);
 
   const commander = await read(".agents/skills/p007-team-commander/SKILL.md");
   const product = await read(".agents/skills/p007-product-manager/SKILL.md");
@@ -197,8 +207,16 @@ test("manifest 和角色技能声明产品基线与双重设计门禁", async ()
   assert.match(product, /do not choose on the user's behalf/);
   assert.match(commander, /exactly three materially different direction images/);
   assert.match(commander, /Forbid Figma during direction exploration/);
+  assert.match(commander, /design_review\.enabled.*false/);
+  assert.match(commander, /existing post-implementation QA flow remains unchanged/);
+  assert.match(commander, /Own auxiliary-skill selection, card injection, scope, and validation as commander/);
   assert.match(design, /Create exactly three materially different visual directions/);
   assert.match(frontend, /final approved Figma file\/node/);
+  assert.match(frontend, /\$frontend-ui-engineering/);
+  assert.match(frontend, /\$baseline-ui/);
+  assert.match(frontend, /\$emil-design-eng/);
+  assert.match(frontend, /Do not introduce Tailwind, Radix, shadcn/);
+  assert.match(frontend, /Do not invoke Refero/);
   assert.match(backend, /final Figma approval/);
   assert.match(qa, /three direction images/);
   assert.match(qa, /specification-compliance verdict/);

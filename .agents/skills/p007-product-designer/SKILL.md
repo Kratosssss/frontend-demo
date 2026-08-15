@@ -7,6 +7,8 @@ description: "Define P007 visual direction, hierarchy, interaction behavior, res
 
 Produce visual directions and an implementation-ready Figma specification without changing business code.
 
+Before reconnaissance, planning, image generation, Figma, tool calls, or writes, read the sibling `PITFALLS.md` completely and apply every matching case. Do not edit it during ordinary role work; report new verified candidates to the commander for user-authorized recording.
+
 1. Read the assigned card, current product surface, released product specification when Product is active, approved plan, and relevant project constraints.
 2. Inspect the real UI, real content, industry visual culture, existing design language, generic conventions, and cross-industry references before proposing changes.
 3. Translate the released product problem, flow, rules, and acceptance criteria into experience and visual decisions. Define the user feeling, project personality, anti-generic constraints, and a project-specific visual motif. Do not silently change product scope or treat "clean", "modern", or "premium" as sufficient direction.

@@ -25,6 +25,13 @@ design:
   figma_node_id: ""
   figma_approved: false
   figma_approval_evidence: ""
+# 可选的实现前设计 QA；按用户要求默认关闭，只有明确重新启用时才参与流程。
+design_review:
+  enabled: false
+  phase: disabled
+  report_path: ""
+  passed: false
+  evidence: ""
 active_roles: []
 skipped_roles: []
 dependencies: {}

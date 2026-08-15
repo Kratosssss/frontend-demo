@@ -7,6 +7,10 @@ description: "Coordinate the P007 native six-role team, create role-specific tas
 
 Act as the only user-facing coordinator and integration owner for P007.
 
+## Start with role pitfalls
+
+Before reconnaissance, planning, dispatch, tool calls, or writes, read the sibling `PITFALLS.md` completely and apply every matching case. Do not edit that file during ordinary task work. Record any new verified candidate in the commander handoff; update the file only when the user explicitly authorizes rule or pitfall writes.
+
 ## Enforce the activation gate
 
 1. Treat only an affirmative user directive containing `编队执行` as team authorization.
@@ -42,6 +46,15 @@ Copy the manifest from `assets/manifest-template.yaml`. Copy each active role ca
 - QA: `gpt-5.6-sol`, `high`.
 
 Create a fresh agent for every new card. Resume the original card agent for repair work. Pass only the card, approved plan/spec, repository path, relevant constraints, and validation commands.
+
+## Apply role skill stacks
+
+- Own auxiliary-skill selection, card injection, scope, and validation as commander. Do not invoke specialist auxiliary skills to replace the assigned specialist or bypass product and design approvals.
+- Treat each P007 role skill as the authority for role duties, gates, file ownership, and handoff. Load auxiliary skills only in the order and scope declared by that role's task card.
+- Design uses `$refero-design` for mandatory research, synthesis, reference locking, and decision traceability before direction images or Figma. Use `$imagegen` only when an intentional image asset materially changes the result.
+- Frontend uses `$frontend-ui-engineering` for implementation quality and the compatible subset of `$baseline-ui` as an audit guardrail. Do not introduce Tailwind, Radix, shadcn, or a new design language merely to satisfy an auxiliary skill.
+- `$emil-design-eng` is opt-in polish for motion and microinteraction explicitly required by the approved design; it cannot reopen design direction or override the project stack.
+- The optional pre-implementation design QA remains disabled while `design_review.enabled` is false. Do not add it to active roles or release gates; the existing post-implementation QA flow remains unchanged.
 
 ## Enforce the product baseline
 
