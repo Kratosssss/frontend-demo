@@ -1,6 +1,9 @@
 export type ModuleId = "ai-foundations" | "training-inference" | "token-embedding" | "transformer-prompt" | "rag-agent" | "evaluation-practice";
+export type ContentType = "note" | "guide" | "decision-card" | "case-study";
+export type ReviewStatus = "current" | "review-needed";
 export type NoteHeading = { level: 2 | 3; text: string; anchor: string };
 export type SourceCitation = { id: string; slug: string; title: string; module: ModuleId; excerpt: string; url: string; kind: "paper" | "official-doc"; locator?: string };
-export type KnowledgeNote = { slug: string; title: string; module: ModuleId; order: number; summary: string; tags: string[]; updatedAt: string; prerequisites: string[]; body: string; headings: NoteHeading[]; sources: SourceCitation[]; contentHash: string };
-export type KnowledgeIndex = { schemaVersion: 1; generatedAt: string; notes: KnowledgeNote[] };
-export type SearchHit = { note: KnowledgeNote; fields: string[]; excerpt: string };
+export type EvidenceReference = { id: string; label: string; kind: "screenshot" | "document" | "repository-artifact"; path: string; supports: string; alt?: string };
+export type KnowledgeItem = { slug: string; title: string; contentType: ContentType; module: ModuleId; order: number; summary: string; tags: string[]; updatedAt: string; reviewedAt: string | null; reviewStatus: ReviewStatus | null; prerequisites: string[]; related: string[]; sources: SourceCitation[]; evidence: EvidenceReference[]; body: string; headings: NoteHeading[]; contentHash: string; canonicalPath: string };
+export type KnowledgeIndex = { schemaVersion: 2; generatedAt: string; items: KnowledgeItem[]; counts: { total: 27; note: 12; guide: 10; decisionCard: 4; caseStudy: 1 } };
+export type SearchHit = { item: KnowledgeItem; fields: string[]; excerpt: string };

@@ -23,4 +23,4 @@ function parseArguments(argumentsList) {
 const options = parseArguments(process.argv.slice(2));
 const index = await buildKnowledgeIndex(options.contentDirectory, { generatedAt: options.generatedAt });
 await writeKnowledgeIndex(index, options.outputPath);
-console.log(`已生成 ${index.notes.length} 篇笔记的确定性索引：${options.outputPath}`);
+console.log(`已生成 ${index.items.length} 项内容的确定性索引：${options.outputPath}`);
