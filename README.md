@@ -9,7 +9,7 @@
 - `export-car-demo/`：EXPORTCAR 虚构国际车辆出口展示，含五语体验、库存筛选、出口准备信息与本地模拟询盘。
 - `adpulse/`：AdPulse 营销投放分析中台，React SPA，含仪表盘、活动管理、详情下钻及本地 Mock 数据流。
 - `motion-demo/`：Motion Signal Lab 网页动效作品，展示入场编排、滚动叙事、指针响应、模式切换、暂停与减少动态效果支持。
-- `retail-mall/`：栖物 QIWU 多端商城 Demo，同一套 uni-app 业务代码生成 H5、微信小程序和支付宝小程序。
+- `retail-mall/`：MORU 消费数码独立站 Demo，覆盖发现、比较、购物袋、模拟支付、订单与售后完整交易生命周期。
 - `ai-learning/`：AI 学习知识库，含六阶段学习地图、12 篇原创 Markdown 笔记与中文全文搜索。
 
 CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可以直接访问各自的子路径；本地构建只生成待发布产物，不会自动部署。
@@ -23,7 +23,7 @@ CloudBase 是本仓库唯一发布目标。根入口提供作品卡片，也可�
 - [TestCar 汽车出口展示](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/testcar/)
 - [Export Car Demo](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/export-car-demo/)
 - [AdPulse 营销投放分析中台](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/adpulse/)
-- [栖物 QIWU 多端商城](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/qiwu-mall/)
+- [MORU 数码独立站](https://timoworkplace-d3gygu8b95232dc0a-1255934205.tcloudbaseapp.com/qiwu-mall/)
 
 `/ai-learning/` 仅在本地任务分支完成并合并到干净 `main` 后才能正式发布；当前不提供尚未发布的线上链接。本版是纯静态知识库，不接登录、在线问答、模型 API 或业务数据库。
 

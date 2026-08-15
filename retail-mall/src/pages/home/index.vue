@@ -1,21 +1,291 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { products, categories } from '../../data/seed'
-import ProductCard from '../../components/ProductCard.vue'
-const featured = computed(() => products.slice(0, 4))
-const goCatalog = (categoryId = '') => uni.navigateTo({ url: `/pages/catalog/index${categoryId ? `?category=${categoryId}` : ''}` })
-const goCart = () => uni.switchTab({ url: '/pages/cart/index' })
+import { computed } from "vue";
+import { products } from "../../data/seed";
+import GlobalHeader from "../../components/GlobalHeader.vue";
+const featured = computed(() => products.slice(0, 3));
+const go = (url: string) => uni.navigateTo({ url });
+const browseCatalog = () => uni.reLaunch({ url: "/pages/catalog/index" });
 </script>
 <template>
-  <view class="page home">
-    <view class="top"><view><text class="eyebrow">QIWU / 2026 AUTUMN</text><view class="wordmark serif">栖物</view></view><text class="bag" @click="goCart">购物袋</text></view>
-    <view class="hero"><image src="/static/qiwu-editorial-products.png" mode="aspectFill" /><view class="hero-copy"><text class="eyebrow">LIVING, SLOWLY</text><view class="serif">把日常<br/>过成作品</view><text @click="goCatalog()">开始选物 →</text></view></view>
-    <view class="notice">演示环境 · 全部商品、订单与支付流程均为虚构模拟</view>
-    <view class="section-head"><view><text class="eyebrow">EDITED FOR YOU</text><view class="section-title">今日选物</view></view><text @click="goCatalog()">查看全部</text></view>
-    <scroll-view class="categories" scroll-x><view v-for="category in categories" :key="category.id" class="category" @click="goCatalog(category.id)"><text>{{ category.name }}</text><small>{{ category.tagline }}</small></view></scroll-view>
-    <view class="product-grid"><ProductCard v-for="product in featured" :key="product.id" :product="product" /></view>
+  <view class="home">
+    <GlobalHeader /><view class="hero">
+      <view class="stage blue"></view><view class="stage lime"></view><view class="stage pink"></view><view class="hero-copy">
+        <p class="demo-top">本地演示 / 不发生真实交易</p>
+        <text>新品已到</text>
+        <h1>顺手的装备，<br />现在就想拥有</h1>
+        <p>关键差异讲清楚，购买权益一次看懂。</p>
+        <view class="actions">
+          <button class="hero-button" @click="browseCatalog">
+            开始选购
+          </button><button
+            class="hero-button light"
+            @click="go('/pages/compare/index')"
+          >
+            先做比较
+          </button>
+        </view>
+      </view><image
+        class="keyboard"
+        :src="featured[0].image"
+        :alt="featured[0].imageAlt"
+        mode="aspectFit"
+      /><image
+        class="ssd"
+        :src="featured[1].image"
+        :alt="featured[1].imageAlt"
+        mode="aspectFit"
+      /><image
+        class="charger"
+        :src="featured[2].image"
+        :alt="featured[2].imageAlt"
+        mode="aspectFit"
+      />
+    </view><view class="feature-strip">
+      <button
+        v-for="item in featured"
+        :key="item.id"
+        @click="go(`/pages/product/index?id=${item.id}`)"
+      >
+        <b>{{ item.name }} ¥{{ item.skus[0].price }}</b><text>立即探索 →</text>
+      </button>
+    </view><view class="home-body">
+      <p class="demo">
+        本地演示 · 不发生真实交易。商品、支付、订单与售后仅保存在当前浏览器。
+      </p>
+      <h2>热选三件</h2>
+      <p>参数不是主角，差异才是。</p>
+    </view>
   </view>
 </template>
 <style scoped lang="scss">
-.home{padding-top:70rpx}.top,.section-head{display:flex;justify-content:space-between;align-items:flex-end}.wordmark{font-size:72rpx;color:#173b2a;letter-spacing:10rpx}.bag{font-size:24rpx;color:#173b2a;border-bottom:1rpx solid #173b2a}.hero{height:670rpx;position:relative;margin:38rpx -28rpx 28rpx;overflow:hidden;background:#d5c6aa}.hero image{width:100%;height:100%;filter:brightness(.76)}.hero-copy{position:absolute;left:38rpx;bottom:46rpx;color:#fff}.hero-copy .serif{font-size:62rpx;line-height:1.22;margin:15rpx 0 24rpx}.hero-copy>text:last-child{font-size:25rpx;border-bottom:1rpx solid #fff;padding-bottom:8rpx}.section-head{margin-top:42rpx}.section-head>text{font-size:24rpx;color:#71836a}.categories{white-space:nowrap;margin:0 -28rpx 34rpx;width:calc(100% + 56rpx)}.category{display:inline-flex;flex-direction:column;width:210rpx;height:115rpx;box-sizing:border-box;padding:20rpx;margin-left:28rpx;background:#e5e7dc;border-radius:4rpx;color:#173b2a}.category:last-child{margin-right:28rpx}.category text{font-family:'Noto Serif SC','Songti SC',serif;font-size:28rpx}.category small{font-size:18rpx;color:#71836a;margin-top:8rpx}.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:36rpx 22rpx}.product-grid :deep(.product-card:nth-child(2)){margin-top:70rpx}
+.home {
+  min-height: 100dvh;
+  background: #1737ff;
+  color: #fff;
+  padding-top: 88px;
+}
+.hero {
+  height: 690px;
+  position: relative;
+  overflow: hidden;
+}
+.stage {
+  position: absolute;
+}
+.blue {
+  inset: 0;
+  background: #1737ff;
+}
+.lime {
+  width: 55%;
+  height: 72%;
+  right: 16%;
+  bottom: -14%;
+  background: #d9ff43;
+  transform: skewY(8deg);
+}
+.pink {
+  width: 30%;
+  height: 58%;
+  right: -3%;
+  top: -8%;
+  background: #ff3dac;
+  transform: skewY(-10deg);
+}
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  padding: 44px 3%;
+  max-width: 660px;
+  animation: home-enter 240ms ease-out both;
+}
+.hero-copy > text {
+  color: #d9ff43;
+  font-weight: 900;
+}
+.hero-copy .demo-top {
+  margin: 0 0 14px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.hero-copy h1 {
+  font-size: clamp(54px, 7vw, 104px);
+  line-height: 0.98;
+  letter-spacing: -0.08em;
+  margin: 12px 0;
+}
+.hero-copy p {
+  font-size: 20px;
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+.hero-button {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 2px solid #101010;
+  background: #101010;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+.hero-button.light {
+  background: #d9ff43;
+  color: #101010;
+}
+.keyboard,
+.ssd,
+.charger {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  animation: product-enter 240ms ease-out both;
+}
+.keyboard {
+  width: 42%;
+  left: -2%;
+  bottom: 3%;
+  transform: rotate(8deg);
+}
+.ssd {
+  width: 29%;
+  left: 50%;
+  bottom: 8%;
+}
+.charger {
+  width: 20%;
+  right: 6%;
+  top: 8%;
+  transform: rotate(-6deg);
+}
+@keyframes home-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes product-enter {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+.feature-strip {
+  position: relative;
+  z-index: 3;
+  margin: -72px 24px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #101010;
+}
+.feature-strip button {
+  min-height: 110px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-right: 1px solid #555;
+  background: transparent;
+  color: #fff;
+  padding: 20px 28px;
+  cursor: pointer;
+  font: inherit;
+}
+.feature-strip text {
+  text-decoration: underline;
+}
+.home-body {
+  padding: 44px 48px 80px;
+  background: #101010;
+}
+.home-body h2 {
+  font-size: 38px;
+  margin: 28px 0 0;
+}
+.demo {
+  max-width: 680px;
+  color: #d9ff43;
+}
+@media (max-width: 700px) {
+  .home {
+    padding-top: 64px;
+  }
+  .hero {
+    height: 596px;
+  }
+  .hero-copy {
+    padding: 28px 20px;
+  }
+  .hero-copy h1 {
+    font-size: 54px;
+  }
+  .hero-copy p {
+    font-size: 16px;
+  }
+  .keyboard {
+    width: 78%;
+    left: 22%;
+    bottom: 21%;
+  }
+  .ssd {
+    width: 34%;
+    left: 58%;
+    bottom: 0;
+  }
+  .charger {
+    width: 27%;
+    right: 60%;
+    top: 65%;
+  }
+  .feature-strip {
+    display: block;
+    margin: 0;
+  }
+  .feature-strip button {
+    min-height: 92px;
+    border-bottom: 1px solid #555;
+  }
+  .feature-strip button:nth-child(n + 2) {
+    display: none;
+  }
+  .home-body {
+    padding: 30px 18px 100px;
+  }
+  .actions {
+    display: none;
+  }
+  .hero-button.light {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy,
+  .keyboard,
+  .ssd,
+  .charger {
+    animation: home-fade 80ms ease-out both;
+  }
+  @keyframes home-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
 </style>

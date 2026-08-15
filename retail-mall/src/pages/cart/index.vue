@@ -1,11 +1,167 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useMallStore } from '../../stores/mall'
-const store = useMallStore(); store.hydrate(); const total = computed(() => store.cartDetails.filter((item)=>item.selected).reduce((sum,item)=>sum+item.subtotal,0))
-const change = async (id:string, next:number) => { try { await store.updateLine(id,next) } catch(error) { uni.showToast({title:(error as Error).message,icon:'none'}) } }
-const checkout = () => { try { store.prepareCheckout(); uni.navigateTo({url:'/pages/checkout/index'}) } catch(error) { uni.showToast({title:(error as Error).message,icon:'none'}) } }
-const toggle = (id: string, event: Event) => store.setSelected(id, (event as unknown as { detail: { value: boolean } }).detail.value)
-const goCatalog = () => uni.switchTab({ url: '/pages/catalog/index' })
+import { ref } from "vue";
+import { useMallStore } from "../../stores/mall";
+import GlobalHeader from "../../components/GlobalHeader.vue";
+const store = useMallStore();
+const error = ref("");
+const change = async (id: string, n: number) => {
+  try {
+    await store.updateLine(id, n);
+  } catch (e) {
+    error.value = (e as Error).message;
+  }
+};
+const remove = async (id: string) => {
+  try {
+    await store.removeLine(id);
+  } catch (e) {
+    error.value = (e as Error).message;
+  }
+};
+const select = (id: string, selected: boolean) => {
+  try {
+    store.setSelected(id, selected);
+  } catch (e) {
+    error.value = (e as Error).message;
+  }
+};
+const checkout = () => {
+  try {
+    store.prepareCheckout();
+    uni.navigateTo({ url: "/pages/checkout/index" });
+  } catch (e) {
+    error.value = (e as Error).message;
+  }
+};
+const browseCatalog = () => uni.reLaunch({ url: "/pages/catalog/index" });
 </script>
-<template><view class="page"><text class="eyebrow">YOUR QIWU BAG</text><view class="section-title">购物袋</view><view v-if="store.cartDetails.length"><view v-for="line in store.cartDetails" :key="line.id" class="line panel"><switch :checked="line.selected" color="#173B2A" @change="toggle(line.id,$event)"/><image :src="line.product.image" mode="aspectFill"/><view class="info"><view class="serif">{{line.product.name}}</view><view class="muted">{{line.sku.name}} · {{line.sku.specs}}</view><view class="row"><view class="step"><text @click="change(line.id,line.quantity-1)">−</text><text>{{line.quantity}}</text><text @click="change(line.id,line.quantity+1)">＋</text></view><text class="price">¥{{line.subtotal}}</text></view></view><text class="remove" @click="store.removeLine(line.id)">移除</text></view></view><view v-else class="empty"><view class="serif">还没有选物</view><text @click="goCatalog">去看看今日选物 →</text></view><view v-if="store.cartDetails.length" class="checkout"><view><text class="muted">合计（不含运费）</text><view class="price">¥{{total}}</view></view><text class="primary" @click="checkout">去结算</text></view></view></template>
-<style scoped lang="scss">.line{display:grid;grid-template-columns:45rpx 140rpx 1fr 45rpx;gap:18rpx;align-items:center}.line image{width:140rpx;height:140rpx;border-radius:12rpx}.info{min-width:0}.info .serif{font-size:29rpx;color:#173b2a}.info .muted{margin:10rpx 0}.step{display:flex;gap:18rpx;align-items:center;color:#173b2a;font-size:27rpx}.remove{font-size:21rpx;color:#71836a;text-align:right}.empty{text-align:center;padding:180rpx 0;color:#71836a}.empty .serif{font-size:42rpx;color:#173b2a;margin-bottom:22rpx}.checkout{position:fixed;bottom:100rpx;left:0;right:0;background:#fffdf8;padding:20rpx 28rpx calc(20rpx + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between}.checkout .primary{width:220rpx;padding:20rpx}</style>
+<template>
+  <view class="page object-page">
+    <GlobalHeader />
+    <h1 class="page-title">购物袋 · {{ store.cartDetails.length }} 件</h1>
+    <p class="lede">选择要在这次模拟订单中结算的商品。</p>
+    <p v-if="error" class="error" role="alert">{{ error }}</p>
+    <view v-if="store.cartDetails.length" class="bag">
+      <view v-for="line in store.cartDetails" :key="line.id" class="line">
+        <checkbox
+          :checked="line.selected"
+          :disabled="!!line.boundOrderId"
+          color="#1737FF"
+          @click="select(line.id, !line.selected)"
+        /><image
+          :src="line.product.image"
+          :alt="line.product.imageAlt"
+          mode="aspectFit"
+        /><view>
+          <h2>{{ line.product.name }}</h2>
+          <p>{{ line.sku.name }} · {{ line.sku.specs }}</p>
+          <p v-if="line.boundOrderId">
+            已绑定待付款订单，需先支付或取消。
+          </p>
+        </view><view class="line-actions">
+          <view>
+            <button
+              aria-label="减少数量"
+              :disabled="!!line.boundOrderId"
+              @click="change(line.id, line.quantity - 1)"
+            >
+              −
+            </button><b>{{ line.quantity }}</b><button
+              aria-label="增加数量"
+              :disabled="!!line.boundOrderId"
+              @click="change(line.id, line.quantity + 1)"
+            >
+              ＋
+            </button>
+          </view><b class="price">¥{{ line.subtotal }}</b><button
+            class="remove"
+            :disabled="!!line.boundOrderId"
+            @click="remove(line.id)"
+          >
+            移除
+          </button>
+        </view>
+      </view>
+    </view><view v-else class="empty">
+      <h2>购物袋还是空的</h2>
+      <p>先从精选数码产品中挑一件。</p>
+      <button class="button signal" @click="browseCatalog">
+        去看全部产品
+      </button>
+    </view><view v-if="store.cartDetails.length" class="bottom-action">
+      <view>
+        <small>选中商品</small><b class="price">¥{{ store.selectedTotal }}</b>
+      </view><button
+        class="button emotional"
+        :disabled="!store.selectedLines.length"
+        @click="checkout"
+      >
+        去结账
+      </button>
+    </view>
+  </view>
+</template>
+<style scoped lang="scss">
+.bag {
+  margin-top: 32px;
+  border-top: 1px solid #101010;
+}
+.line {
+  display: grid;
+  grid-template-columns: 28px 130px 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid #101010;
+}
+.line image {
+  width: 130px;
+  height: 110px;
+}
+.line h2 {
+  margin: 0;
+  font-size: 21px;
+}
+.line p {
+  margin: 4px 0;
+  color: #666;
+}
+.line-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.line-actions > view {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.line-actions button {
+  border: 1px solid #101010;
+  background: #fff;
+  min-width: 32px;
+  min-height: 32px;
+}
+.remove {
+  border: 0 !important;
+  border-bottom: 1px solid #c62828 !important;
+  color: #c62828;
+}
+@media (max-width: 700px) {
+  .line {
+    grid-template-columns: 24px 90px 1fr;
+  }
+  .line image {
+    width: 90px;
+    height: 90px;
+  }
+  .line-actions {
+    grid-column: 3;
+    align-items: flex-start;
+  }
+  .line h2 {
+    font-size: 17px;
+  }
+}
+</style>

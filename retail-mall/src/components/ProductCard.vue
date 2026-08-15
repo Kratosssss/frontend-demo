@@ -1,24 +1,78 @@
 <script setup lang="ts">
-import type { Product } from '../types/domain'
-defineProps<{ product: Product }>()
-const go = (id: string) => uni.navigateTo({ url: `/pages/product/index?id=${id}` })
+import type { Product } from "../types/domain";
+defineProps<{ product: Product; index?: number }>();
+const go = (id: string) =>
+  uni.navigateTo({ url: `/pages/product/index?id=${id}` });
 </script>
-
 <template>
-  <view class="product-card" @click="go(product.id)">
-    <image class="image" :src="product.image" mode="aspectFill" />
-    <view class="tags"><text v-for="tag in product.tags.slice(0, 2)" :key="tag">{{ tag }}</text></view>
-    <view class="name serif">{{ product.name }}</view>
-    <view class="sub">{{ product.subtitle }}</view>
-    <view class="price">¥{{ product.skus[0].price }}</view>
-  </view>
+  <button class="product-card" @click="go(product.id)">
+    <view class="media">
+      <image
+        :src="product.image"
+        :alt="product.imageAlt"
+        mode="aspectFit"
+      />
+    </view><view class="copy">
+      <text class="eyebrow">{{ product.tags[0] }}</text><text class="name">{{ product.name }}</text><text class="sub">{{ product.subtitle }}</text><text class="price">¥{{ product.skus[0].price }}</text><text class="view">查看详情 →</text>
+    </view>
+  </button>
 </template>
-
 <style scoped lang="scss">
-.product-card { width: 100%; overflow:hidden; }
-.image { width:100%; height: 310rpx; border-radius: 20rpx; background:#ded6c5; }
-.tags { display:flex; gap:8rpx; margin-top:12rpx; }
-.tags text { font-size:20rpx; color:#71836a; padding:4rpx 10rpx; background:#e8eadf; border-radius:999rpx; }
-.name { color:#173b2a; font-size:30rpx; margin-top:10rpx; }
-.sub { color:#71836a; font-size:22rpx; margin:8rpx 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.product-card {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: #101010;
+  cursor: pointer;
+}
+.product-card::after {
+  border: 0;
+}
+.media {
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  border-bottom: 4px solid #d9ff43;
+}
+.media image {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.08);
+}
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 0;
+}
+.eyebrow {
+  font-size: 12px;
+}
+.name {
+  font-weight: 900;
+  font-size: 22px;
+}
+.sub {
+  color: #666;
+}
+.price {
+  font-size: 18px;
+  font-weight: 900;
+}
+.view {
+  text-decoration: underline;
+  font-weight: 700;
+}
+@media (max-width: 700px) {
+  .media {
+    height: 200px;
+  }
+  .name {
+    font-size: 18px;
+  }
+}
 </style>

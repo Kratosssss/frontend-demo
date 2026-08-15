@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import { onLaunch } from '@dcloudio/uni-app'
-import { useMallStore } from './stores/mall'
-import './styles/theme.scss'
-
-onLaunch(() => useMallStore().hydrate())
+import { onLaunch } from "@dcloudio/uni-app";
+import { useMallStore } from "./stores/mall";
+import "./styles/theme.scss";
+onLaunch(() => useMallStore().hydrate());
 </script>
-
 <style lang="scss">
-page { background: #f4f0e6; color: #22231f; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* uni-app H5 requires tabBar metadata at runtime; MORU supplies its own header navigation. */
+.uni-tabbar,
+.uni-tabbar-border,
+.uni-tabbar-placeholder {
+  display: none !important;
 }
 </style>
