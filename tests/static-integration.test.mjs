@@ -171,7 +171,7 @@ test("CloudBase 中每个 Web 页面都尊重系统减少动态效果偏好", as
     ["Export Car Demo", resolve(builtRoot, "export-car-demo")],
     ["AdPulse", resolve(builtRoot, "adpulse")],
     ["Motion Signal Lab", resolve(builtRoot, "motion-demo")],
-    ["栖物生活方式商城", resolve(builtRoot, "qiwu-mall")],
+    ["MORU 数码独立站", resolve(builtRoot, "qiwu-mall")],
     ["AI 学习知识库", resolve(builtRoot, "ai-learning")],
   ];
 

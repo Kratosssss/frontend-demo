@@ -277,15 +277,7 @@ const browseCatalog = () => uni.reLaunch({ url: "/pages/catalog/index" });
   .keyboard,
   .ssd,
   .charger {
-    animation: home-fade 80ms ease-out both;
-  }
-  @keyframes home-fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    animation: none;
   }
 }
 </style>
