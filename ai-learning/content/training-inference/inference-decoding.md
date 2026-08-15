@@ -1,13 +1,18 @@
 ---
 slug: inference-decoding
 title: 推理与解码：训练后的模型怎样生成结果
+contentType: note
 module: training-inference
 order: 4
 summary: 区分训练阶段与推理阶段，并理解生成模型的采样控制。
 tags: ["推理", "解码", "采样", "温度"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["training-optimization"]
+related: ["model-inference-budget"]
 sources: [{"id":"hugging-face-generation","slug":"inference-decoding","title":"Generation strategies","module":"training-inference","excerpt":"官方文档比较了贪心、束搜索与采样等文本生成策略的行为差异。","url":"https://huggingface.co/docs/transformers/main/en/generation_strategies","kind":"official-doc","locator":"Generation strategies"}]
+evidence: []
 ---
 
 ## 推理不是继续训练
@@ -25,6 +30,19 @@ sources: [{"id":"hugging-face-generation","slug":"inference-decoding","title":"G
 ## 服务层的保护措施
 
 真实服务还需要设置最大输出长度、超时、停止条件和重试策略。输出被截断时，应向调用方明确说明；遇到网络失败，也不能把半段文本伪装成完整答案。对知识问答而言，解码控制还必须服从证据边界：没有可映射来源时不能补充常识。
+
+## 示例
+
+对同一摘要任务比较保守解码和多样采样，并记录可接受差异。
+
+## 常见误区
+
+只调温度，却没有把输出格式和失败重试纳入测试。
+
+## 决策清单
+
+- 先定义任务允许的随机性。
+- 在成本与延迟预算内比较策略。
 
 ## 原始来源
 

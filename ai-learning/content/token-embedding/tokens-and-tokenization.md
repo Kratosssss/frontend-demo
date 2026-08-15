@@ -1,13 +1,18 @@
 ---
 slug: tokens-and-tokenization
 title: Token 是什么：文本进入模型前的切分
+contentType: note
 module: token-embedding
 order: 5
 summary: 了解 token、词表与子词切分如何影响长度、成本和边界。
 tags: ["Token", "分词", "子词", "词表"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["training-optimization"]
+related: ["context-and-memory"]
 sources: [{"id":"bpe-subword-nmt","slug":"tokens-and-tokenization","title":"Neural Machine Translation of Rare Words with Subword Units","module":"token-embedding","excerpt":"论文将字节对编码用于子词单元，以在固定词表与罕见词表示之间折中。","url":"https://aclanthology.org/P16-1162/","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## Token 不是自然语言里的“一个词”
@@ -25,6 +30,19 @@ sources: [{"id":"bpe-subword-nmt","slug":"tokens-and-tokenization","title":"Neur
 ## 为系统预留长度预算
 
 在检索增强系统中，用户问题、系统指令、检索片段、工具结果和模型输出共享同一上下文预算。应先规定各部分最大长度，并在接近上限时采用可解释的截断策略，例如优先保留来源标题和最相关段落。盲目拼接全部内容，反而可能稀释关键证据。
+
+## 示例
+
+对一段中英文混合输入计数，检查是否超出上下文预算。
+
+## 常见误区
+
+把汉字数直接当成模型实际 token 数。
+
+## 决策清单
+
+- 在请求前测量输入和预留输出。
+- 为超长内容提供分段策略。
 
 ## 原始来源
 

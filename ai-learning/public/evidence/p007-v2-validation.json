@@ -1,0 +1,14 @@
+{
+  "date": "2026-08-15",
+  "scope": "ai-learning V2 的公开内容、前端与静态构建",
+  "commands": [
+    "npm run validate:content",
+    "npm test",
+    "npm run lint",
+    "npm run typecheck",
+    "npm run build",
+    "git diff --check"
+  ],
+  "result": "passed",
+  "limits": "该记录只证明所列命令在上述范围内以零退出状态完成；不证明未公开的业务结果或线上部署状态。"
+}

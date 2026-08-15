@@ -1,13 +1,18 @@
 ---
 slug: build-a-small-rag
 title: 实践：搭建一个可验证的小型 RAG 闭环
+contentType: note
 module: evaluation-practice
 order: 12
 summary: 用最小闭环把内容校验、搜索、受限回答和评估连接起来。
 tags: ["RAG 实践", "内容校验", "测试", "同步"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["evaluation-for-ai", "rag-pipeline"]
+related: ["cost-production-observability"]
 sources: [{"id":"ragas-evaluation","slug":"build-a-small-rag","title":"RAGAS: Automated Evaluation of Retrieval Augmented Generation","module":"evaluation-practice","excerpt":"论文提出用无需人工参考答案的指标评估检索增强生成链路。","url":"https://arxiv.org/abs/2309.15217","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## 先做最小可观察闭环
@@ -23,6 +28,19 @@ sources: [{"id":"ragas-evaluation","slug":"build-a-small-rag","title":"RAGAS: Au
 ## 用失败用例收尾
 
 最后为无匹配问题、损坏 frontmatter、重复 slug、未来前置依赖、未知引用、网络失败和中断流添加测试。特别要断言：没有至少一个可映射引用且完成事件未确认 grounded 时，答案逐字是 `知识库中未找到`。这条规则让系统在不确定时保持诚实。
+
+## 示例
+
+用一小组可公开资料搭建检索、引用和人工复核的最小闭环。
+
+## 常见误区
+
+在没有基线样本时就宣称检索系统更可靠。
+
+## 决策清单
+
+- 固定文档版本和问题集。
+- 同时检查答案与引用是否成立。
 
 ## 原始来源
 

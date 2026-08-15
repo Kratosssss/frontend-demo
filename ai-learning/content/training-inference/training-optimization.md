@@ -1,13 +1,18 @@
 ---
 slug: training-optimization
 title: 训练如何让模型从误差中学习
+contentType: note
 module: training-inference
 order: 3
 summary: 从损失函数、梯度与验证集理解训练不是简单记忆数据。
 tags: ["训练", "损失函数", "梯度下降", "验证集"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["ai-what-is-model", "data-task-capability"]
+related: ["evaluation-human-acceptance"]
 sources: [{"id":"adam-optimizer","slug":"training-optimization","title":"Adam: A Method for Stochastic Optimization","module":"training-inference","excerpt":"Adam 通过一阶与二阶矩的自适应估计调整参数更新步长。","url":"https://arxiv.org/abs/1412.6980","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## 损失函数是训练时的反馈尺子
@@ -27,6 +32,19 @@ sources: [{"id":"adam-optimizer","slug":"training-optimization","title":"Adam: A
 把一部分未参与参数更新的数据保留为验证集，可以观察模型是否能迁移到相近但未见过的样本。当训练指标持续改善、验证指标反而变差时，常见原因是过拟合。此时可以减少训练轮数、调整数据、加强正则化，或重新检查任务定义。
 
 测试集应该留到选择方案之后再使用，否则它也会被反复调参“看熟”。
+
+## 示例
+
+把验证集指标、数据版本和停止条件一起写入训练记录。
+
+## 常见误区
+
+把训练损失下降当作线上任务已经可用。
+
+## 决策清单
+
+- 分开观察训练和验证信号。
+- 为数据漂移留下复跑路径。
 
 ## 原始来源
 

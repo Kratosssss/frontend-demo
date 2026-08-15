@@ -1,13 +1,18 @@
 ---
 slug: rag-pipeline
 title: RAG 流程：检索、证据与受限回答
+contentType: note
 module: rag-agent
 order: 9
 summary: 拆解 RAG 的索引、检索、组装与引用步骤，理解每一步的责任边界。
 tags: ["RAG", "检索增强", "引用", "知识库"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["embeddings-and-similarity", "prompt-design-boundaries"]
+related: ["rag-content-engineering"]
 sources: [{"id":"retrieval-augmented-generation","slug":"rag-pipeline","title":"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks","module":"rag-agent","excerpt":"论文将参数化生成与外部检索结合，用于需要知识支持的自然语言生成任务。","url":"https://arxiv.org/abs/2005.11401","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## RAG 不是把文档贴进提示词
@@ -23,6 +28,19 @@ sources: [{"id":"retrieval-augmented-generation","slug":"rag-pipeline","title":"
 ## 受限回答是 RAG 的核心行为
 
 在任何带回答器的 RAG 系统中，应收到至少一个可映射引用，并在完成事件明确表明回答有依据，才向用户显示模型正文。否则最终只显示 `知识库中未找到`。这不是降低体验，而是把“模型猜测”与“资料支持”分开，给用户一个可预测的核验边界。
+
+## 示例
+
+让回答同时返回支持它的原文链接，并在无证据时拒绝断言。
+
+## 常见误区
+
+检索到相似段落就默认可以回答具体事实。
+
+## 决策清单
+
+- 分开测量检索与生成质量。
+- 让引用可直接复查。
 
 ## 原始来源
 

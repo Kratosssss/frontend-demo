@@ -1,13 +1,18 @@
 ---
 slug: evaluation-for-ai
 title: 评估 AI 系统：从好看示例到可复现证据
+contentType: note
 module: evaluation-practice
 order: 11
 summary: 用任务集、指标与失败分类评估模型系统，而不只展示少量成功案例。
 tags: ["评估", "基准", "指标", "失败分析"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["rag-pipeline", "agents-and-tools"]
+related: ["evaluation-human-acceptance"]
 sources: [{"id":"helm-holistic-evaluation","slug":"evaluation-for-ai","title":"Holistic Evaluation of Language Models","module":"evaluation-practice","excerpt":"HELM 提出从准确性、鲁棒性、公平性、效率等多个维度系统评估语言模型。","url":"https://arxiv.org/abs/2211.09110","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## 示例能启发，不能代替评估
@@ -25,6 +30,19 @@ sources: [{"id":"helm-holistic-evaluation","slug":"evaluation-for-ai","title":"H
 ## 保留可复现实验记录
 
 每次比较至少记录内容索引版本、提示版本、模型或模拟器版本、任务集、参数、运行时间和结果。当前知识库只交付静态内容与本地搜索；课程中涉及的 Agent 评估方法应在未来接入独立服务时另行验证，不能从静态站点的测试中推断模型质量。
+
+## 示例
+
+固定一组保留样本，分别记录通过、拒答和人工复核结果。
+
+## 常见误区
+
+只展示少数成功案例来代替评估范围。
+
+## 决策清单
+
+- 把任务、指标和样本版本一起保存。
+- 将高风险失败交给人工验收。
 
 ## 原始来源
 

@@ -1,13 +1,18 @@
 ---
 slug: transformer-attention
 title: Transformer 与注意力：序列关系如何被建模
+contentType: note
 module: transformer-prompt
 order: 7
 summary: 从自注意力、位置与层叠结构理解 Transformer 的基本工作方式。
 tags: ["Transformer", "注意力", "自注意力", "序列"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["embeddings-and-similarity"]
+related: ["structured-output-tools"]
 sources: [{"id":"attention-is-all-you-need","slug":"transformer-attention","title":"Attention Is All You Need","module":"transformer-prompt","excerpt":"论文提出以注意力机制为核心的 Transformer 架构，用于序列到序列建模。","url":"https://arxiv.org/abs/1706.03762","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## 自注意力在比较哪些关系
@@ -27,6 +32,19 @@ sources: [{"id":"attention-is-all-you-need","slug":"transformer-attention","titl
 典型 Transformer 会交替使用多头注意力和前馈网络，并通过残差连接和归一化稳定训练。多头机制让模型能够在不同子空间中学习关系；多层结构则让后续层在先前表示上继续组合特征。
 
 理解这些组件的目的不是手算每个矩阵，而是知道模型为什么依赖输入顺序、上下文长度与训练分布。提示词能影响当前推理路径，却不能替代训练数据中从未形成的能力。
+
+## 示例
+
+比较同一事实在相邻段落与远距离段落中被引用时的可见上下文。
+
+## 常见误区
+
+把注意力权重当作完整的因果解释。
+
+## 决策清单
+
+- 明确需要保留的上下文关系。
+- 用任务指标而非术语热度选架构。
 
 ## 原始来源
 

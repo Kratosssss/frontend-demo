@@ -1,13 +1,18 @@
 ---
 slug: prompt-design-boundaries
 title: Prompt 设计：给模型清晰任务，不承诺不存在的能力
+contentType: note
 module: transformer-prompt
 order: 8
 summary: 用角色、目标、输入和验收条件组织提示，并识别提示无法解决的问题。
 tags: ["Prompt", "提示工程", "上下文", "约束"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["transformer-attention", "inference-decoding"]
+related: ["prompt-rag-finetune"]
 sources: [{"id":"openai-prompt-engineering","slug":"prompt-design-boundaries","title":"Prompt engineering","module":"transformer-prompt","excerpt":"官方指南强调明确指令、结构化输入和迭代评估对提示质量的重要性。","url":"https://platform.openai.com/docs/guides/prompt-engineering","kind":"official-doc","locator":"Prompt engineering guide"}]
+evidence: []
 ---
 
 ## 一条提示应当包含什么
@@ -25,6 +30,19 @@ sources: [{"id":"openai-prompt-engineering","slug":"prompt-design-boundaries","t
 ## 提示解决不了什么
 
 提示不能补齐缺失知识，不能让没有权限的模型访问私有数据，也不能保证事实正确。对于知识库问答，最重要的约束不是“回答得像专家”，而是“只依据提供的可映射来源”。检索不到证据时，固定返回 `知识库中未找到` 比编造一个貌似合理的解释更可靠。
+
+## 示例
+
+为提取任务给出字段、拒绝条件和一个反例，而不是只写“请认真回答”。
+
+## 常见误区
+
+用更长提示替代数据、检索或评估缺口。
+
+## 决策清单
+
+- 把输出格式写成可验证约束。
+- 记录提示变更对应的测试样本。
 
 ## 原始来源
 

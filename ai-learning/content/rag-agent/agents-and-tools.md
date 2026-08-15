@@ -1,13 +1,18 @@
 ---
 slug: agents-and-tools
 title: Agent 与工具调用：把模型放进可控流程
+contentType: note
 module: rag-agent
 order: 10
 summary: 理解 Agent 的计划、工具与状态，并为每个副作用设置可检查门槛。
 tags: ["Agent", "工具调用", "工作流", "权限"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["rag-pipeline"]
+related: ["agent-state-recovery"]
 sources: [{"id":"react-agent-reasoning","slug":"agents-and-tools","title":"ReAct: Synergizing Reasoning and Acting in Language Models","module":"rag-agent","excerpt":"论文把推理轨迹与外部行动交替组织，用于需要工具和环境反馈的任务。","url":"https://arxiv.org/abs/2210.03629","kind":"paper","locator":"Abstract"}]
+evidence: []
 ---
 
 ## Agent 是工作流，不是一种人格
@@ -25,6 +30,19 @@ sources: [{"id":"react-agent-reasoning","slug":"agents-and-tools","title":"ReAct
 ## 让停止条件可观察
 
 Agent 需要预算：最多步骤数、最大重试次数、每个工具的超时和遇到不确定时的退出策略。日志应记录动作类型、稳定资源 ID 和结果状态，但绝不能记录密码、Token 或完整 Secret。这样故障排查能回答“做了什么”，而不会扩大敏感信息暴露面。
+
+## 示例
+
+让工具调用先经过输入校验、权限检查与人工确认边界。
+
+## 常见误区
+
+把多步提示称为 Agent，却没有状态和停止条件。
+
+## 决策清单
+
+- 为每个副作用设置最小权限。
+- 让失败可以暂停、重试或交给人工。
 
 ## 原始来源
 

@@ -1,13 +1,18 @@
 ---
 slug: ai-what-is-model
 title: 什么是 AI 模型：任务、数据与函数近似
+contentType: note
 module: ai-foundations
 order: 1
 summary: 用“输入、目标、约束、反馈”四个问题建立理解 AI 模型的共同语言。
 tags: ["AI 基础", "机器学习", "模型", "数据集"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: []
+related: ["data-task-capability"]
 sources: [{"id":"turing-computing-machinery","slug":"ai-what-is-model","title":"Computing Machinery and Intelligence","module":"ai-foundations","excerpt":"图灵把可观察的对话行为作为讨论机器智能的一种操作性起点。","url":"https://doi.org/10.1093/mind/LIX.236.433","kind":"paper","locator":"Section 1"}]
+evidence: []
 ---
 
 ## 从问题而不是“智能”开始
@@ -27,6 +32,19 @@ sources: [{"id":"turing-computing-machinery","slug":"ai-what-is-model","title":"
 模型输出通常是估计，不是证明。即使答案流畅，也可能来自错误关联、训练分布以外的输入，或不完整的上下文。可靠系统会把模型放在明确流程中：限制输入格式、保留原始证据、设置拒答条件，并把高风险决定交回人或可验证规则。
 
 这一视角也解释了为什么“更大”不等于“适合”。参数规模、训练数据、推理预算和提示上下文都会影响结果，但它们不能替代一个可检验的任务定义。
+
+## 示例
+
+先把自动分流工单写成输入、可接受输出和错误代价，再讨论模型是否适合。
+
+## 常见误区
+
+把流畅回答等同于对业务规则的可靠理解。
+
+## 决策清单
+
+- 明确任务、数据和失败后果。
+- 用可复查样本验证边界。
 
 ## 原始来源
 

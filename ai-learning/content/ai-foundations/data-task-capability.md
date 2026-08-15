@@ -1,13 +1,18 @@
 ---
 slug: data-task-capability
 title: 数据、任务与能力边界如何对齐
+contentType: note
 module: ai-foundations
 order: 2
 summary: 学会用数据卡和风险边界检查模型是否真的适合当前任务。
 tags: ["数据集", "任务定义", "偏差", "风险"]
 updatedAt: 2026-08-15
+reviewedAt: null
+reviewStatus: null
 prerequisites: ["ai-what-is-model"]
+related: ["model-inference-budget"]
 sources: [{"id":"nist-ai-rmf","slug":"data-task-capability","title":"AI Risk Management Framework","module":"ai-foundations","excerpt":"NIST 将治理、映射、度量和管理作为识别与处理 AI 风险的连续活动。","url":"https://www.nist.gov/itl/ai-risk-management-framework","kind":"official-doc","locator":"AI RMF 1.0"}]
+evidence: []
 ---
 
 ## 对齐是一份可检查的假设
@@ -25,6 +30,19 @@ sources: [{"id":"nist-ai-rmf","slug":"data-task-capability","title":"AI Risk Man
 ## 把能力边界变成产品行为
 
 边界应体现在界面和流程里，而不只写在模型说明中。低置信度时给出人工复核入口；没有足够依据时返回未知；敏感输入先做最小化处理。这样，模型的输出只是决策链的一环，而不是不可解释的终点。
+
+## 示例
+
+把客服问题按可引用资料、可拒答范围和人工接管条件拆开记录。
+
+## 常见误区
+
+只看离线准确率，却没有定义高风险误答如何处理。
+
+## 决策清单
+
+- 用真实任务样本界定能力。
+- 记录不能自动化的例外。
 
 ## 原始来源
 
