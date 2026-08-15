@@ -1,12 +1,12 @@
-# Visual concept task card
+# 视觉概念任务卡
 
 ## 目标
 
-<single bounded visual concept exploration objective>
+<单一有边界的视觉概念探索目标>
 
 ## 输入
 
-- <approved plan, released product specification when required, current surface, real content, and constraints>
+- <获批计划、按需已释放产品规格、当前界面、真实内容与约束>
 
 ## 拥有路径
 
@@ -16,7 +16,7 @@
 
 ## 只读路径
 
-- `<current application, released product specification, and existing design-system paths>`
+- `<当前应用、已释放产品规格与现有设计系统路径>`
 
 ## 技能
 
@@ -24,11 +24,11 @@
 
 ## 接口契约
 
-<commander-owned contract or none>
+<总指挥拥有的契约或空>
 
 ## 概念范围与输入
 
-- 产品规格基线路径与释放证据：<path/evidence or not required>
+- 产品规格基线路径与释放证据：<路径/证据或不需要>
 - 核心用户、场景、任务和真实内容：<...>
 - 已有设计语言与本次不得改变的产品约束：<...>
 
@@ -68,7 +68,7 @@
 
 ## 验证命令
 
-- `<safe count, metadata, and path-boundary validation command>`
+- `<安全的数量、元数据与路径边界验证命令>`
 
 ## 禁止事项
 
@@ -78,4 +78,4 @@
 
 ## 阻塞关系
 
-- <Product baseline card id or none>
+- <产品基线卡片 ID 或空>

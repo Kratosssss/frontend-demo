@@ -1,7 +1,7 @@
-# Backend Engineer pitfalls
+# 后端工程师踩坑记录
 
-Read this file completely before every Backend run. Apply only cases whose trigger matches the current task.
+每次 Backend 运行前完整阅读本文件。只应用触发条件与当前任务匹配的条目。
 
-## Current record
+## 当前记录
 
-No verified Backend-specific pitfall has been recorded yet. Do not invent one; report a candidate to the commander when a concrete failure is observed.
+尚未记录任何经过验证的后端专属踩坑。不要凭空捏造；遇到具体失败时，把候选踩坑上报给总指挥。

@@ -1,12 +1,12 @@
-# Design director task card
+# 设计总监任务卡
 
 ## 目标
 
-<single bounded final-design objective>
+<单一有边界的最终设计目标>
 
 ## 输入
 
-- <approved plan, released product specification, twelve briefs, four First Draft frames, selected concept, locked characteristics, current surface, and constraints>
+- <获批计划、已释放产品规格、十二个 Brief、四个 First Draft 画面、获选概念、锁定特征、当前界面与约束>
 
 ## 拥有路径
 
@@ -18,7 +18,7 @@
 
 - `.planning/review/<review-id>/artifacts/concept-briefs/`
 - `.planning/review/<review-id>/artifacts/figma-first-drafts/`
-- `<current application and contract paths>`
+- `<当前应用与契约路径>`
 
 ## 技能
 
@@ -39,11 +39,11 @@
 
 ## 接口契约
 
-<commander-owned contract or none>
+<总指挥拥有的契约或空>
 
 ## 设计目标与项目人格
 
-- 产品规格基线路径与释放证据：<path/evidence or not required>
+- 产品规格基线路径与释放证据：<路径/证据或不需要>
 - 核心用户、场景和关键任务：<...>
 - 第一眼与使用后的目标感受：<...>
 - 项目人格与明确排除的气质：<...>
@@ -69,7 +69,7 @@
 
 ## 反公式化清单
 
-- <task-specific banned generic patterns>
+- <任务专属的禁用套路>
 - 不得默认使用渐变 Hero、等宽卡片阵列、玻璃拟态或固定 SaaS 落地页顺序。
 - 任何被保留的常见模式必须说明业务作用。
 
@@ -105,7 +105,7 @@
 
 ## 验证命令
 
-- `<safe artifact and specification validation command>`
+- `<安全的产物与规格验证命令>`
 
 ## 禁止事项
 
@@ -116,4 +116,4 @@
 
 ## 阻塞关系
 
-- Concept selection and <card id or none>
+- 概念选择，以及 <卡片 ID 或空>

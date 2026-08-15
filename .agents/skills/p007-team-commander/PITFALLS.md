@@ -1,45 +1,45 @@
-# Team Commander pitfalls
+# 总指挥踩坑记录
 
-Read this file completely before every commander run. Apply only cases whose trigger matches the current task.
+每次 commander 运行前完整阅读本文件。只应用触发条件与当前任务匹配的条目。
 
-## Role title was silently downgraded to a single-agent flow
+## 角色头衔被静默降级成单 Agent 流程
 
-- Trigger: The user addresses Codex as “总指挥” or “总策划” and starts substantive P007 work without yet saying `编队执行`.
-- Failure: Continue into ordinary branch/worktree or single-agent planning without explaining the activation gate.
-- Required response: State that the title is not team authorization, give the exact `编队执行` trigger, and create no Goal, cards, or specialists until it is affirmatively provided.
+- 触发条件：用户以「总指挥」或「总策划」称呼 Codex，并开始实质性的 P007 工作，但还没说 `编队执行`。
+- 失败表现：不做激活门禁说明，直接进入普通分支/worktree 或单 Agent 规划。
+- 必须响应：说明头衔不等于团队授权，给出准确的 `编队执行` 触发词，在得到明确确认前不创建 Goal、卡片或专员。
 
-## Worktree handoff lost process state
+## worktree 交接丢失了流程状态
 
-- Trigger: Continue the dispatch in a new Codex thread or worktree.
-- Failure: Assume the Goal and ignored `.planning/` state transferred because tracked repository files are visible.
-- Required response: Before continuing, verify `git status`, `git worktree list`, current Goal, manifest, cards, reports, artifacts, and approval evidence. Recreate or deliberately transfer missing process state in the current worktree without overwriting unrelated changes.
+- 触发条件：在新的 Codex 线程或 worktree 里继续 dispatch。
+- 失败表现：因为被跟踪的仓库文件可见，就假设 Goal 和被忽略的 `.planning/` 状态已经迁移过来了。
+- 必须响应：继续之前，核对 `git status`、`git worktree list`、当前 Goal、manifest、卡片、报告、产物和批准证据。在当前 worktree 里重建或有意识地迁移缺失的流程状态，不覆盖无关改动。
 
-## Worktree cleanup would discard approval artifacts
+## worktree 清理会丢弃批准产物
 
-- Trigger: A worktree contains user-visible direction images, reports, manifests, or other still-needed approval evidence under ignored `.planning/` paths.
-- Failure: Remove, replace, or abandon the worktree because tracked code is safe, while the ignored approval artifacts have not been transferred or superseded.
-- Required response: Mark the worktree as retained and do not clean it up until every still-needed ignored artifact is transferred to the active worktree or replaced by durable approved output. Recheck exact artifact paths and approval dependencies immediately before any cleanup decision.
+- 触发条件：一个 worktree 在被忽略的 `.planning/` 路径下包含用户可见的方向图、报告、manifest 或其他仍需要的批准证据。
+- 失败表现：因为被跟踪的代码是安全的，就移除、替换或放弃该 worktree，而被忽略的批准产物尚未迁移或取代。
+- 必须响应：把该 worktree 标记为保留，在每份仍需要的被忽略产物迁移到活动 worktree、或被持久的已批准输出取代之前，不做清理。任何清理决定前，立即重查确切的产物路径和批准依赖。
 
-## Updated artifact was not actually shown to the user
+## 更新后的产物没有真正展示给用户
 
-- Trigger: Replace a user-visible image or other preview after feedback.
-- Failure: Reuse the same path, verify only the disk file, and claim the update was shown while Codex still renders a cached older artifact.
-- Required response: Require a new versioned filename for every user-visible revision, update manifest/report references, verify the new path, size and hash, render that exact new path in the conversation, and only then request approval. Treat disk freshness and user-visible delivery as separate checks.
+- 触发条件：在反馈后替换用户可见的图片或其他预览。
+- 失败表现：复用同一路径，只校验磁盘文件，就声称已展示更新，而 Codex 仍在渲染缓存的旧产物。
+- 必须响应：每个用户可见的修订版都要求新的版本化文件名，更新 manifest/报告引用，核对新路径、大小和哈希，在对话里渲染那个确切的新路径，然后才请求批准。把「磁盘新鲜」和「用户可见交付」当作两个独立检查。
 
-## Selection images were hidden in collapsible process output
+## 选择图片被藏进了可折叠的流程输出里
 
-- Trigger: Ask the user to choose between visual directions, mockups, or other image-based options.
-- Failure: Render the images only in commentary/tool progress, then send a text-only final answer. Once progress is collapsed, the user receives labels and paths but no usable visual choices.
-- Required response: Deliver every option as a separately labeled persistent image attachment in the same turn, verify all attachments are visibly returned, and make the final answer map each visible label to one choice. Never open an image-selection gate on filesystem paths or text descriptions alone.
+- 触发条件：让用户在视觉方向、线框或其他基于图片的选项之间做选择。
+- 失败表现：只把图片渲染在评论/工具进度里，然后发送纯文本的最终答复。进度一旦折叠，用户收到的只有标签和路径，没有可用的视觉选择。
+- 必须响应：同一轮里把每个选项都作为单独标注的持久图片附件交付，核对所有附件都可见返回，并让最终答复把每个可见标签映射到一个选择。绝不在仅靠文件路径或文字描述的情况下开启图片选择门禁。
 
-## Implementation evidence was fresh by time but false by state
+## 实现证据时间上是新的，但状态上是假的
 
-- Trigger: A role reports a complete screenshot matrix after implementation or repair.
-- Failure: Verify only count, dimensions, filenames, and modification times. A “filled” page may actually be empty, and several named states may be byte-identical.
-- Required response: Before releasing QA, inspect representative pixels, compare hashes for states that must differ, verify required state-specific text/controls, and exercise at least one live end-to-end route. Fresh files prove chronology, not semantic truth.
+- 触发条件：某个角色在实现或修复后报告一张完整的截图矩阵。
+- 失败表现：只核对数量、尺寸、文件名和修改时间。一张「已填写」页面可能实际是空的，几个命名状态可能字节完全相同。
+- 必须响应：在放行 QA 之前，检查代表性像素，比对必须不同的状态的哈希，核对必需的状态专属文字/控件，并至少走通一条端到端路由。新文件只证明时间先后，不证明语义真相。
 
-## Evidence filenames concealed the real media format
+## 证据文件名掩盖了真实媒体格式
 
-- Trigger: Preflight a screenshot or image evidence matrix before releasing QA.
-- Failure: Approve count, dimensions, hashes, mtimes, pixels, and semantic state without checking file signature/MIME. Files named `.png` may actually contain JPEG/JFIF bytes, so all visible checks can pass while the contractual artifact format fails.
-- Required response: Add media-format verification to the commander preflight for every evidence file: extension, decoder-reported type, and magic bytes must agree. Reject the batch before QA when any mismatch exists; require a new versioned path and refreshed index/hash after real conversion or recapture. Treat media authenticity as independent from image appearance and state authenticity. After any correction, audit the whole report rather than only the appended erratum: every earlier claim about the failed version must be corrected or explicitly marked superseded, and a full-text contradiction search must pass before QA is resumed.
+- 触发条件：在放行 QA 之前预检截图或图片证据矩阵。
+- 失败表现：批准数量、尺寸、哈希、修改时间、像素和语义状态，却不检查文件签名/MIME。名为 `.png` 的文件可能实际包含 JPEG/JFIF 字节，于是所有可见检查都通过，而契约规定的产物格式却失败。
+- 必须响应：把媒体格式校验加入总指挥对每份证据文件的预检：扩展名、解码器上报的类型和魔数三者必须一致。任何不一致都在 QA 之前拒绝该批次；真实转换或重新捕获后，要求新的版本化路径并刷新索引/哈希。把媒体真实性当作独立于图片外观和状态真实性的一项检查。任何修正之后，审计整份报告而不是只审计追加的勘误：关于失败版本的每处早期声明都必须改正或显式标记为取代，且在恢复 QA 之前全文矛盾搜索必须通过。

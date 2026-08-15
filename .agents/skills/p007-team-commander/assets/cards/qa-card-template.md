@@ -1,20 +1,20 @@
-# QA task card
+# QA 任务卡
 
 ## 目标
 
-<single bounded independent verification objective>
+<单一有边界的独立验证目标>
 
 ## 输入
 
-- <implementation Goal ID, review manifest reference, approved product/concept/design specifications, plan, active cards, reports, diff, and approval evidence>
+- <实施 Goal ID、review manifest 引用、获批产品/概念/设计规格、计划、活动卡片、报告、diff 与批准证据>
 
 ## 拥有路径
 
-- `<none; QA keeps business and shared files read-only>`
+- `<无；QA 保持业务与共享文件只读>`
 
 ## 只读路径
 
-- `<all in-scope implementation, test, design, and dispatch paths>`
+- `<范围内全部实现、测试、设计与 dispatch 路径>`
 
 ## 技能
 
@@ -22,16 +22,16 @@
 
 ## 接口契约
 
-<commander-owned contract>
+<总指挥拥有的契约>
 
 ## 风险与范围
 
 - 本卡只能在最终视觉审批完成后、实施 Goal 已创建并记录 review manifest 引用时创建。
-- QA 启用原因：<matched risk trigger(s)>
-- 变更面与共享影响：<bounded paths, flows, contracts, or projects>
-- 可复用证据：<current owner test/build/lint/screenshots and report paths>
+- QA 启用原因：<匹配的风险触发项>
+- 变更面与共享影响：<有边界的路径、流程、契约或项目>
+- 可复用证据：<责任角色当前的测试/构建/lint/截图与报告路径>
 - 独立检查：默认最多 3 个最高价值的独立检查；只有已记录风险无法被较小检查覆盖时才扩展。
-- 全仓命令：<not required, or exact shared-risk justification>
+- 全仓命令：<不需要，或确切的共享风险理由>
 
 ## 批准证据核验
 
@@ -71,7 +71,7 @@
 
 ## 验证命令
 
-- `<up to three focused independent commands/checks by default; expand only with recorded risk justification>`
+- `<默认最多三个聚焦的独立命令/检查；仅凭记录的风险理由才扩展>`
 
 ## 禁止事项
 
@@ -80,4 +80,4 @@
 
 ## 阻塞关系
 
-- Product, Concept, Design, Frontend, Backend reports and <card id or none>
+- Product、Concept、Design、Frontend、Backend 报告，以及 <卡片 ID 或空>

@@ -1,12 +1,12 @@
-# Product task card
+# 产品任务卡
 
 ## 目标
 
-<single bounded product-definition objective>
+<单一有边界的产品定义目标>
 
 ## 输入
 
-- <approved plan, real product surface, existing specifications, representative content/data, and constraints>
+- <获批计划、真实产品界面、现有规格、代表性内容/数据与约束>
 
 ## 拥有路径
 
@@ -15,7 +15,7 @@
 
 ## 只读路径
 
-- `<current application, design, data, contract, and research paths>`
+- `<当前应用、设计、数据、契约与研究路径>`
 
 ## 技能
 
@@ -23,7 +23,7 @@
 
 ## 接口契约
 
-<commander-owned contract or none>
+<总指挥拥有的契约或空>
 
 ## 用户问题与证据
 
@@ -45,13 +45,13 @@
 
 ## 边界情况
 
-- <loading, empty, error, permission, long content, mobile, interruption, and recovery cases as relevant>
+- <按需：加载、空态、错误、权限、长内容、移动端、中断与恢复等情况>
 
 ## 重大产品决策
 
 - 是否需要用户决策：<true|false>
-- 选项、取舍与推荐：<... or none>
-- 用户决策证据：<manifest reference or pending>
+- 选项、取舍与推荐：<... 或空>
+- 用户决策证据：<manifest 引用或待定>
 
 ## 产品规格基线
 
@@ -71,7 +71,7 @@
 
 ## 验证命令
 
-- `<safe specification and artifact validation command>`
+- `<安全的规格与产物验证命令>`
 
 ## 禁止事项
 
@@ -81,4 +81,4 @@
 
 ## 阻塞关系
 
-- <card id or none>
+- <卡片 ID 或空>

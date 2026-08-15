@@ -1,11 +1,11 @@
-# QA Engineer pitfalls
+# QA 工程师踩坑记录
 
-Read this file completely before every QA run. Apply only cases whose trigger matches the current task.
+每次 QA 运行前完整阅读本文件。只应用触发条件与当前任务匹配的条目。
 
-## Current record
+## 当前记录
 
-## Direct-route screenshots hid a broken uni-app H5 runtime
+## 直达路由截图掩盖了损坏的 uni-app H5 运行时
 
-- Trigger: A uni-app H5 delivery has green typecheck/build/tests and visually plausible screenshots captured by direct URL.
-- Failure: Treat renderable routes as proof that the application works. A local `globalThis.uni` shim can leave every navigation/storage/toast click broken while static pages still render.
-- Required response: In a standard H5 browser, click at least one cross-route API and one storage-writing API, verify the URL/state change, and inspect app-origin Console errors. Also compare hashes and visible content for every claimed multi-state screenshot; filenames alone are not evidence.
+- 触发条件：一个 uni-app H5 交付拥有通过的 typecheck/build/测试，以及通过直接 URL 截图得到的看似可信的截图。
+- 失败表现：把「可渲染的路由」当作应用能正常工作的证明。一个本地 `globalThis.uni` 垫片（shim）可能让所有导航/存储/提示点击都失效，而静态页面仍能渲染。
+- 必须响应：在标准 H5 浏览器里，点击至少一个跨路由 API 和一个写入存储的 API，核对 URL/状态变化，并检查应用源的 Console 错误。同时对比每张宣称的多状态截图的哈希和可见内容；文件名本身不是证据。

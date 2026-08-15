@@ -1,21 +1,21 @@
-# Backend task card
+# 后端任务卡
 
 ## 目标
 
-<single bounded backend objective>
+<单一有边界的后端目标>
 
 ## 输入
 
-- <implementation Goal ID, approved plan, review manifest reference, released product specification when required, final design specification, and interface contract>
+- <实施 Goal ID、获批计划、review manifest 引用、按需已释放产品规格、最终设计规格与接口契约>
 
 ## 拥有路径
 
-- `<exclusive backend writable path>`
+- `<后端独占可写路径>`
 - `.planning/dispatch/<goal-id>/reports/backend.md`
 
 ## 只读路径
 
-- `<frontend, shared contract, and design paths>`
+- `<前端、共享契约与设计路径>`
 
 ## 技能
 
@@ -23,7 +23,7 @@
 
 ## 接口契约
 
-<commander-owned contract>
+<总指挥拥有的契约>
 
 ## 设计门禁期间
 
@@ -34,7 +34,7 @@
 
 ## 数据与副作用边界
 
-- <input validation, compatibility, failure behavior, data boundary, and side effects>
+- <输入校验、兼容性、失败行为、数据边界与副作用>
 
 ## 交付物
 
@@ -46,7 +46,7 @@
 
 ## 验证命令
 
-- `<backend tests and safe validation commands>`
+- `<后端测试与安全验证命令>`
 
 ## 禁止事项
 
@@ -56,4 +56,4 @@
 
 ## 阻塞关系
 
-- Product baseline release, Concept selection, Design final Figma/Make approval, and <card id or none>
+- 产品基线释放、概念选择、设计最终 Figma/Make 批准，以及 <卡片 ID 或空>

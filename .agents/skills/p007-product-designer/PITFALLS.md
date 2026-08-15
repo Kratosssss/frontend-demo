@@ -1,21 +1,21 @@
-# Product Designer pitfalls
+# 产品设计师踩坑记录
 
-Read this file completely before every Design run. Apply only cases whose trigger matches the current task.
+每次 Design 运行前完整阅读本文件。只应用触发条件与当前任务匹配的条目。
 
-## Directions changed layout but shared the same visual DNA
+## 三个方向只改了布局，却共享同一套视觉 DNA
 
-- Trigger: Produce three direction images for a product that already has related demos in the repository.
-- Failure: Change module placement while reusing the same palette, typography, density, information hierarchy, comparison-first structure, or industrial/editorial motif; the set appears like one template with variations and may resemble an existing project.
-- Required response: Inspect the real existing visual DNA first. Define explicit banned similarities and separate the three directions across background value, color strategy, type personality, imagery, density, composition, discovery logic, and signature motion. Compare all three with each other and the existing project before handoff.
+- 触发条件：为仓库里已有相关 Demo 的产品产出三张方向图。
+- 失败表现：改变模块排布，却复用同一套配色、字体、密度、信息层级、对比优先结构或工业/杂志风母题；结果看起来像同一个模板换了几个版本，还可能撞脸已有项目。
+- 必须响应：先审视真实存在的视觉 DNA。明确定义禁止的相似点，并在背景明暗、色彩策略、字体性格、图像、密度、构图、发现逻辑和标志性动效上把三个方向分开。交付前把三个方向互相比对，并和已有项目比对。
 
-## Complete lifecycle was crammed into the homepage
+## 完整生命周期被塞进了首页
 
-- Trigger: The product specification includes account, address, discounts, payment, orders, cancellation, and after-sales flows.
-- Failure: Expose every lifecycle state in the first viewport to prove scope, turning a consumer DTC storefront into a dashboard or ledger.
-- Required response: Keep the homepage focused on desire, trust, discovery, and purchase intent. Prove the wider lifecycle through clear but restrained navigation and dedicated screens unless the approved product/design specifically requires expansion.
+- 触发条件：产品规格包含账户、地址、折扣、支付、订单、取消和售后流程。
+- 失败表现：为了证明范围，把每个生命周期状态都暴露在第一屏，把一个消费数码 DTC 商城做成了仪表盘或账本。
+- 必须响应：让首页聚焦于欲望、信任、发现和购买意图。通过清晰但克制的导航和独立页面来证明更广的生命周期，除非获批的产品/设计明确要求扩展。
 
-## Replaced images reused cached filenames
+## 替换图片却复用了缓存的旧文件名
 
-- Trigger: Regenerate or substantially revise a direction image already shown to the user.
-- Failure: Overwrite the old path and report success; Codex may keep rendering the cached previous image, so the user sees no update.
-- Required response: Save each user-visible revision under a new versioned filename such as `r1-<direction>.png`; never overwrite a previously displayed path. Report the new absolute paths, size and hash to the commander, keep exactly the required active images, and let the commander verify rendering before requesting approval.
+- 触发条件：重新生成或大幅修改一张已经展示给用户看过的方向图。
+- 失败表现：覆盖旧路径并上报成功；Codex 可能继续渲染缓存的旧图，导致用户看不到更新。
+- 必须响应：每个用户可见的修订版都保存为新的版本化文件名，如 `r1-<方向>.png`；绝不覆盖已展示过的路径。把新的绝对路径、大小和哈希上报给总指挥，只保留必需的有效图片，并在请求批准前让总指挥确认渲染效果。

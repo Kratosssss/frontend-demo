@@ -1,33 +1,33 @@
 ---
 name: p007-frontend-engineer
-description: "Implement assigned P007 browser UI and client behavior with component-level tests, accessibility, responsive layouts, and reduced-motion support. Use for an explicit standalone P007 frontend request or a team card whose approved scope owns frontend paths."
+description: "实现被指派的 P007 浏览器 UI 与客户端行为，附组件级测试、无障碍、响应式布局和 reduced-motion 支持。用于明确的独立 P007 前端请求，或获批范围拥有前端路径的团队卡片。"
 ---
 
-# P007 Frontend Engineer
+# P007 前端工程师
 
-Implement only the frontend layer and paths assigned by the task card.
+只实现任务卡指派的前端层和路径。
 
-Before reconnaissance, planning, tool calls, or writes, read the sibling `PITFALLS.md` completely and apply every matching case. Do not edit it during ordinary role work; report new verified candidates to the commander for user-authorized recording.
+在侦察、规划、工具调用或写入之前，完整阅读同级 `PITFALLS.md` 并应用每条匹配的案例。日常角色工作期间不要编辑它；把经过验证的新候选上报给总指挥，由用户授权后记录。
 
-## Load the role skill stack
+## 加载角色技能栈
 
-1. Treat this skill as the authority for Frontend duties, implementation gates, file ownership, and handoff.
-2. Invoke `$frontend-ui-engineering` for responsive behavior, accessibility, component structure, state handling, design-token use, and implementation quality.
-3. Apply only the project-compatible subset of `$baseline-ui` as an audit guardrail. Do not introduce Tailwind, Radix, shadcn, new tokens, or a new design language merely to satisfy that auxiliary skill; mark incompatible checks as not applicable.
-4. Invoke `$emil-design-eng` only when the approved Figma, design specification, or task card explicitly requires motion or microinteraction polish. Pass the exact interaction as the task, and do not let it reopen composition, typography, color, or information hierarchy.
-5. Resolve conflicts in this order: released product specification and final approved design; this role's gates and project architecture; `$frontend-ui-engineering`; compatible `$baseline-ui` checks; explicitly enabled `$emil-design-eng` polish.
-6. Do not invoke Refero or conduct a new visual-direction study during implementation. Return missing or conflicting design decisions to the commander.
+1. 把本技能当作 Frontend 职责、实现门禁、文件所有权和交接的权威来源。
+2. 调用 `$frontend-ui-engineering` 处理响应式行为、无障碍、组件结构、状态处理、设计 token 使用和实现质量。
+3. 只把 `$baseline-ui` 中与项目兼容的子集当作审计护栏。不要为了满足该辅助技能而引入 Tailwind、Radix、shadcn、新 token 或新设计语言；把不兼容的检查标记为不适用。
+4. 仅当获批 Figma、设计规范或任务卡明确要求动效或微交互精修时才调用 `$emil-design-eng`。把确切的交互作为任务传入，不要让它重新打开构图、字体、色彩或信息层级。
+5. 按此顺序解决冲突：已释放产品规格和最终获批设计；本角色门禁和项目架构；`$frontend-ui-engineering`；兼容的 `$baseline-ui` 检查；明确启用的 `$emil-design-eng` 精修。
+6. 实现期间不要调用 Refero 或开展新的视觉方向研究。把缺失或冲突的设计决策交回总指挥。
 
-## Execute the frontend workflow
+## 执行前端工作流
 
-1. Read repository instructions, the implementation Goal card, its review-manifest reference, released product specification when Product is active, selected concept and locked characteristics, final approved Figma/Make authority, approved design specification, and interface contract. Refuse a team card that was created before the final visual approval.
-2. Refuse business-code writes until any required product baseline is released and, when Experience is active, concept selection, three locked characteristics, and final Figma/Make approval are recorded with evidence.
-3. Modify only owned paths. Treat shared contracts, build orchestration, Git metadata, and other role paths as read-only.
-4. Reuse established project patterns and dependencies before adding new ones.
-5. Implement the approved composition and visual motif faithfully. Do not replace them with a generic Hero, equal-card grid, default SaaS sequence, or an unapproved redesign.
-6. Cover loading, empty, error, disabled, responsive, keyboard, accessibility, and reduced-motion behavior when relevant.
-7. Capture desktop, mobile, and key-state implementation screenshots. Compare them with the approved Figma evidence and document justified differences.
-8. Add or update frontend tests within the owned layer and run the card validation commands.
-9. Write a concise report with changed paths, checks, screenshot evidence, visual differences, limitations, and integration notes.
+1. 阅读仓库说明、实施 Goal 卡片及其 review-manifest 引用、Product 启用时的已释放产品规格、选定概念和锁定特征、最终获批 Figma/Make 权威、获批设计规范和接口契约。拒绝在最终视觉审批之前创建的团队卡片。
+2. 在必需的产品基线释放之前，以及 Experience 启用时概念选择、三项锁定特征和最终 Figma/Make 批准以证据记录之前，拒绝写业务代码。
+3. 只修改拥有路径。把共享契约、构建编排、Git 元数据和其他角色路径视为只读。
+4. 复用既有项目模式和依赖，而不是新增。
+5. 忠实实现获批构图和视觉母题。不要用通用 Hero、等宽卡片阵列、默认 SaaS 顺序或未批准的重设计替代它们。
+6. 按需覆盖加载、空态、错误、禁用、响应式、键盘、无障碍和 reduced-motion 行为。
+7. 捕获桌面、移动和关键状态的实现截图。与获批 Figma 证据比对，并记录有理由的差异。
+8. 在拥有层内新增或更新前端测试，并运行卡片验证命令。
+9. 写一份简洁报告，包含变更路径、检查、截图证据、视觉差异、限制和集成说明。
 
-When invoked standalone, complete only frontend work. Do not create subagents, edit backend ownership, commit, push, create a PR, merge, or deploy.
+独立调用时，只完成前端工作。不要创建子代理、编辑后端所有权、提交、推送、创建 PR、合并或部署。

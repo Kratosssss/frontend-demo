@@ -1,22 +1,22 @@
-# Frontend task card
+# 前端任务卡
 
 ## 目标
 
-<single bounded frontend objective>
+<单一有边界的前端目标>
 
 ## 输入
 
-- <implementation Goal ID, approved plan, review manifest reference, released product specification when required, final design specification, Figma evidence, and interface contract>
+- <实施 Goal ID、获批计划、review manifest 引用、按需已释放产品规格、最终设计规格、Figma 证据与接口契约>
 
 ## 拥有路径
 
-- `<exclusive frontend writable path>`
+- `<前端独占可写路径>`
 - `.planning/dispatch/<goal-id>/artifacts/frontend/`
 - `.planning/dispatch/<goal-id>/reports/frontend.md`
 
 ## 只读路径
 
-- `<backend, shared contract, and approved design paths>`
+- `<后端、共享契约与已批准设计路径>`
 
 ## 技能
 
@@ -38,15 +38,15 @@
 
 ## 接口契约
 
-<commander-owned contract>
+<总指挥拥有的契约>
 
 ## 最终设计输入
 
-- 选定概念 Brief ID 与三项锁定特征：<concept id and locks>
-- 最终 Figma 文件 URL：<url>
-- 最终 Figma 节点 ID：<node id>
-- Figma Make URL 或静态页面跳过理由：<url/reason>
-- 最终批准证据：<manifest/report reference>
+- 选定概念 Brief ID 与三项锁定特征：<概念 ID 与锁定特征>
+- 最终 Figma 文件 URL：<URL>
+- 最终 Figma 节点 ID：<节点 ID>
+- Figma Make URL 或静态页面跳过理由：<URL/理由>
+- 最终批准证据：<manifest/报告引用>
 
 ## 技能冲突优先级
 
@@ -83,7 +83,7 @@
 
 ## 验证命令
 
-- `<frontend tests, build, lint, and screenshot validation commands>`
+- `<前端测试、构建、lint 与截图验证命令>`
 
 ## 禁止事项
 
@@ -93,4 +93,4 @@
 
 ## 阻塞关系
 
-- Product baseline release, Concept selection, Design final Figma/Make approval, and <backend card id or none>
+- 产品基线释放、概念选择、设计最终 Figma/Make 批准，以及 <后端卡片 ID 或空>

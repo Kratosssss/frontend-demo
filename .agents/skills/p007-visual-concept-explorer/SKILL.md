@@ -1,19 +1,19 @@
 ---
 name: p007-visual-concept-explorer
-description: "Rapidly explore P007 visual concepts as twelve structured briefs across four distinct direction families, then coordinate four editable Figma AI First Draft candidates for human selection. Use for an assigned P007 concept card or an explicit standalone request for fast, bounded visual direction exploration before final product design."
+description: "把 P007 视觉概念快速探索为四个明显不同的方向族下的十二个结构化 Brief，然后协调四个可编辑的 Figma AI First Draft 候选供人工选择。用于被指派的 P007 概念卡片，或在最终产品设计前的明确独立快速、有边界的视觉方向探索请求。"
 ---
 
-# P007 Visual Concept Explorer
+# P007 视觉概念探索者
 
-Generate breadth quickly without taking final design authority.
+快速产出广度，不取得最终设计权威。
 
-1. Read the assigned card, released product baseline when required, current product surface, real content, approved plan, and project constraints.
-2. Produce exactly twelve structured concept briefs grouped into exactly four materially different direction families, three briefs per family. Give every brief an ID, title, target feeling, composition, visual motif, color/type idea, signature move, Figma AI prompt, risk, and rejection signal.
-3. Keep the four families different in information hierarchy and composition, not merely color, type, imagery, or decoration.
-4. For every dispatch, create a fresh Figma Design file. Use native Figma Agent/First Draft to turn the four families into exactly four editable first-draft frames, one per family. Record the file URL, four node IDs, four screenshots, and the prompt package.
-5. If native Figma Agent/First Draft access or AI credits are unavailable, set the dispatch to `waiting_human`, record the cause, and stop. Do not silently replace Figma AI with manual Sol design.
-6. Present all twelve briefs and four actual screens together. Ask the user to choose one concept, then record the approval evidence and the three locked characteristics: composition, visual motif, and key color or typography.
-7. Keep all briefs, prompts, first-draft evidence, and reports under the card's temporary `.planning/review/<review-id>/` paths. This visual-review work never creates an implementation Goal.
-8. Do not modify business code, shared contracts, `docs/specs/`, or the final Figma design. Do not approve a concept, reinterpret a general acknowledgement as approval, or authorize implementation.
+1. 阅读指派卡片、按需已释放的产品基线、当前产品界面、真实内容、获批计划和项目约束。
+2. 产出恰好十二个结构化概念 Brief，分成恰好四个实质不同的方向族，每族三个。给每个 Brief 一个 ID、标题、目标感受、构图、视觉母题、色彩/字体想法、标志性动作、Figma AI 提示、风险和淘汰信号。
+3. 让四个方向族在信息层级和构图上不同，而不只是色彩、字体、图像或装饰。
+4. 每次 dispatch 都新建一个独立的 Figma Design 文件。用原生 Figma Agent/First Draft 把四个方向族变成恰好四个可编辑的 First Draft 画面，每族一个。记录文件 URL、四个节点 ID、四张截图和提示包。
+5. 如果原生 Figma Agent/First Draft 访问或 AI 额度不可用，把 dispatch 设为 `waiting_human`，记录原因并停止。不要静默用 Sol 手工设计替代 Figma AI。
+6. 把十二个 Brief 和四个实际画面一起呈现。请用户选择一个概念，然后记录批准证据和三项锁定特征：构图、视觉母题和关键色彩或字体。
+7. 把所有 Brief、提示、First Draft 证据和报告放在卡片的临时 `.planning/review/<review-id>/` 路径下。这个视觉评审工作绝不创建实施 Goal。
+8. 不修改业务代码、共享契约、`docs/specs/` 或最终 Figma 设计。不批准概念、不把泛泛确认曲解为批准、不授权实现。
 
-When invoked standalone, preserve the same output counts, fresh-file rule, Figma-access pause, evidence, and ownership boundaries. Do not create subagents, commit, push, merge, deploy, or touch production data.
+独立调用时，保持同样的产出数量、新文件规则、Figma 访问暂停、证据和所有权边界。不要创建子代理、提交、推送、合并、部署或触碰生产数据。

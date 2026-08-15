@@ -1,41 +1,41 @@
-# Frontend Engineer pitfalls
+# 前端工程师踩坑记录
 
-Read this file completely before every Frontend run. Apply only cases whose trigger matches the current task.
+每次 Frontend 运行前完整阅读本文件。只应用触发条件与当前任务匹配的条目。
 
-## Current record
+## 当前记录
 
-## uni-app H5 API was shadowed with `globalThis.uni`
+## uni-app H5 API 被 `globalThis.uni` 遮蔽
 
-- Trigger: A uni-app Vue page or component needs navigation, storage, toast, or other `uni` APIs in H5.
-- Failure: Add a local `const uni = globalThis.uni` shim. Typecheck, build, service tests, and direct-route screenshots can still pass, while standard H5 clicks fail because `window.uni` is undefined.
-- Required response: Use the uni-app-supported global/API reference without shadowing it. Before handoff, exercise at least one real navigation API and one real storage API in a standard H5 browser, check app-origin Console errors, and add a regression guard against reintroducing the shim.
+- 触发条件：一个 uni-app Vue 页面或组件在 H5 里需要导航、存储、提示或其他 `uni` API。
+- 失败表现：添加本地 `const uni = globalThis.uni` 垫片。typecheck、构建、服务测试和直达路由截图可能仍然通过，而标准 H5 点击却因为 `window.uni` 未定义而失效。
+- 必须响应：使用 uni-app 支持的全局/API 引用，不要遮蔽它。交付前，在标准 H5 浏览器里至少真实调用一次导航 API 和一次存储 API，检查应用源的 Console 错误，并加一条防止重新引入该垫片的回归护栏。
 
-## Screenshot filenames claimed states that the pixels did not contain
+## 截图文件名声称的状态，像素里并不存在
 
-- Trigger: Capture multiple implementation states such as filled checkout or payment ready/processing/success/failed.
-- Failure: Trust route names or output filenames; submit an empty checkout as “filled”, identical hashes for different states, or screenshots captured before the last code repair.
-- Required response: Capture into a new versioned directory after final source changes; verify every image is newer than the source, check dimensions and hashes, visually inspect each state, require state-specific text/controls to differ, and prove the key states through a real browser path or documented deterministic fixture.
+- 触发条件：捕获多种实现状态，例如已填写的结算、支付就绪/处理中/成功/失败。
+- 失败表现：信任路由名或输出文件名；把空结算提交成「已填写」，不同状态用相同哈希，或在最后一次代码修复前就截图。
+- 必须响应：在最终源码改动之后，捕获到新的版本化目录；验证每张图都比源码新，检查尺寸和哈希，逐张目检状态，要求状态专属的文字/控件确有差异，并通过真实浏览器路径或已文档化的确定性夹具证明关键状态。
 
-## A reused static tab produced a complete-looking but invalid screenshot batch
+## 复用的静态标签页产出了看似完整却无效的截图批次
 
-- Trigger: Capture a multi-page H5 evidence matrix from a production build, especially when routes depend on browser-local commerce state.
-- Failure: Reuse a cached or interrupted tab, construct unverified deep links, or mutate storage without proving the UI consumed it. The batch can contain white pages, empty checkout under a `filled` filename, identical payment states, and identical filled/empty cart hashes even though the capture command reports success.
-- Required response: Start from a fresh build tab, wait for a page-specific visible element, and establish dependent states through the real UI path unless a tested fixture is documented. Gate the batch on a small representative set first; visually open every gated image and compare hashes for states that must differ before producing the remainder. A partial evidence checkpoint is not a completed frontend handoff.
+- 触发条件：从生产构建捕获多页 H5 证据矩阵，尤其是路由依赖浏览器本地电商状态时。
+- 失败表现：复用缓存或中断的标签页，构造未经验证的深链接，或在未证明 UI 确实消费了存储改动的情况下就改存储。即便捕获命令报告成功，批次里仍可能出现白页、`filled` 文件名下的空结算、相同的支付状态，以及填充/空购物袋的哈希相同。
+- 必须响应：从全新的构建标签页开始，等待页面专属的可见元素，除非有已测试的夹具文档，否则通过真实 UI 路径建立依赖状态。先用一小批代表性样本把关；在产出剩余部分前，逐张打开每张把关图片，并对必须不同的状态比对哈希。部分证据检查点不等于前端交付完成。
 
-## DOM viewport dimensions were mistaken for screenshot file dimensions
+## DOM 视口尺寸被误当成截图文件尺寸
 
-- Trigger: A browser capability reports the requested responsive viewport and the output filename includes that size.
-- Failure: Assume `window.innerWidth/innerHeight` proves the PNG dimensions. Some browser/tab paths can still return a 1280×720 or chrome-reduced 1440×618 bitmap, while a stateful page can also drift into a bound or disabled state during recapture.
-- Required response: After every screenshot write, inspect the actual PNG width/height before moving on, then inspect its state-specific pixels. The viewport assertion, PNG dimensions, and semantic UI state are three independent gates; all three must pass. Never resize, pad, rename, or reuse a semantically stale image to satisfy the matrix.
+- 触发条件：浏览器能力上报了请求的响应式视口，输出文件名也带上了该尺寸。
+- 失败表现：假设 `window.innerWidth/innerHeight` 能证明 PNG 尺寸。某些浏览器/标签页路径仍可能返回 1280×720 或 chrome 缩减后的 1440×618 位图，而有状态的页面在重新捕获时也可能漂移到绑定或禁用状态。
+- 必须响应：每次截图写入后，先检查实际 PNG 宽高，再检查其状态专属像素。视口断言、PNG 尺寸和语义化 UI 状态是三个独立门禁，三者都必须通过。绝不通过缩放、填充、重命名或复用语义过期的图片来凑齐矩阵。
 
-## Screenshot suffix matched the request but not the encoded bytes
+## 截图后缀匹配了请求，但编码字节不匹配
 
-- Trigger: Save browser evidence under a requested image extension such as `.png`.
-- Failure: Validate only filename, dimensions, hash, mtime, and visible pixels. A capture can remain JPEG/JFIF bytes even when the path ends in `.png`, making the evidence index materially false.
-- Required response: Before handoff, verify every image with both a decoder/type probe and magic bytes. A PNG must begin with the PNG signature, not JFIF/JPEG. If encoding is wrong, create a new versioned evidence path, perform a real format conversion or recapture, recompute all hashes, update the index/report, and visually inspect the new files. Never fix this by renaming the same bytes. Re-read the entire report and every old-version reference after the correction; replace or explicitly supersede each stale format claim in place, then use a full-text search to prove the report no longer contradicts its appended erratum.
+- 触发条件：把浏览器证据保存为请求的图片扩展名，如 `.png`。
+- 失败表现：只校验文件名、尺寸、哈希、修改时间和可见像素。即便路径以 `.png` 结尾，捕获结果仍可能是 JPEG/JFIF 字节，使证据索引实质失真。
+- 必须响应：交付前，用解码器/类型探测和魔数（magic bytes）双重验证每张图。PNG 必须以 PNG 签名开头，而不是 JFIF/JPEG。如果编码错了，新建版本化证据路径，做真实的格式转换或重新捕获，重算所有哈希，更新索引/报告，并目检新文件。绝不靠给同样的字节改名来修复。修正后重读整份报告和每处旧版本引用；就地替换或显式标记取代每处过期的格式声明，再用全文搜索证明报告不再与其追加的勘误自相矛盾。
 
-## Component-only reduced-motion repair missed the release-wide contract
+## 仅组件级 reduced-motion 修复漏掉了发布级全局契约
 
-- Trigger: A frontend surface adds or changes animation or transition behavior and must satisfy the release reduced-motion gate.
-- Failure: Disable one visual component while the global `*`, `*::before`, `*::after` reduce rule still leaves animation or transition at a perceptible duration such as 80ms; local typecheck, lint, and build can pass while the root static integration fails.
-- Required response: Inspect the global reduce rule and set both animation and transition to `none !important` or a `0`/`0.01ms !important` duration, preserving one iteration and automatic scrolling as applicable. Build the actual release surface and run the root static integration before declaring the gate complete.
+- 触发条件：前端界面新增或改动动画/过渡行为，且必须满足发布级 reduced-motion 门禁。
+- 失败表现：只禁用一个视觉组件，而全局 `*`、`*::before`、`*::after` reduce 规则仍让动画或过渡停留在可感知时长（如 80ms）；本地 typecheck、lint、build 可能通过，而根级静态集成却失败。
+- 必须响应：检查全局 reduce 规则，把 animation 和 transition 都设为 `none !important` 或 `0`/`0.01ms !important` 时长，并按适用情况保留一次迭代和自动滚动。构建实际的发布界面并运行根级静态集成，再宣称门禁完成。
