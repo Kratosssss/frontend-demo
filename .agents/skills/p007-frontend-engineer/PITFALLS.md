@@ -33,3 +33,9 @@ Read this file completely before every Frontend run. Apply only cases whose trig
 - Trigger: Save browser evidence under a requested image extension such as `.png`.
 - Failure: Validate only filename, dimensions, hash, mtime, and visible pixels. A capture can remain JPEG/JFIF bytes even when the path ends in `.png`, making the evidence index materially false.
 - Required response: Before handoff, verify every image with both a decoder/type probe and magic bytes. A PNG must begin with the PNG signature, not JFIF/JPEG. If encoding is wrong, create a new versioned evidence path, perform a real format conversion or recapture, recompute all hashes, update the index/report, and visually inspect the new files. Never fix this by renaming the same bytes. Re-read the entire report and every old-version reference after the correction; replace or explicitly supersede each stale format claim in place, then use a full-text search to prove the report no longer contradicts its appended erratum.
+
+## Component-only reduced-motion repair missed the release-wide contract
+
+- Trigger: A frontend surface adds or changes animation or transition behavior and must satisfy the release reduced-motion gate.
+- Failure: Disable one visual component while the global `*`, `*::before`, `*::after` reduce rule still leaves animation or transition at a perceptible duration such as 80ms; local typecheck, lint, and build can pass while the root static integration fails.
+- Required response: Inspect the global reduce rule and set both animation and transition to `none !important` or a `0`/`0.01ms !important` duration, preserving one iteration and automatic scrolling as applicable. Build the actual release surface and run the root static integration before declaring the gate complete.

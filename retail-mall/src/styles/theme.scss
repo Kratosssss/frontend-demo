@@ -175,8 +175,8 @@ button:focus-visible {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    transition-duration: 80ms !important;
-    animation-duration: 80ms !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
   .slide-enter-from {
