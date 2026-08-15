@@ -277,7 +277,7 @@ const browseCatalog = () => uni.reLaunch({ url: "/pages/catalog/index" });
   .keyboard,
   .ssd,
   .charger {
-    animation: none;
+    animation: none !important;
   }
 }
 </style>
