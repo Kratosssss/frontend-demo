@@ -148,13 +148,15 @@ test("AdPulse 作品接入入口与 CloudBase 汇总产物", async () => {
   assert.match(app, /CampaignDetail/);
 });
 
-test("AI 学习知识库以纯静态地图、笔记和搜索接入", async () => {
+test("AI 工程知识库以 27 项静态内容、动态卡、案例和搜索接入", async () => {
   const portal = await read("portal/index.html");
   const packageJson = await read("ai-learning/package.json");
   const sourceFiles = await listFiles(resolve(root, "ai-learning", "src"));
   const source = (await Promise.all(sourceFiles.map((path) => readFile(path, "utf8")))).join("\n");
 
-  assert.match(portal, /六阶段学习地图、12 篇原创长文笔记与中文全文搜索/);
+  assert.match(portal, /证据时间轴首页、27 项中文 AI 工程内容、动态决策卡与 P007 七角色旗舰案例/);
+  assert.match(portal, /AI 工程 · 知识库/);
+  assert.doesNotMatch(portal, /AI Learning Lab/);
   assert.doesNotMatch(portal, /RAG 问答|登录后提问/);
   assert.doesNotMatch(packageJson, /@cloudbase\/js-sdk/);
   assert.doesNotMatch(source, /VITE_CLOUDBASE_|p007\.ai-learning\.chat|\/ask|\/login|AI 问答|DeepSeek|sendMessage|ai\.bot/);
