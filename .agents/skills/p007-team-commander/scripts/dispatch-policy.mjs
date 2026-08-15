@@ -12,14 +12,20 @@ export const DISPATCH_STATES = Object.freeze([
 
 export const ROLE_PROFILES = Object.freeze({
   product: { model: "gpt-5.6-sol", reasoningEffort: "high" },
+  concept: {
+    model: "gpt-5.6-luna",
+    reasoningEffort: "none",
+    fallback: { model: "gpt-5.6-terra", reasoningEffort: "low" },
+  },
   design: { model: "gpt-5.6-sol", reasoningEffort: "high" },
   frontend: { model: "gpt-5.6-terra", reasoningEffort: "high" },
   backend: { model: "gpt-5.6-terra", reasoningEffort: "high" },
-  qa: { model: "gpt-5.6-sol", reasoningEffort: "high" },
+  qa: { model: "gpt-5.6-sol", reasoningEffort: "medium" },
 });
 
 export const CARD_TEMPLATE_FILES = Object.freeze({
   product: "assets/cards/product-card-template.md",
+  concept: "assets/cards/concept-card-template.md",
   design: "assets/cards/design-card-template.md",
   frontend: "assets/cards/frontend-card-template.md",
   backend: "assets/cards/backend-card-template.md",
@@ -28,6 +34,11 @@ export const CARD_TEMPLATE_FILES = Object.freeze({
 
 const quotedTrigger = /[“”"'`《》「」『』][^\n]{0,24}编队执行[^\n]{0,24}[“”"'`《》「」『』]/;
 const nonDirectiveContext = /(不(?:要|用|能|会|是)?|别|无需|尚未|没说|如果|假如|等到|讨论|引用|解释|什么意思|为什么|只有.+才|的时候|再说|之前再|以后再)/;
+
+const nonEmpty = (value) => typeof value === "string" && value.trim().length > 0;
+const exactCapability = (capabilities, model, reasoningEffort) => capabilities.some((item) => (
+  item?.model === model && item?.reasoningEffort === reasoningEffort
+));
 
 export function isAffirmativeTeamTrigger(input) {
   if (typeof input !== "string") return false;
@@ -38,41 +49,67 @@ export function isAffirmativeTeamTrigger(input) {
   return true;
 }
 
-export function selectSpecialists({ product = false, experience = false, frontend = false, backend = false, delivery = true } = {}) {
+export function requiresIndependentQa({
+  explicitRequest = false,
+  designGateDelivery = false,
+  crossLayerOrMultipleOwners = false,
+  sharedBuildOrConfig = false,
+  securityOrPermission = false,
+  dataOrIrreversibleSideEffect = false,
+  ownerEvidenceInsufficient = false,
+} = {}) {
+  return [
+    explicitRequest,
+    designGateDelivery,
+    crossLayerOrMultipleOwners,
+    sharedBuildOrConfig,
+    securityOrPermission,
+    dataOrIrreversibleSideEffect,
+    ownerEvidenceInsufficient,
+  ].some(Boolean);
+}
+
+export function selectSpecialists({ product = false, experience = false, frontend = false, backend = false, qaRequired = false } = {}) {
   const roles = [];
   if (product) roles.push("product");
-  if (experience) roles.push("design");
+  if (experience) roles.push("concept", "design");
   if (frontend) roles.push("frontend");
   if (backend) roles.push("backend");
-  if (delivery) roles.push("qa");
+  if (qaRequired) roles.push("qa");
   return roles;
 }
 
-export function roleMayWrite({
-  role,
-  productRequired = false,
-  productSpecPath = "",
-  productBaselineReady = false,
-  productDecisionRequired = false,
-  productDecisionApproved = false,
-  productDecisionApprovalEvidence = "",
-  designRequired = false,
-  directionApproved = false,
-  figmaApproved = false,
-} = {}) {
-  if (role === "qa") return false;
-  if (role === "product") return true;
-  if (!canReleaseProductBaseline({
-    productRequired,
-    productSpecPath,
-    productBaselineReady,
-    productDecisionRequired,
-    productDecisionApproved,
-    productDecisionApprovalEvidence,
-  })) return false;
-  if (role === "design") return true;
-  if (designRequired && (!directionApproved || !figmaApproved) && (role === "frontend" || role === "backend")) return false;
-  return role === "frontend" || role === "backend";
+export function resolveRoleProfile(role, availableCapabilities) {
+  const requested = ROLE_PROFILES[role];
+  if (!requested) throw new Error(`unknown role profile: ${role}`);
+
+  const base = {
+    requestedModel: requested.model,
+    requestedReasoningEffort: requested.reasoningEffort,
+  };
+  if (!Array.isArray(availableCapabilities) || availableCapabilities.length === 0
+    || exactCapability(availableCapabilities, requested.model, requested.reasoningEffort)) {
+    return {
+      ...base,
+      effectiveModel: requested.model,
+      effectiveReasoningEffort: requested.reasoningEffort,
+      fallbackUsed: false,
+      fallbackReason: "",
+    };
+  }
+
+  if (requested.fallback
+    && exactCapability(availableCapabilities, requested.fallback.model, requested.fallback.reasoningEffort)) {
+    return {
+      ...base,
+      effectiveModel: requested.fallback.model,
+      effectiveReasoningEffort: requested.fallback.reasoningEffort,
+      fallbackUsed: true,
+      fallbackReason: `${requested.model} + ${requested.reasoningEffort} is unavailable in the current dispatch interface`,
+    };
+  }
+
+  throw new Error(`no supported capability for role: ${role}`);
 }
 
 export function canReleaseProductBaseline({
@@ -84,36 +121,68 @@ export function canReleaseProductBaseline({
   productDecisionApprovalEvidence = "",
 } = {}) {
   if (!productRequired) return true;
-  if (typeof productSpecPath !== "string" || productSpecPath.trim().length === 0 || !productBaselineReady) return false;
+  if (!nonEmpty(productSpecPath) || !productBaselineReady) return false;
   if (!productDecisionRequired) return true;
-  return productDecisionApproved
-    && typeof productDecisionApprovalEvidence === "string"
-    && productDecisionApprovalEvidence.trim().length > 0;
+  return productDecisionApproved && nonEmpty(productDecisionApprovalEvidence);
 }
 
-export function mayUseFigma(options = {}) {
-  const { designRequired = false, directionApproved = false } = options;
-  return canReleaseProductBaseline(options) && designRequired && directionApproved;
-}
-
-export function canRequestDirectionApproval({ directionImages = [] } = {}) {
-  return Array.isArray(directionImages)
-    && directionImages.length === 3
-    && directionImages.every((path) => typeof path === "string" && path.trim().length > 0);
-}
-
-export function canAdvanceToFigma({
-  directionImages = [],
-  directionApproved = false,
-  directionApprovalEvidence = "",
-  selectedDirection = "",
+export function canRequestConceptApproval({
+  conceptBriefs = [],
+  firstDraftFileUrl = "",
+  firstDraftNodeIds = [],
+  firstDraftScreenshotPaths = [],
 } = {}) {
-  return canRequestDirectionApproval({ directionImages })
-    && directionApproved
-    && typeof directionApprovalEvidence === "string"
-    && directionApprovalEvidence.trim().length > 0
-    && typeof selectedDirection === "string"
-    && selectedDirection.trim().length > 0;
+  if (!Array.isArray(conceptBriefs) || conceptBriefs.length !== 12) return false;
+  if (!conceptBriefs.every((brief) => (
+    brief && nonEmpty(brief.id) && nonEmpty(brief.family) && nonEmpty(brief.title)
+  ))) return false;
+  const familyCounts = new Map();
+  for (const brief of conceptBriefs) {
+    familyCounts.set(brief.family, (familyCounts.get(brief.family) ?? 0) + 1);
+  }
+  if (familyCounts.size !== 4 || [...familyCounts.values()].some((count) => count !== 3)) return false;
+  return nonEmpty(firstDraftFileUrl)
+    && Array.isArray(firstDraftNodeIds)
+    && firstDraftNodeIds.length === 4
+    && firstDraftNodeIds.every(nonEmpty)
+    && new Set(firstDraftNodeIds).size === 4
+    && Array.isArray(firstDraftScreenshotPaths)
+    && firstDraftScreenshotPaths.length === 4
+    && firstDraftScreenshotPaths.every(nonEmpty)
+    && new Set(firstDraftScreenshotPaths).size === 4;
+}
+
+export function canReleaseConceptSelection({
+  conceptBriefs = [],
+  firstDraftFileUrl = "",
+  firstDraftNodeIds = [],
+  firstDraftScreenshotPaths = [],
+  conceptApproved = false,
+  conceptApprovalEvidence = "",
+  selectedConceptId = "",
+  lockedCharacteristics = {},
+} = {}) {
+  if (!canRequestConceptApproval({
+    conceptBriefs,
+    firstDraftFileUrl,
+    firstDraftNodeIds,
+    firstDraftScreenshotPaths,
+  })) return false;
+  if (!conceptApproved || !nonEmpty(conceptApprovalEvidence) || !nonEmpty(selectedConceptId)) return false;
+  if (!conceptBriefs.some((brief) => brief.id === selectedConceptId)) return false;
+  return nonEmpty(lockedCharacteristics.composition)
+    && nonEmpty(lockedCharacteristics.visualMotif)
+    && nonEmpty(lockedCharacteristics.colorOrTypography);
+}
+
+export function mayCreateFigmaFirstDraft(options = {}) {
+  return canReleaseProductBaseline(options) && options.conceptRequired === true;
+}
+
+export function mayRefineDesignInFigma(options = {}) {
+  return canReleaseProductBaseline(options)
+    && options.designRequired === true
+    && canReleaseConceptSelection(options);
 }
 
 export function canReleaseImplementation({
@@ -124,14 +193,14 @@ export function canReleaseImplementation({
   productDecisionApproved = false,
   productDecisionApprovalEvidence = "",
   designRequired = false,
-  directionImages = [],
-  directionApproved = false,
-  directionApprovalEvidence = "",
-  selectedDirection = "",
-  figmaFileUrl = "",
-  figmaNodeId = "",
-  figmaApproved = false,
-  figmaApprovalEvidence = "",
+  finalFigmaFileUrl = "",
+  finalFigmaNodeId = "",
+  figmaMakeRequired = false,
+  figmaMakeUrl = "",
+  figmaMakeSkippedReason = "",
+  finalDesignApproved = false,
+  finalDesignApprovalEvidence = "",
+  ...conceptEvidence
 } = {}) {
   if (!canReleaseProductBaseline({
     productRequired,
@@ -142,19 +211,28 @@ export function canReleaseImplementation({
     productDecisionApprovalEvidence,
   })) return false;
   if (!designRequired) return true;
-  return canAdvanceToFigma({
-    directionImages,
-    directionApproved,
-    directionApprovalEvidence,
-    selectedDirection,
-  })
-    && typeof figmaFileUrl === "string"
-    && figmaFileUrl.trim().length > 0
-    && typeof figmaNodeId === "string"
-    && figmaNodeId.trim().length > 0
-    && figmaApproved
-    && typeof figmaApprovalEvidence === "string"
-    && figmaApprovalEvidence.trim().length > 0;
+  if (!canReleaseConceptSelection(conceptEvidence)) return false;
+  const makeReady = figmaMakeRequired ? nonEmpty(figmaMakeUrl) : nonEmpty(figmaMakeSkippedReason);
+  return nonEmpty(finalFigmaFileUrl)
+    && nonEmpty(finalFigmaNodeId)
+    && makeReady
+    && finalDesignApproved
+    && nonEmpty(finalDesignApprovalEvidence);
+}
+
+export function mayCreateImplementationGoal(options = {}) {
+  return canReleaseImplementation(options);
+}
+
+export function roleMayWrite(options = {}) {
+  const { role, conceptRequired = false, designRequired = false } = options;
+  if (role === "qa") return false;
+  if (role === "product") return true;
+  if (!canReleaseProductBaseline(options)) return false;
+  if (role === "concept") return conceptRequired;
+  if (role === "design") return designRequired && canReleaseConceptSelection(options);
+  if (role === "frontend" || role === "backend") return canReleaseImplementation(options);
+  return false;
 }
 
 export function mayStartRepair(completedRepairRounds) {
@@ -187,10 +265,11 @@ export function validateTaskCard(markdown, role) {
   ];
   const roleRequired = {
     product: ["用户问题与证据", "范围与非目标", "用户流程与产品规则", "边界情况", "重大产品决策", "产品规格基线"],
-    design: ["设计目标与项目人格", "视觉侦察", "Refero 研究与参考锁定", "Demo 资产政策", "反公式化清单", "三个视觉方向", "方向图片证据", "Figma 完善", "两次人工批准"],
+    concept: ["概念范围与输入", "十二个概念 Brief", "四个 Figma First Draft", "模型与回退记录", "第一次人工选择"],
+    design: ["设计目标与项目人格", "视觉侦察", "Refero 研究与参考锁定", "Demo 资产政策", "反公式化清单", "获选概念与锁定特征", "Figma AI 与 Make 精修", "最终人工批准"],
     frontend: ["最终设计输入", "技能冲突优先级", "实现边界", "视觉还原证据"],
     backend: ["设计门禁期间", "数据与副作用边界"],
-    qa: ["批准证据核验", "视觉与反公式化验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
+    qa: ["风险与范围", "批准证据核验", "视觉与反公式化验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
   };
   const required = [...commonRequired, ...(roleRequired[role] ?? [])];
   return required.filter((heading) => !new RegExp(`^## ${heading}$`, "m").test(markdown));

@@ -6,7 +6,7 @@
 
 ## 输入
 
-- <approved plan, released product specification when required, final design specification, Figma evidence, and interface contract>
+- <implementation Goal ID, approved plan, review manifest reference, released product specification when required, final design specification, Figma evidence, and interface contract>
 
 ## 拥有路径
 
@@ -42,9 +42,10 @@
 
 ## 最终设计输入
 
-- 选定方向：<direction id>
+- 选定概念 Brief ID 与三项锁定特征：<concept id and locks>
 - 最终 Figma 文件 URL：<url>
 - 最终 Figma 节点 ID：<node id>
+- Figma Make URL 或静态页面跳过理由：<url/reason>
 - 最终批准证据：<manifest/report reference>
 
 ## 技能冲突优先级
@@ -60,6 +61,7 @@
 
 ## 实现边界
 
+- 本卡只能在最终视觉审批完成后、实施 Goal 已创建并记录 review manifest 引用时创建。
 - 产品规格基线未释放时只读侦察，不写业务代码，也不自行补造产品规则。
 - 仅实现最终批准的 Figma 与设计规范，不自行改变视觉方向。
 - 不得以通用组件套版、等宽卡片阵列或默认 Hero 替代获批构图。
@@ -69,7 +71,7 @@
 ## 视觉还原证据
 
 - 提交桌面端、移动端和关键状态实现截图。
-- 对照最终 Figma 记录差异、理由和残余限制。
+- 对照最终 Figma/Make 与三项锁定特征记录差异、理由和残余限制。
 
 ## 交付物
 
@@ -87,8 +89,8 @@
 
 - 不提交、推送、创建 PR、合并或部署。
 - 不修改共享契约、后端路径或其他角色拥有的路径。
-- 不在最终 Figma 批准前写业务界面或自行重新设计。
+- 不在最终 Figma/Make 批准前写业务界面或自行重新设计。
 
 ## 阻塞关系
 
-- Product baseline release, Design final Figma approval, and <backend card id or none>
+- Product baseline release, Concept selection, Design final Figma/Make approval, and <backend card id or none>

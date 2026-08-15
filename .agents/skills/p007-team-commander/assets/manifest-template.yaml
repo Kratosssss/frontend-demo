@@ -2,46 +2,44 @@ goal_id: "<goal-id>"
 plan_ref: "<approved-plan-path>"
 trigger_text: "编队执行"
 state: queued
+review_manifest_path: ".planning/review/<review-id>/manifest.yaml"
+review_approval_evidence_ref: ""
 repair_round: 0
-product:
+qa:
   required: false
-  phase: not_required
-  spec_path: ""
-  baseline_ready: false
-  decision_required: false
-  decision_options: []
-  decision_approved: false
-  decision_approval_evidence: ""
-design:
-  required: false
-  phase: not_required
-  direction_required: false
-  direction_images: []
-  direction_approved: false
-  direction_approval_evidence: ""
-  selected_direction: ""
-  figma_required: false
-  figma_file_url: ""
-  figma_node_id: ""
-  figma_approved: false
-  figma_approval_evidence: ""
-# 可选的实现前设计 QA；按用户要求默认关闭，只有明确重新启用时才参与流程。
-design_review:
-  enabled: false
-  phase: disabled
-  report_path: ""
-  passed: false
-  evidence: ""
+  risk_reasons: []
+  scope: []
+  reused_evidence: []
+  skipped_reason: ""
 active_roles: []
+deferred_roles: []
 skipped_roles: []
 dependencies: {}
 model_profile:
-  product: { model: gpt-5.6-sol, reasoning_effort: high }
-  design: { model: gpt-5.6-sol, reasoning_effort: high }
-  frontend: { model: gpt-5.6-terra, reasoning_effort: high }
-  backend: { model: gpt-5.6-terra, reasoning_effort: high }
-  qa: { model: gpt-5.6-sol, reasoning_effort: high }
+  frontend:
+    requested: { model: gpt-5.6-terra, reasoning_effort: high }
+    effective: { model: gpt-5.6-terra, reasoning_effort: high }
+    fallback_used: false
+    fallback_reason: ""
+  backend:
+    requested: { model: gpt-5.6-terra, reasoning_effort: high }
+    effective: { model: gpt-5.6-terra, reasoning_effort: high }
+    fallback_used: false
+    fallback_reason: ""
+  qa:
+    requested: { model: gpt-5.6-sol, reasoning_effort: medium }
+    effective: { model: gpt-5.6-sol, reasoning_effort: medium }
+    fallback_used: false
+    fallback_reason: ""
 shared_files_owner: commander
+artifact_promotion:
+  audit_completed: false
+  durable_specs: []
+  project_rule_candidates: []
+  skill_candidates: []
+  regression_tests_or_issue_candidates: []
+  temporary_evidence: []
+  authorization_required: []
 closeout_cleanup:
   audit_completed: false
   authorization_evidence: ""
