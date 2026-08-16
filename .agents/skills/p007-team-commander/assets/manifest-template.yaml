@@ -11,6 +11,12 @@ qa:
   scope: []
   reused_evidence: []
   skipped_reason: ""
+frontend_acceptance:
+  mode: manual
+  checklist: []
+  evidence: []
+  accepted: false
+  acceptance_evidence: ""
 active_roles: []
 deferred_roles: []
 skipped_roles: []

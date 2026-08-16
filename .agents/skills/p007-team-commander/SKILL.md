@@ -1,6 +1,6 @@
 ---
 name: p007-team-commander
-description: "协调 P007 原生七角色团队，创建角色专属任务卡，强制执行产品、视觉概念和最终设计审批，分配隔离的文件所有权，整合结果并运行有边界的 QA 修复循环。用于用户显式调用本技能准备一次 dispatch，或用户给出肯定指令「编队执行」启动团队时。"
+description: "协调 P007 原生六角色团队，创建角色专属任务卡，强制执行产品与按需启用的设计门禁，分配隔离的文件所有权，整合结果并运行有边界的 QA 修复循环。用于用户显式调用本技能准备一次 dispatch，或用户给出肯定指令「编队执行」启动团队时。"
 ---
 
 # P007 总指挥
@@ -19,21 +19,24 @@ description: "协调 P007 原生七角色团队，创建角色专属任务卡，
 
 ## 两阶段 dispatch
 
-1. 评审阶段不创建 Goal：建 `.planning/review/<review-id>/manifest.yaml`，活动 Product/Concept/Design 卡片放 `cards/`，报告放 `reports/`，临时证据放 `artifacts/`；最多并发三个专员。
+1. 评审阶段不创建 Goal：建 `.planning/review/<review-id>/manifest.yaml`，活动 Product 与（按需启用的）Design 卡片放 `cards/`，报告放 `reports/`，临时证据放 `artifacts/`；最多并发三个专员。
 2. 门禁完全释放后创建并验证恰好一个实施 Goal：`.planning/dispatch/<goal-id>/manifest.yaml` 引用不可变评审 manifest，只为 Frontend、Backend 和风险必需的 QA 建卡。
 3. manifest 和任务卡只从 `assets/` 模板复制；辅助技能只按卡片声明加载，不替代专员或绕过门禁。
 
 ## 强制执行门禁
 
 1. 产品基线（`docs/specs/` 持久规格）先释放；需要用户价值决策时记录选项并设 `waiting_human`，绝不从沉默或泛泛确认推断批准。
-2. Experience 启用时先 Concept 后 Design：恰好十二个结构化 Brief（四个方向族×三）、四个实际 Figma First Draft 节点/截图、三项锁定特征全部记录后才请求选择；概念选择前 Design 保持只读。
-3. 最终 Figma/Make 批准证据记录后才能放行实施；Figma AI 访问或额度不可用、或任何批准待定时停在 `waiting_human`，绝不静默用 Sol 手工设计替代 Figma AI。
+2. 设计门禁默认关闭。总指挥判断任务涉及体验或视觉时，先询问用户是否启用设计；用户明确同意并记录 `enable_evidence` 后才派 Design。
+3. Design 启用时：Product 先产出四个文字级创意方向族；Design 据此产出四个实际 Figma First Draft 节点/截图后才请求选择；记录批准证据并锁定构图、视觉母题和关键色彩/字体；方向选定前 Design 保持只读。
+4. 最终 Figma/Make 批准证据记录后才能放行实施；Figma AI 访问或额度不可用、或任何批准待定时停在 `waiting_human`，绝不静默用 Sol 手工设计替代 Figma AI。
 
 ## 集成与验证
 
 1. 总指挥独占用户沟通、共享文件编辑、Git、PR、合并和部署；子代理不得提交、推送、创建 PR、合并、部署或触碰生产数据。
-2. QA 按风险默认关闭（`qa.required: false`）；启用时要求独立只读验证。缺陷退回原负责人，最多两轮修复/重测。
-3. CloudBase 发布遵循项目 AGENTS.md 门禁：合并到干净本地 `main` 后、从 `main` 重建。
+2. QA 按风险默认关闭（`qa.required: false`）；前端范围 QA 只检查代码问题（类型、测试、构建、契约），禁止打开页面或使用浏览器自动化核对样式。
+3. 前端视觉验收改为人工：前端交付截图与验收清单，总指挥汇总后请用户确认，记录 `frontend_acceptance` 证据后才合并。
+4. 缺陷退回原负责人，最多两轮修复/重测；失败后停止并上报根因和剩余证据。
+5. CloudBase 发布遵循项目 AGENTS.md 门禁：合并到干净本地 `main` 后、从 `main` 重建。
 
 ## 收尾审计
 

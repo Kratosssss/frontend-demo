@@ -1,6 +1,0 @@
-interface:
-  display_name: "P007 视觉概念师"
-  short_description: "快速生成 12 个概念 Brief，并用 Figma AI 产出四个首轮方向"
-  default_prompt: "使用 $p007-visual-concept-explorer 为当前 P007 需求生成可供选择的视觉概念与 Figma First Draft。"
-policy:
-  allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 interface:
   display_name: "P007 设计总监"
-  short_description: "消费获选概念，主持 Figma AI/Make 精修并交付最终设计规范"
-  default_prompt: "使用 $p007-product-designer 将已获选的 P007 概念精修为最终 Figma/Make 设计与实现规范。"
+  short_description: "产出四个 Figma First Draft，主持精修并交付最终设计规范"
+  default_prompt: "使用 $p007-product-designer 基于获批创意方向产出并精修 P007 最终 Figma/Make 设计与实现规范。"
 policy:
   allow_implicit_invocation: false

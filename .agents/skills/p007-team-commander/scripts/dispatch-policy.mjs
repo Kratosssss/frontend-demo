@@ -12,11 +12,6 @@ export const DISPATCH_STATES = Object.freeze([
 
 export const ROLE_PROFILES = Object.freeze({
   product: { model: "gpt-5.6-sol", reasoningEffort: "high" },
-  concept: {
-    model: "gpt-5.6-luna",
-    reasoningEffort: "none",
-    fallback: { model: "gpt-5.6-terra", reasoningEffort: "low" },
-  },
   design: { model: "gpt-5.6-sol", reasoningEffort: "high" },
   frontend: { model: "gpt-5.6-terra", reasoningEffort: "high" },
   backend: { model: "gpt-5.6-terra", reasoningEffort: "high" },
@@ -25,7 +20,6 @@ export const ROLE_PROFILES = Object.freeze({
 
 export const CARD_TEMPLATE_FILES = Object.freeze({
   product: "assets/cards/product-card-template.md",
-  concept: "assets/cards/concept-card-template.md",
   design: "assets/cards/design-card-template.md",
   frontend: "assets/cards/frontend-card-template.md",
   backend: "assets/cards/backend-card-template.md",
@@ -51,7 +45,6 @@ export function isAffirmativeTeamTrigger(input) {
 
 export function requiresIndependentQa({
   explicitRequest = false,
-  designGateDelivery = false,
   crossLayerOrMultipleOwners = false,
   sharedBuildOrConfig = false,
   securityOrPermission = false,
@@ -60,7 +53,6 @@ export function requiresIndependentQa({
 } = {}) {
   return [
     explicitRequest,
-    designGateDelivery,
     crossLayerOrMultipleOwners,
     sharedBuildOrConfig,
     securityOrPermission,
@@ -69,10 +61,10 @@ export function requiresIndependentQa({
   ].some(Boolean);
 }
 
-export function selectSpecialists({ product = false, experience = false, frontend = false, backend = false, qaRequired = false } = {}) {
+export function selectSpecialists({ product = false, design = false, frontend = false, backend = false, qaRequired = false } = {}) {
   const roles = [];
   if (product) roles.push("product");
-  if (experience) roles.push("concept", "design");
+  if (design) roles.push("design");
   if (frontend) roles.push("frontend");
   if (backend) roles.push("backend");
   if (qaRequired) roles.push("qa");
@@ -126,21 +118,18 @@ export function canReleaseProductBaseline({
   return productDecisionApproved && nonEmpty(productDecisionApprovalEvidence);
 }
 
-export function canRequestConceptApproval({
-  conceptBriefs = [],
+export function canRequestDesignSelection({
+  directionFamilies = [],
   firstDraftFileUrl = "",
   firstDraftNodeIds = [],
   firstDraftScreenshotPaths = [],
 } = {}) {
-  if (!Array.isArray(conceptBriefs) || conceptBriefs.length !== 12) return false;
-  if (!conceptBriefs.every((brief) => (
-    brief && nonEmpty(brief.id) && nonEmpty(brief.family) && nonEmpty(brief.title)
+  if (!Array.isArray(directionFamilies) || directionFamilies.length !== 4) return false;
+  if (!directionFamilies.every((family) => (
+    family && nonEmpty(family.id) && nonEmpty(family.family) && nonEmpty(family.title)
   ))) return false;
-  const familyCounts = new Map();
-  for (const brief of conceptBriefs) {
-    familyCounts.set(brief.family, (familyCounts.get(brief.family) ?? 0) + 1);
-  }
-  if (familyCounts.size !== 4 || [...familyCounts.values()].some((count) => count !== 3)) return false;
+  const ids = new Set(directionFamilies.map((family) => family.id));
+  if (ids.size !== 4) return false;
   return nonEmpty(firstDraftFileUrl)
     && Array.isArray(firstDraftNodeIds)
     && firstDraftNodeIds.length === 4
@@ -152,37 +141,37 @@ export function canRequestConceptApproval({
     && new Set(firstDraftScreenshotPaths).size === 4;
 }
 
-export function canReleaseConceptSelection({
-  conceptBriefs = [],
+export function canReleaseDesignSelection({
+  directionFamilies = [],
   firstDraftFileUrl = "",
   firstDraftNodeIds = [],
   firstDraftScreenshotPaths = [],
-  conceptApproved = false,
-  conceptApprovalEvidence = "",
-  selectedConceptId = "",
+  directionApproved = false,
+  directionApprovalEvidence = "",
+  selectedFamilyId = "",
   lockedCharacteristics = {},
 } = {}) {
-  if (!canRequestConceptApproval({
-    conceptBriefs,
+  if (!canRequestDesignSelection({
+    directionFamilies,
     firstDraftFileUrl,
     firstDraftNodeIds,
     firstDraftScreenshotPaths,
   })) return false;
-  if (!conceptApproved || !nonEmpty(conceptApprovalEvidence) || !nonEmpty(selectedConceptId)) return false;
-  if (!conceptBriefs.some((brief) => brief.id === selectedConceptId)) return false;
+  if (!directionApproved || !nonEmpty(directionApprovalEvidence) || !nonEmpty(selectedFamilyId)) return false;
+  if (!directionFamilies.some((family) => family.id === selectedFamilyId)) return false;
   return nonEmpty(lockedCharacteristics.composition)
     && nonEmpty(lockedCharacteristics.visualMotif)
     && nonEmpty(lockedCharacteristics.colorOrTypography);
 }
 
 export function mayCreateFigmaFirstDraft(options = {}) {
-  return canReleaseProductBaseline(options) && options.conceptRequired === true;
+  return canReleaseProductBaseline(options) && options.designRequired === true;
 }
 
 export function mayRefineDesignInFigma(options = {}) {
   return canReleaseProductBaseline(options)
     && options.designRequired === true
-    && canReleaseConceptSelection(options);
+    && canReleaseDesignSelection(options);
 }
 
 export function canReleaseImplementation({
@@ -200,7 +189,7 @@ export function canReleaseImplementation({
   figmaMakeSkippedReason = "",
   finalDesignApproved = false,
   finalDesignApprovalEvidence = "",
-  ...conceptEvidence
+  ...designEvidence
 } = {}) {
   if (!canReleaseProductBaseline({
     productRequired,
@@ -211,7 +200,7 @@ export function canReleaseImplementation({
     productDecisionApprovalEvidence,
   })) return false;
   if (!designRequired) return true;
-  if (!canReleaseConceptSelection(conceptEvidence)) return false;
+  if (!canReleaseDesignSelection(designEvidence)) return false;
   const makeReady = figmaMakeRequired ? nonEmpty(figmaMakeUrl) : nonEmpty(figmaMakeSkippedReason);
   return nonEmpty(finalFigmaFileUrl)
     && nonEmpty(finalFigmaNodeId)
@@ -225,12 +214,11 @@ export function mayCreateImplementationGoal(options = {}) {
 }
 
 export function roleMayWrite(options = {}) {
-  const { role, conceptRequired = false, designRequired = false } = options;
+  const { role, designRequired = false } = options;
   if (role === "qa") return false;
   if (role === "product") return true;
   if (!canReleaseProductBaseline(options)) return false;
-  if (role === "concept") return conceptRequired;
-  if (role === "design") return designRequired && canReleaseConceptSelection(options);
+  if (role === "design") return designRequired && canReleaseDesignSelection(options);
   if (role === "frontend" || role === "backend") return canReleaseImplementation(options);
   return false;
 }
@@ -264,12 +252,11 @@ export function validateTaskCard(markdown, role) {
     "交付物", "验收标准", "验证命令", "禁止事项", "阻塞关系",
   ];
   const roleRequired = {
-    product: ["用户问题与证据", "范围与非目标", "用户流程与产品规则", "边界情况", "重大产品决策", "产品规格基线"],
-    concept: ["概念范围与输入", "十二个概念 Brief", "四个 Figma First Draft", "模型与回退记录", "第一次人工选择"],
-    design: ["设计目标与项目人格", "视觉侦察", "Refero 研究与参考锁定", "Demo 资产政策", "反公式化清单", "获选概念与锁定特征", "Figma AI 与 Make 精修", "最终人工批准"],
-    frontend: ["最终设计输入", "技能冲突优先级", "实现边界", "视觉还原证据"],
+    product: ["用户问题与证据", "范围与非目标", "用户流程与产品规则", "边界情况", "重大产品决策", "产品规格基线", "创意方向族"],
+    design: ["设计目标与项目人格", "视觉侦察", "Refero 研究与参考锁定", "Demo 资产政策", "反公式化清单", "获选方向与锁定特征", "四个 Figma First Draft", "Figma AI 与 Make 精修", "最终人工批准"],
+    frontend: ["最终设计输入", "技能冲突优先级", "实现边界", "视觉还原证据", "人工验收清单"],
     backend: ["设计门禁期间", "数据与副作用边界"],
-    qa: ["风险与范围", "批准证据核验", "视觉与反公式化验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
+    qa: ["风险与范围", "批准证据核验", "前端代码验收", "独立验收边界", "规格符合性验收", "工程质量验收"],
   };
   const required = [...commonRequired, ...(roleRequired[role] ?? [])];
   return required.filter((heading) => !new RegExp(`^## ${heading}$`, "m").test(markdown));
