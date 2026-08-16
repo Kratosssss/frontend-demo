@@ -299,14 +299,12 @@ test("视觉审查与实施 Goal 使用分离 manifest，并保留审批证据�
 
 test("总指挥、概念师、设计总监与 QA 的职责边界已拆分", async () => {
   const commander = await read(".agents/skills/p007-team-commander/SKILL.md");
-  const commanderWorkflow = await read(".agents/skills/p007-team-commander/references/commander-workflow.md");
   const concept = await read(".agents/skills/p007-visual-concept-explorer/SKILL.md");
   const design = await read(".agents/skills/p007-product-designer/SKILL.md");
   const frontend = await read(".agents/skills/p007-frontend-engineer/SKILL.md");
   const backend = await read(".agents/skills/p007-backend-engineer/SKILL.md");
   const qa = await read(".agents/skills/p007-qa-engineer/SKILL.md");
   assert.match(commander, /原生七角色团队/);
-  assert.match(commander, /references\/commander-workflow\.md/);
   assert.match(commander, /scripts\/dispatch-policy\.mjs/);
   assert.match(commander, /恰好一个实施 Goal/);
   assert.match(commander, /四个实际 Figma First Draft 节点\/截图/);
@@ -314,11 +312,10 @@ test("总指挥、概念师、设计总监与 QA 的职责边界已拆分", asyn
   assert.match(commander, /评审阶段不创建 Goal/);
   assert.match(commander, /最多两轮修复\/重测/);
   assert.match(commander, /只读清理审计/);
-  assert.match(commanderWorkflow, /辅助技能的选择、卡片注入、范围和验证由总指挥拥有/);
-  assert.match(commanderWorkflow, /概念选择前让 Design 保持只读/);
-  assert.match(commanderWorkflow, /请求 `gpt-5\.6-luna`，`none`/);
-  assert.match(commanderWorkflow, /qa\.required: false/);
-  assert.match(commanderWorkflow, /不要自动编辑 `AGENTS\.md`/);
+  assert.match(commander, /辅助技能只按卡片声明加载/);
+  assert.match(commander, /概念选择前 Design 保持只读/);
+  assert.match(commander, /qa\.required: false/);
+  assert.match(commander, /不自动编辑 `AGENTS\.md`/);
   assert.match(concept, /十二个结构化概念 Brief/);
   assert.match(concept, /不修改业务代码、共享契约/);
   assert.doesNotMatch(design, /三个视觉方向/);
@@ -340,20 +337,15 @@ test("总指挥、概念师、设计总监与 QA 的职责边界已拆分", asyn
 
 test("总指挥自动审计收尾清理与产物晋升但不越权", async () => {
   const commander = await read(".agents/skills/p007-team-commander/SKILL.md");
-  const workflow = await read(".agents/skills/p007-team-commander/references/commander-workflow.md");
   const manifest = await read(".agents/skills/p007-team-commander/assets/manifest-template.yaml");
   assert.match(commander, /收尾审计/);
-  assert.match(commander, /references\/commander-workflow\.md/);
-  assert.match(workflow, /^## 审计产物晋升$/m);
-  assert.match(workflow, /持久规范/);
-  assert.match(workflow, /稳定项目规则候选/);
-  assert.match(workflow, /可复用技能候选/);
-  assert.match(workflow, /不要自动编辑 `AGENTS\.md`/);
-  assert.match(workflow, /^## 审计收尾清理$/m);
-  assert.match(workflow, /总是运行一次只读清理审计/);
-  assert.match(workflow, /删除不是/);
-  assert.match(workflow, /绝不强制移除/);
-  assert.match(workflow, /不要移除承载当前总指挥回合的 worktree/);
+  assert.match(commander, /产物晋升审计/);
+  assert.match(commander, /持久规范/);
+  assert.match(commander, /规则候选/);
+  assert.match(commander, /技能候选/);
+  assert.match(commander, /只读清理审计/);
+  assert.match(commander, /不自动编辑 `AGENTS\.md`/);
+  assert.match(commander, /绝不强制移除/);
   for (const field of [
     "audit_completed", "durable_specs", "project_rule_candidates", "skill_candidates",
     "regression_tests_or_issue_candidates", "temporary_evidence", "authorization_required",
