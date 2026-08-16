@@ -36,7 +36,7 @@ description: "协调 P007 原生六角色团队，创建角色专属任务卡，
 2. QA 按风险默认关闭（`qa.required: false`）；前端范围 QA 只检查代码问题（类型、测试、构建、契约），禁止打开页面或使用浏览器自动化核对样式。
 3. 前端视觉验收改为人工：前端交付截图与验收清单，总指挥汇总后请用户确认，记录 `frontend_acceptance` 证据后才合并。
 4. 缺陷退回原负责人，最多两轮修复/重测；失败后停止并上报根因和剩余证据。
-5. CloudBase 发布遵循项目 AGENTS.md 门禁：合并到干净本地 `main` 后、从 `main` 重建。
+5. CloudBase 发布遵循 `docs/cloudbase-release-gate.md` 门禁：合并到干净本地 `main` 后、从 `main` 重建。
 
 ## 收尾审计
 

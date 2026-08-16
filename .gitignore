@@ -1,5 +1,6 @@
-# Local planning and research notes
-/docs/
+# Local planning and research notes (only the release gate is tracked)
+/docs/*
+!/docs/cloudbase-release-gate.md
 /.planning/
 /.local/
 /docs/research/

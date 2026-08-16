@@ -350,8 +350,15 @@ test("六个技能显式调用且不保留仓库级 verify 工作流", async () 
 
 test("根规则保留通用工程底线并声明六角色入口", async () => {
   const instructions = await read("AGENTS.md");
+  const gate = await read("docs/cloudbase-release-gate.md");
   assert.match(instructions, /P007 的六角色编队（总指挥＋五类专家）/);
   assert.match(instructions, /如需六角色编队须明确回复“编队执行”/);
+  assert.match(instructions, /docs\/cloudbase-release-gate\.md/);
+  assert.doesNotMatch(instructions, /确认全量构建/);
+  assert.match(gate, /只做增量构建/);
+  assert.match(gate, /build:changed -- --dry-run/);
+  assert.match(gate, /确认全量构建/);
+  assert.match(gate, /Node\.js 22/);
   assert.match(instructions, /^## 通用工程底线$/m);
   assert.match(instructions, /最小改动：只修改完成任务必需的文件和逻辑/);
   assert.match(instructions, /优先复用：先复用现有组件、工具和架构/);
